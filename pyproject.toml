@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ai_assistant_parsers_core"
+version = "0.0.0"
+description = ""
+authors = ["LEv145"]
+readme = "README.md"
+packages = [{include = "ai_assistant_parsers_core", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+beautifulsoup4 = "^4.12.3"
+tldextract = "^5.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+mkinit = "^1.1.0"
+black = "^24.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
