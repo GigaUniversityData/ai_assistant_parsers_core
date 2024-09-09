@@ -1,13 +1,30 @@
+"""Утилита для универсальной очистки любого HTML-кода."""
+
+from __future__ import annotations
+
 from bs4 import BeautifulSoup, Tag
 
 from ai_assistant_parsers_core.common_utils.beautiful_soup import clean_tags, clean_comments
 
 
-def universal_clean_html(html_src: str) -> str:
-    soup = BeautifulSoup(html_src, "html5lib")
+def universal_clean_html(html: str) -> str:
+    """Очищает HTML-код.
 
-    soup = soup.find("body") or soup
-    soup = soup.find("main") or soup
+    Args:
+        html (str): HTML-код.
+
+    Returns:
+        str: HTML-код.
+    """
+
+    soup: BeautifulSoup | Tag = BeautifulSoup(html, "html5lib")
+
+    for tag in ["body", "main"]:
+        finded_tag = soup.find(tag)
+
+        if isinstance(finded_tag, Tag):
+            soup = finded_tag
+
 
     clean_tags(soup, ["script", "style", "noscript", "nav", "head", "footer", "header"])
     #_clean_specific_css(soup)
@@ -22,14 +39,23 @@ def universal_clean_html(html_src: str) -> str:
     return str(soup)
 
 
-def _clean_specific_css(soup: BeautifulSoup) -> None:
-    """Удаляет теги по селектору."""
+def _clean_specific_css(soup: BeautifulSoup | Tag) -> None:
+    """Удаляет теги по специальным селекторам.
+
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+    """
+
     for tag in soup.select('div[id*="google-cache-hdr"], div[id*="wm-ipp"], div[class*="bread"], ul[class*="bread"], div[class*="menu"], li[class*="menu"], section[class*="anchors"]'):
         tag.decompose()
 
 
-def _clean_attributes(soup: BeautifulSoup) -> None:
-    """Remove unwanted attributes and convert relative links to absolute."""
+def _clean_attributes(soup: BeautifulSoup | Tag) -> None:
+    """Удаляет ненужные атрибуты тегам.
+
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+    """
     tag: Tag
 
     for tag in soup.find_all(True):  # True finds all tags
