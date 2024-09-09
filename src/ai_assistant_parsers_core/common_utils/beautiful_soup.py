@@ -1,25 +1,36 @@
+"""Утилиты для работы с BeautifulSoup."""
+
 from __future__ import annotations
 
 import re
 from urllib import parse
 
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup, Tag, Comment
 
 
 # https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s08.html
 URL_SCHEME_PATTERN = re.compile(r"^([a-z][a-z0-9+\-.]*):", re.IGNORECASE)
 
 
-def clean_tags(soup: BeautifulSoup, tags: list[str]) -> None:
+def clean_tags(soup: BeautifulSoup | Tag, tags: list[str]) -> None:
+    """Очищает теги из списка по названию.
+
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+        tags (list[str]): Список тегов.
+    """
+
     for tag in soup.find_all(tags):
         tag.decompose()
 
 
-def rewrite_urls(soup: BeautifulSoup, base_url: str | None = None) -> None:
-    """Convert relative links to absolute URLs and unquote all."""
+def rewrite_urls(soup: BeautifulSoup | Tag, base_url: str | None = None) -> None:
+    """Преобразует относительные ссылки в абсолютные ссылки и их декидирует.
 
-    if base_url and not re.match(r'^https?://', base_url):
-        raise ValueError("Invalid base URL. It should start with http:// or https://")
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+        base_url (str | None, optional): Базовый URL-адрес. По умолчанию None.
+    """
 
     tags_to_process = [
         ("a", "href"),
@@ -43,16 +54,25 @@ def rewrite_urls(soup: BeautifulSoup, base_url: str | None = None) -> None:
                 element[attr] = parse.unquote(url)
 
 
-def clean_comments(soup: BeautifulSoup) -> None:
-    """Удаляет блоки коментариев."""
+def clean_comments(soup: BeautifulSoup | Tag) -> None:
+    """Удаляет блоки коментариев.
+
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+    """
+
     comment: Comment
     comments = soup.find_all(string=lambda text: isinstance(text, Comment))
     for comment in comments:
         comment.extract()
 
 
-def clean_empty_tags(soup: BeautifulSoup) -> None:
-    """Удаляет все пустые теги (нет текста, дочерних тегов)."""
+def clean_empty_tags(soup: BeautifulSoup | Tag) -> None:
+    """Удаляет все пустые теги (нет текста, нет дочерних тегов).
+
+    Args:
+        soup (BeautifulSoup | Tag): Объект beautiful soup.
+    """
     for tag in soup.find_all():
         if not tag.text.strip():
             tag.decompose()

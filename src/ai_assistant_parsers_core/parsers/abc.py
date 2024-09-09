@@ -1,15 +1,29 @@
+"""Абстракции для парсеров."""
+
 import abc
 
 
 class ABCParser(abc.ABC):
+    """Абстрактный парсер."""
+
     @abc.abstractmethod
     def check(self, url: str) -> bool:
-        """Checking url to make sure that url fits parser."""
+        """Проверяет URL-адрес, чтобы убедиться, что он подходит для парсинга.
+
+        Args:
+            url (str): URL-адрес.
+
+        Returns:
+            bool: Булевый результат.
+        """
 
     @abc.abstractmethod
     def parse(self, html: str) -> str:
-        """Parse url.
+        """Парсит HTML-код, чтобы получить очищенный HTML-код.
 
-        :param html: Site html
-        :return: Cleaned html
+        Args:
+            html (str): HTML-код.
+
+        Returns:
+            str: Очищенный HTML-код.
         """
