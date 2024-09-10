@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-from .abc import ABCParser
-from .mixins import SimpleSelectMixin
 
-
-class SimpleFindPageBaseParser(SimpleSelectMixin, ABCParser):
+class PageMixin():
     def __init__(
         self,
         supported_urls: list[str],
-        select_arguments: list[str],
+        **kwargs,
     ) -> None:
-        super().__init__(select_arguments=select_arguments)
+        super().__init__(**kwargs)
 
         self._supported_urls = supported_urls
 

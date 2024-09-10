@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from .base_query_mixin import BaseQueryMixin
 
 
-class SimpleSelectMixin(BaseQueryMixin):
+class SelectQueryMixin(BaseQueryMixin):
     def __init__(self, select_arguments: list[str], **kwargs) -> None:
         super().__init__(**kwargs)
 

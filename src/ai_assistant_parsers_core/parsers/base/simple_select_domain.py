@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from .abc import ABCParser
-from .mixins import SimpleDomainMixin, SimpleSelectMixin
+from ..abc import ABCParser
+from ..mixins import DomainMixin, SelectQueryMixin
 
 
-class SimpleSelectDomainBaseParser(SimpleDomainMixin, SimpleSelectMixin, ABCParser):
+class SimpleSelectDomainBaseParser(DomainMixin, SelectQueryMixin, ABCParser):
     def __init__(
         self,
         supported_subdomains: list[str], 

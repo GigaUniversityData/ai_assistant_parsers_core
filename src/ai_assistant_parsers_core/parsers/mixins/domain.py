@@ -5,7 +5,7 @@ import re
 from ai_assistant_parsers_core.common_utils.parse_url import get_url_subdomain, get_url_path
 
 
-class SimpleDomainMixin():
+class DomainMixin():
     def __init__(
         self,
         supported_subdomains: list[str],

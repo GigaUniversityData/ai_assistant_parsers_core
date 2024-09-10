@@ -1,19 +1,23 @@
 from .base_query_mixin import (
     BaseQueryMixin,
 )
-from .simple_domain import (
-    SimpleDomainMixin,
+from .domain import (
+    DomainMixin,
 )
-from .simple_find import (
-    SimpleFindMixin,
+from .find_query import (
+    FindQueryMixin,
 )
-from .simple_select import (
-    SimpleSelectMixin,
+from .page import (
+    PageMixin,
+)
+from .select_query import (
+    SelectQueryMixin,
 )
 
 __all__ = [
     "BaseQueryMixin",
-    "SimpleDomainMixin",
-    "SimpleFindMixin",
-    "SimpleSelectMixin",
+    "DomainMixin",
+    "FindQueryMixin",
+    "PageMixin",
+    "SelectQueryMixin",
 ]

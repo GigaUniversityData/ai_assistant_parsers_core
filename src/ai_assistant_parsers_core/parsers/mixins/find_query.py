@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from .base_query_mixin import BaseQueryMixin
 
 
-class SimpleFindMixin(BaseQueryMixin):
+class FindQueryMixin(BaseQueryMixin):
     def __init__(self, find_arguments: list[dict[str, t.Any]], **kwargs) -> None:
         super().__init__(**kwargs)
 

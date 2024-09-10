@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import typing as t
 
-from .abc import ABCParser
-from .mixins import SimpleDomainMixin, SimpleFindMixin
+from ..abc import ABCParser
+from ..mixins import DomainMixin, FindQueryMixin
 
 
-class SimpleFindDomainBaseParser(SimpleDomainMixin, SimpleFindMixin, ABCParser):
+class SimpleFindDomainBaseParser(DomainMixin, FindQueryMixin, ABCParser):
     def __init__(
         self,
         supported_subdomains: list[str],
