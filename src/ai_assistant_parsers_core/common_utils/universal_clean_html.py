@@ -20,10 +20,10 @@ def universal_clean_html(html: str) -> str:
     soup: BeautifulSoup | Tag = BeautifulSoup(html, "html5lib")
 
     for tag in ["body", "main"]:
-        finded_tag = soup.find(tag)
+        found_tag = soup.find(tag)
 
-        if isinstance(finded_tag, Tag):
-            soup = finded_tag
+        if isinstance(found_tag, Tag):
+            soup = found_tag
 
 
     clean_tags(soup, ["script", "style", "noscript", "nav", "head", "footer", "header"])
