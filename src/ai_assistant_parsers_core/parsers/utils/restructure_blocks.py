@@ -1,5 +1,5 @@
 """
-Утилиты для изменение структуры HTML-кода. 
+Утилиты для изменения структуры HTML-кода.
 Как правило, нужны для улучшения читаемости HTML-кода.
 """
 
@@ -35,7 +35,7 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
 # TODO: Это работает с html5lib, но релевантно ли это?
 def convert_tables_to_divs(soup: BeautifulSoup | Tag):
     """Преобразует все таблицы в HTML-коде в `<div>` блоки.
-    Это полезно, если на сайте присутсвтвует табличная вёрстка, которая портит структуру HTML-кода.
+    Это полезно, если на сайте присутствует табличная вёрстка, которая портит структуру HTML-кода.
 
     Args:
         soup (BeautifulSoup | Tag): Объект beautiful soup.
