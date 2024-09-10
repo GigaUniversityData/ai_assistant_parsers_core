@@ -1,11 +1,23 @@
+"""Модуль для `CleanPostParsingRefiner`."""
+
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.beautiful_soup import clean_tags, clean_comments, URL_SCHEME_PATTERN
+from ai_assistant_parsers_core.common_utils.beautiful_soup import (
+    clean_tags,
+    clean_comments,
+    URL_SCHEME_PATTERN,
+)
 
 from ..abc import ABCParsingRefiner
 
 
 class CleanPostParsingRefiner(ABCParsingRefiner):
+    """
+    Производит универсальную очистку "очищенного HTML-кода".
+
+    NOTE: Рекомендуется применять после парсинга.
+    """
+
     def refine(self, html: str) -> str:
         soup = BeautifulSoup(html, "html5lib")
 
@@ -21,7 +33,9 @@ class CleanPostParsingRefiner(ABCParsingRefiner):
 
 def _clear_javascript_scheme_from_links(soup: BeautifulSoup) -> None:
     """
-    Example page: https://artesliberales.spbu.ru/ru/faculty
+    Очищает javascript схему в URL-адресах.
+
+    Пример страницы: https://artesliberales.spbu.ru/ru/faculty
     """
     tag = "a"
     attr = "href"

@@ -1,3 +1,5 @@
+"""Модуль для `FindQueryMixin`."""
+
 from __future__ import annotations
 
 import typing as t
@@ -8,20 +10,25 @@ from .base_query_mixin import BaseQueryMixin
 
 
 class FindQueryMixin(BaseQueryMixin):
+    """Mixin для реализации метода `parse`, который оставляет только те HTML-блоки, которые удаётся найти через `soup.find`."""
+
     def __init__(self, find_arguments: list[dict[str, t.Any]], **kwargs) -> None:
         super().__init__(**kwargs)
 
         self._find_arguments = find_arguments
 
-    def _prepare_result(self, soup: BeautifulSoup, result: BeautifulSoup) -> None:
+    def _prepare_result(self, source_html: BeautifulSoup, cleaned_html: BeautifulSoup) -> None:
+        assert cleaned_html.html is not None
+        assert cleaned_html.html.body is not None
+
         for arguments in self._find_arguments:
-            content = soup.find(**arguments)
+            content = source_html.find(**arguments)
 
             if content is None:
                 continue
             if content.name == "body":
-                result.html.body.decompose()
-                result.html.append(content)
+                cleaned_html.html.body.decompose()
+                cleaned_html.html.append(content)
                 continue
 
-            result.html.body.append(content)
+            cleaned_html.html.body.append(content)

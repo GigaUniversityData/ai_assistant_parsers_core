@@ -1,6 +1,11 @@
 from .abc import (
     ABCParser,
 )
+from .base import (
+    SimpleFindDomainBaseParser,
+    SimpleFindPageBaseParser,
+    SimpleSelectDomainBaseParser,
+)
 from .impls import (
     UniversalParser,
 )
@@ -19,5 +24,8 @@ __all__ = [
     "FindQueryMixin",
     "PageMixin",
     "SelectQueryMixin",
+    "SimpleFindDomainBaseParser",
+    "SimpleFindPageBaseParser",
+    "SimpleSelectDomainBaseParser",
     "UniversalParser",
 ]

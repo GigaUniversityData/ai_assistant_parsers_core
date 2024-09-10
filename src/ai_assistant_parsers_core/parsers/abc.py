@@ -4,7 +4,7 @@ import abc
 
 
 class ABCParser(abc.ABC):
-    """Абстрактный парсер."""
+    """Базовый абстрактный парсер."""
 
     @abc.abstractmethod
     def check(self, url: str) -> bool:

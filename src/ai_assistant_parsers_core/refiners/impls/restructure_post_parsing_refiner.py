@@ -24,6 +24,12 @@ STYLE_TAGS_REGEX = re.compile(r"""
 
 
 class RestructurePostParsingRefiner(ABCParsingRefiner):
+    """
+    Производит изменение структуры "очищенного HTML-кода" для улучшения его читаемости.
+     
+    NOTE: Рекомендуется применять после парсинга.
+    """
+
     def refine(self, html: str) -> str:
         soup = BeautifulSoup(html, "html5lib")
 

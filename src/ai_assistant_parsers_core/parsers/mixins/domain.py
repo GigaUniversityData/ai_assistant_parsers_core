@@ -1,3 +1,5 @@
+"""Модуль для `DomainMixin`."""
+
 from __future__ import annotations
 
 import re
@@ -6,6 +8,8 @@ from ai_assistant_parsers_core.common_utils.parse_url import get_url_subdomain, 
 
 
 class DomainMixin():
+    """Mixin для реализации метода `check`, основываясь на поддомене."""
+
     def __init__(
         self,
         supported_subdomains: list[str],
@@ -21,6 +25,15 @@ class DomainMixin():
         self._unsupported_paths = unsupported_paths
 
     def check(self, url: str) -> bool:
+        """Реализует метод `check` базового абстрактного класса.
+
+        Args:
+            url (str): URL-адрес.
+
+        Returns:
+            bool: Булевый результат.
+        """
+
         subdomain = get_url_subdomain(url)
         path = get_url_path(url)
 
