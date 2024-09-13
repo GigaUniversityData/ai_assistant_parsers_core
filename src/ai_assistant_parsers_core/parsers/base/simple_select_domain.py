@@ -1,4 +1,4 @@
-"""Модуль для `SimpleSelectDomainBaseParser`."""
+"""Модуль для ``SimpleSelectDomainBaseParser``."""
 
 from __future__ import annotations
 
@@ -8,9 +8,10 @@ from ..mixins import DomainMixin, SelectQueryMixin
 
 class SimpleSelectDomainBaseParser(DomainMixin, SelectQueryMixin, ABCParser):
     """
-    Базовый класс, который просто совмещает в себе Mixin'ы `DomainMixin` и `SelectQueryMixin`.
+    Базовый класс, который просто совмещает в себе Mixin'ы ``DomainMixin`` и ``SelectQueryMixin``.
 
-    NOTE: Читайте описания соответствующих Mixin'ов для изучения их работы.
+    NOTE:
+        Читайте описания соответствующих Mixin'ов для изучения их работы.
     """
 
     def __init__(

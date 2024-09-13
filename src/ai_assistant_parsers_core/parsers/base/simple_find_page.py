@@ -1,4 +1,4 @@
-"""Модуль для `SimpleFindPageBaseParser`."""
+"""Модуль для ``SimpleFindPageBaseParser``."""
 
 from __future__ import annotations
 
@@ -10,9 +10,10 @@ from ..mixins import PageMixin, FindQueryMixin
 
 class SimpleFindPageBaseParser(PageMixin, FindQueryMixin, ABCParser):
     """
-    Базовый класс, который просто совмещает в себе Mixin'ы `PageMixin` и `FindQueryMixin`.
+    Базовый класс, который просто совмещает в себе Mixin'ы ``PageMixin`` и ``FindQueryMixin``.
 
-    NOTE: Читайте описания соответствующих Mixin'ов для изучения их работы.
+    NOTE:
+        Читайте описания соответствующих Mixin'ов для изучения их работы.
     """
 
     def __init__(

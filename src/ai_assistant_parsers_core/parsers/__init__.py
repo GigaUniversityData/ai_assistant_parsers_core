@@ -5,6 +5,7 @@ from .base import (
     SimpleFindDomainBaseParser,
     SimpleFindPageBaseParser,
     SimpleSelectDomainBaseParser,
+    SimpleSelectPageBaseParser,
 )
 from .impls import (
     UniversalParser,
@@ -27,5 +28,6 @@ __all__ = [
     "SimpleFindDomainBaseParser",
     "SimpleFindPageBaseParser",
     "SimpleSelectDomainBaseParser",
+    "SimpleSelectPageBaseParser",
     "UniversalParser",
 ]

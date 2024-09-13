@@ -9,11 +9,11 @@ from bs4 import BeautifulSoup, Tag
 
 
 def rename_all_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name: str) -> None:
-    """Меняет имя всем HTML-тегам на заданное по селектору для `soup.select`.
+    """Меняет имя всем HTML-тегам на заданное по селектору для ``soup.select``.
 
     Args:
         soup (BeautifulSoup | Tag): Объект beautiful soup.
-        selector (str): CSS-селектор для `soup.select`
+        selector (str): CSS-селектор для ``soup.select``.
         replace_name (str): Имя для замены.
     """
     for tag in soup.select(selector):
@@ -21,11 +21,11 @@ def rename_all_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
 
 
 def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name: str) -> None:
-    """Меняет имя одному HTML-тегу на заданное по селектору для `soup.select_one`.
+    """Меняет имя одному HTML-тегу на заданное по селектору для ``soup.select_one``.
 
     Args:
         soup (BeautifulSoup | Tag): Объект beautiful soup.
-        selector (str): CSS-селектор для `soup.select_one`
+        selector (str): CSS-селектор для ``soup.select_one``.
         replace_name (str): Имя для замены.
     """
     tag = soup.select_one(selector)
@@ -34,7 +34,7 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
 
 # TODO: Это работает с html5lib, но релевантно ли это?
 def convert_tables_to_divs(soup: BeautifulSoup | Tag):
-    """Преобразует все таблицы в HTML-коде в `<div>` блоки.
+    """Преобразует все таблицы в HTML-коде в ``<div>`` блоки.
     Это полезно, если на сайте присутствует табличная вёрстка, которая портит структуру HTML-кода.
 
     Args:

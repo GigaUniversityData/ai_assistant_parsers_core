@@ -1,4 +1,4 @@
-"""Модуль для `CleanPostParsingRefiner`."""
+"""Модуль для ``CleanPostParsingRefiner``."""
 
 from bs4 import BeautifulSoup
 
@@ -15,10 +15,13 @@ class CleanPostParsingRefiner(ABCParsingRefiner):
     """
     Производит универсальную очистку "очищенного HTML-кода".
 
-    NOTE: Рекомендуется применять после парсинга.
+    NOTE:
+        Рекомендуется применять после парсинга.
     """
 
     def refine(self, html: str) -> str:
+        """Реализует метод ``refine`` базового абстрактного класса."""
+
         soup = BeautifulSoup(html, "html5lib")
 
         clean_tags(soup, ["script", "style", "noscript"])

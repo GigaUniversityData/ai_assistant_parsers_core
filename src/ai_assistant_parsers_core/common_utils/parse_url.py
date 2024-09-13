@@ -25,8 +25,9 @@ def get_url_subdomain(url: str) -> str:
 
 def get_url_path(url: str) -> str:
     """Получает URL-путь из URL-адреса.
-    Например:
-        `https://spbu.ru/` -> `spbu.ru/`
+
+    Examples:
+        - ``https://spbu.ru/`` -> ``spbu.ru/``
 
     Args:
         url (str): URL-адрес.
@@ -39,9 +40,10 @@ def get_url_path(url: str) -> str:
 
 def normalize_path(path: str) -> str:
     """Нормализует URL-адрес так, чтобы одинаковые по суте URL-адреса, но разные по строке URL адреса в нормализации стали одинаковыми.
-    Например: 
-        `https://spbu.ru/` -> `https://spbu.ru/`
-        `https://spbu.ru`  -> `https://spbu.ru/`
+
+    Examples: 
+        - ``https://spbu.ru/`` -> ``https://spbu.ru/``
+        - ``https://spbu.ru``  -> ``https://spbu.ru/``
 
     Args:
         path (str): URL-адрес или URL-путь.

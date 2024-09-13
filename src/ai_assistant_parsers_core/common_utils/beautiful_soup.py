@@ -24,8 +24,8 @@ def clean_tags(soup: BeautifulSoup | Tag, tags: list[str]) -> None:
         tag.decompose()
 
 
-def rewrite_urls(soup: BeautifulSoup | Tag, base_url: str | None = None) -> None:
-    """Преобразует относительные ссылки в абсолютные ссылки и их декидирует.
+def converts_relative_links_to_absolute(soup: BeautifulSoup | Tag, base_url: str | None = None) -> None:
+    """Преобразует относительные ссылки в абсолютные ссылки и их декодирует.
 
     Args:
         soup (BeautifulSoup | Tag): Объект beautiful soup.

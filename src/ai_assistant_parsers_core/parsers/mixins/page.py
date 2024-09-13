@@ -1,10 +1,10 @@
-"""Модуль для `PageMixin`."""
+"""Модуль для ``PageMixin``."""
 
 from __future__ import annotations
 
 
 class PageMixin():
-    """Mixin для реализации метода `check`, основываясь на URL-адресах страниц."""
+    """Mixin для реализации метода ``check``, основываясь на URL-адресах страниц."""
 
     def __init__(
         self,
@@ -16,13 +16,6 @@ class PageMixin():
         self._supported_urls = supported_urls
 
     def check(self, url: str) -> bool:
-        """Реализует метод `check` базового абстрактного класса.
-
-        Args:
-            url (str): URL-адрес.
-
-        Returns:
-            bool: Булевый результат.
-        """
+        """Реализует метод ``check`` базового абстрактного класса."""
 
         return url in self._supported_urls

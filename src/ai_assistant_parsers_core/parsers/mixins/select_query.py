@@ -1,4 +1,4 @@
-"""Модуль для `SelectQueryMixin`."""
+"""Модуль для ``SelectQueryMixin``."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from .base_query_mixin import BaseQueryMixin
 
 
 class SelectQueryMixin(BaseQueryMixin):
-    """Mixin для реализации метода `parse`, который оставляет только те HTML-блоки, которые удаётся найти через `soup.select_one`."""
+    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки, которые удаётся найти через ``soup.select_one``."""
 
     def __init__(self, select_arguments: list[str], **kwargs) -> None:
         super().__init__(**kwargs)
@@ -16,6 +16,8 @@ class SelectQueryMixin(BaseQueryMixin):
         self._select_arguments = select_arguments
 
     def _prepare_result(self, source_html: BeautifulSoup, cleaned_html: BeautifulSoup) -> None:
+        """Реализует метод ``_prepare_result`` базового абстрактного класса для метода ``source_html.select_one``."""
+
         assert cleaned_html.html is not None
         assert cleaned_html.html.body is not None
 

@@ -8,11 +8,12 @@ from .simple_select_domain import (
     SimpleSelectDomainBaseParser,
 )
 from .simple_select_page import (
-    SimpleFindPageBaseParser,
+    SimpleSelectPageBaseParser,
 )
 
 __all__ = [
     "SimpleFindDomainBaseParser",
     "SimpleFindPageBaseParser",
     "SimpleSelectDomainBaseParser",
+    "SimpleSelectPageBaseParser",
 ]

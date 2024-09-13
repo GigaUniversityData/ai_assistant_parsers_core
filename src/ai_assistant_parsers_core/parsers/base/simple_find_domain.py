@@ -1,4 +1,4 @@
-"""Модуль для `SimpleFindDomainBaseParser`."""
+"""Модуль для ``SimpleFindDomainBaseParser``."""
 
 from __future__ import annotations
 
@@ -10,9 +10,10 @@ from ..mixins import DomainMixin, FindQueryMixin
 
 class SimpleFindDomainBaseParser(DomainMixin, FindQueryMixin, ABCParser):
     """
-    Базовый класс, который просто совмещает в себе Mixin'ы `DomainMixin` и `FindQueryMixin`.
+    Базовый класс, который просто совмещает в себе Mixin'ы ``DomainMixin`` и ``FindQueryMixin``.
 
-    NOTE: Читайте описания соответствующих Mixin'ов для изучения их работы.
+    NOTE:
+        Читайте описания соответствующих Mixin'ов для изучения их работы.
     """
 
     def __init__(

@@ -1,4 +1,4 @@
-"""Модуль для `UniversalParser`."""
+"""Модуль для ``UniversalParser``."""
 
 from ai_assistant_parsers_core.common_utils.universal_clean_html import universal_clean_html
 
@@ -12,7 +12,11 @@ class UniversalParser(ABCParser):
     """
 
     def check(self, url: str) -> bool:
+        """Реализует метод ``check`` базового абстрактного класса."""
+
         return True
 
     def parse(self, html: str) -> str:
+        """Реализует метод ``parse`` базового абстрактного класса."""
+
         return universal_clean_html(html)

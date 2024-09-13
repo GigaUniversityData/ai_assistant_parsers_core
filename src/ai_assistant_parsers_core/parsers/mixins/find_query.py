@@ -1,4 +1,4 @@
-"""Модуль для `FindQueryMixin`."""
+"""Модуль для ``FindQueryMixin``."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from .base_query_mixin import BaseQueryMixin
 
 
 class FindQueryMixin(BaseQueryMixin):
-    """Mixin для реализации метода `parse`, который оставляет только те HTML-блоки, которые удаётся найти через `soup.find`."""
+    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки, которые удаётся найти через ``soup.find``."""
 
     def __init__(self, find_arguments: list[dict[str, t.Any]], **kwargs) -> None:
         super().__init__(**kwargs)
@@ -18,6 +18,8 @@ class FindQueryMixin(BaseQueryMixin):
         self._find_arguments = find_arguments
 
     def _prepare_result(self, source_html: BeautifulSoup, cleaned_html: BeautifulSoup) -> None:
+        """Реализует метод ``_prepare_result`` базового абстрактного класса для метода ``source_html.find``."""
+
         assert cleaned_html.html is not None
         assert cleaned_html.html.body is not None
 
