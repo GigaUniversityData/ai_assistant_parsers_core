@@ -1,4 +1,4 @@
-.. include:: _readme.rst
+.. include:: ../../README.rst
 
 Документация API
 ----------------
