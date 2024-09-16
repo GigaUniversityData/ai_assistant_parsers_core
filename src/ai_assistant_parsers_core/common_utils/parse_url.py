@@ -5,9 +5,10 @@ from __future__ import annotations
 from urllib.parse import urlparse
 
 import tldextract
+from tldextract.tldextract import ExtractResult
 
 
-def get_url_subdomain(url: str) -> str:
+def extract_url(url: str) -> ExtractResult:
     """Получает поддомен из URL-адреса.
 
     Args:
@@ -17,10 +18,8 @@ def get_url_subdomain(url: str) -> str:
         str: Поддомен.
     """
     parsed_url = tldextract.extract(url)
-    subdomain = parsed_url.subdomain
-    subdomain = subdomain.replace("www.", "")
-    subdomain = subdomain if subdomain else "www"
-    return subdomain
+    # subdomain = subdomain.replace("www.", "")
+    return parsed_url
 
 
 def get_url_path(url: str) -> str:
