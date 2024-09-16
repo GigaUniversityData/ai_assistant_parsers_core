@@ -2,47 +2,57 @@
 
 from __future__ import annotations
 
-import re
+from fnmatch import fnmatchcase
 
-from ai_assistant_parsers_core.common_utils.parse_url import get_url_subdomain, get_url_path
+from ai_assistant_parsers_core.common_utils.parse_url import extract_url, normalize_path
 
 
-# TODO?: Убрать прикол в `www`
 class DomainMixin():
-    """
-        Mixin для реализации метода ``check``, основываясь на поддомене.
+    """Mixin для реализации метода ``check``, основываясь на поддомене.
 
-        NOTE:
-            Если необходимо парсить страницы сайта, которые не имеют поддомена, то следует передавать
-            в аргументы ``supported_subdomains=["www"]``
+    Examples:
+        - ``DomainMixin(allowed_domains_paths=["spbu.ru"], excluded_paths=["/virtual_tour/*"])``
+        - Правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru"], excluded_paths=["/museum/web-sites/"])``
+        - Не правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru/"], excluded_paths=["/museum/web-sites"])``
+
+    NOTE:
+        Шаблоны для ``excluded_paths``:
+
+        ==========  ========
+        Шаблон      Значение
+        ==========  ========
+        ``*``       Соответствует всему
+        ``?``       Соответствует любому отдельному символу
+        ``[seq]``   Соответствует любому символу в ``seq``
+        ``[!seq]``  Соответствует любому символу, не входящему в ``seq``
+        ==========  ========
     """
 
     def __init__(
         self,
-        supported_subdomains: list[str],
-        unsupported_paths: list[str] | None = None,
+        allowed_domains_paths: list[str],
+        excluded_paths: list[str] | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
 
-        if unsupported_paths is None:
-            unsupported_paths = []
+        if excluded_paths is None:
+            excluded_paths = []
 
-        self._supported_subdomains = supported_subdomains
-        self._unsupported_paths = unsupported_paths
+        self._allowed_domains_paths = allowed_domains_paths
+        self._excluded_paths = excluded_paths
 
     def check(self, url: str) -> bool:
         """Реализует метод ``check`` базового абстрактного класса."""
-
-        subdomain = get_url_subdomain(url)
-        path = get_url_path(url)
+        extract_result = extract_url(url)
+        domain_path = f"{extract_result.subdomain}.{extract_result.domain}.{extract_result.suffix}"
 
         return (
-            subdomain in self._supported_subdomains
-            and not self.__check_is_path_unsupported(path)
+            domain_path in self._allowed_domains_paths
+            and not self.__check_is_path_excluded(domain_path)
         )
 
-    def __check_is_path_unsupported(self, path: str) -> bool:
+    def __check_is_path_excluded(self, path: str) -> bool:
         """Проверяет, поддерживается ли URL-путь.
 
         Args:
@@ -52,6 +62,6 @@ class DomainMixin():
             bool: Булевый результат.
         """
         return any(
-            re.fullmatch(pattern, path)
-            for pattern in self._unsupported_paths
+            fnmatchcase(pattern, path)
+            for pattern in self._excluded_paths
         )
