@@ -8,25 +8,27 @@ from ai_assistant_parsers_core.common_utils.parse_url import extract_url, normal
 
 
 class DomainMixin():
+    # noinspection GrazieInspection
     """Mixin для реализации метода ``check``, основываясь на поддомене.
 
-    Examples:
-        - ``DomainMixin(allowed_domains_paths=["spbu.ru"], excluded_paths=["/virtual_tour/*"])``
-        - Правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru"], excluded_paths=["/museum/web-sites/"])``
-        - Не правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru/"], excluded_paths=["/museum/web-sites"])``
+        Examples:
+            - ``DomainMixin(allowed_domains_paths=["spbu.ru"], excluded_paths=["/virtual_tour/*"])``
+            - ``DomainMixin(allowed_domains_paths=["spbu.ru"], excluded_paths=["/component/users/*?"])``
+            - Правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru"], excluded_paths=["/museum/web-sites/"])``
+            - Не правильно: ``DomainMixin(allowed_domains_paths=["pr.spbu.ru/"], excluded_paths=["/museum/web-sites"])``
 
-    NOTE:
-        Шаблоны для ``excluded_paths``:
+        NOTE:
+            Шаблоны для ``excluded_paths``:
 
-        ==========  ========
-        Шаблон      Значение
-        ==========  ========
-        ``*``       Соответствует всему
-        ``?``       Соответствует любому отдельному символу
-        ``[seq]``   Соответствует любому символу в ``seq``
-        ``[!seq]``  Соответствует любому символу, не входящему в ``seq``
-        ==========  ========
-    """
+            ==========  ========
+            Шаблон      Значение
+            ==========  ========
+            ``*``       Соответствует всему
+            ``?``       Соответствует любому отдельному символу
+            ``[seq]``   Соответствует любому символу в ``seq``
+            ``[!seq]``  Соответствует любому символу, не входящему в ``seq``
+            ==========  ========
+        """
 
     def __init__(
         self,
