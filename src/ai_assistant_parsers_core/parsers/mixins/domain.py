@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from fnmatch import fnmatchcase
 
-from ai_assistant_parsers_core.common_utils.parse_url import extract_url, normalize_path
+from ai_assistant_parsers_core.common_utils.parse_url import get_url_path, parse_url
 
 
 class DomainMixin():
@@ -46,12 +46,12 @@ class DomainMixin():
 
     def check(self, url: str) -> bool:
         """Реализует метод ``check`` базового абстрактного класса."""
-        extract_result = extract_url(url)
-        domain_path = f"{extract_result.subdomain}.{extract_result.domain}.{extract_result.suffix}"
+        domain_path = parse_url(url).netloc
+        url_path = get_url_path(url)
 
         return (
             domain_path in self._allowed_domains_paths
-            and not self.__check_is_path_excluded(domain_path)
+            and not self.__check_is_path_excluded(url_path)
         )
 
     def __check_is_path_excluded(self, path: str) -> bool:
@@ -64,6 +64,6 @@ class DomainMixin():
             bool: Булевый результат.
         """
         return any(
-            fnmatchcase(pattern, path)
+            fnmatchcase(path, pattern)
             for pattern in self._excluded_paths
         )
