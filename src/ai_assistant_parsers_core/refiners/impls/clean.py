@@ -11,10 +11,8 @@ from ..abc import ABCParsingRefiner
 class CleanParsingRefiner(ABCParsingRefiner):
     """Производит универсальную очистку "очищенного HTML-кода"."""
 
-    def refine(self, html: str) -> str:
+    def refine(self, soup: BeautifulSoup) -> str:
         """Реализует метод ``refine`` базового абстрактного класса."""
-
-        soup = BeautifulSoup(html, "html5lib")
 
         for tag in ["script", "style", "noscript"]:
             clean_all_by_select(soup, tag)

@@ -7,17 +7,15 @@ from bs4 import BeautifulSoup, Tag
 from ai_assistant_parsers_core.common_utils.beautiful_soup import clean_tags, clean_comments
 
 
-def universal_clean_html(html: str) -> str:
+def universal_clean_html(soup: BeautifulSoup) -> str:
     """Очищает HTML-код.
 
     Args:
-        html (str): HTML-код.
+        soup (BeautifulSoup): Объект beautiful soup.
 
     Returns:
         str: HTML-код.
     """
-
-    soup: BeautifulSoup | Tag = BeautifulSoup(html, "html5lib")
 
     for tag in ["body", "main"]:
         found_tag = soup.find(tag)
