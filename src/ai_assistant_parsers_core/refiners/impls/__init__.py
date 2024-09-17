@@ -1,13 +1,13 @@
-from .clean_post_parsing_refiner import (
-    CleanPostParsingRefiner,
+from .clean import (
+    CleanParsingRefiner,
 )
-from .restructure_post_parsing_refiner import (
-    RestructurePostParsingRefiner,
+from .restructure import (
+    RestructureParsingRefiner,
     STYLE_TAGS_REGEX,
 )
 
 __all__ = [
-    "CleanPostParsingRefiner",
-    "RestructurePostParsingRefiner",
+    "CleanParsingRefiner",
+    "RestructureParsingRefiner",
     "STYLE_TAGS_REGEX",
 ]

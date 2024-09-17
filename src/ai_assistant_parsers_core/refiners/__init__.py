@@ -2,14 +2,14 @@ from .abc import (
     ABCParsingRefiner,
 )
 from .impls import (
-    CleanPostParsingRefiner,
-    RestructurePostParsingRefiner,
+    CleanParsingRefiner,
+    RestructureParsingRefiner,
     STYLE_TAGS_REGEX,
 )
 
 __all__ = [
     "ABCParsingRefiner",
-    "CleanPostParsingRefiner",
-    "RestructurePostParsingRefiner",
+    "CleanParsingRefiner",
+    "RestructureParsingRefiner",
     "STYLE_TAGS_REGEX",
 ]

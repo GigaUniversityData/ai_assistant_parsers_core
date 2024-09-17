@@ -2,29 +2,23 @@
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.beautiful_soup import (
-    clean_tags,
-    clean_comments,
-    URL_SCHEME_PATTERN,
-)
+from ai_assistant_parsers_core.common_utils.beautiful_soup import clean_comments, URL_SCHEME_PATTERN
+from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_all_by_select
 
 from ..abc import ABCParsingRefiner
 
 
-class CleanPostParsingRefiner(ABCParsingRefiner):
-    """
-    Производит универсальную очистку "очищенного HTML-кода".
-
-    NOTE:
-        Рекомендуется применять после парсинга.
-    """
+class CleanParsingRefiner(ABCParsingRefiner):
+    """Производит универсальную очистку "очищенного HTML-кода"."""
 
     def refine(self, html: str) -> str:
         """Реализует метод ``refine`` базового абстрактного класса."""
 
         soup = BeautifulSoup(html, "html5lib")
 
-        clean_tags(soup, ["script", "style", "noscript"])
+        for tag in ["script", "style", "noscript"]:
+            clean_all_by_select(soup, tag)
+
         #clean_tags(soup, ["aside"])
         clean_comments(soup)
         #clean_empty_tags(soup)

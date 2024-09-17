@@ -8,7 +8,7 @@ class ABCParsingRefiner(abc.ABC):
 
     @abc.abstractmethod
     def refine(self, html: str) -> str:
-        """Улучшает HTML-код.
+        """Улучшает очищенный HTML-код после парсинга.
 
         Args:
             html (str): HTML-код.
