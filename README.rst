@@ -49,7 +49,7 @@ AI Assistant Parsers Core - это ядро библиотеки, предост
 
        def __init__(self) -> None:
            super().__init__(
-               supported_subdomains=["www"],  # Парсим страницы, которые не умеют поддомена
+               supported_subdomains=["rgust.ru"],  # Парсим страницы, которые не умеют поддомена
                select_arguments=[
                    "section.content",  # Тег, содержащий основной контент
                ],
@@ -62,6 +62,9 @@ AI Assistant Parsers Core - это ядро библиотеки, предост
            rename_all_by_select(soup, "p.main-page-faculty-widget-programs-header", "h2")  # Зачем `p` HTML-тег на `h2`
 
 
+Больше примеров!
+----------------
+Примеры находятся в папке `examples <https://github.com/GigaUniversity/ai_assistant_parsers_core/examples>`_
 
 Основная документация
 ---------------------
