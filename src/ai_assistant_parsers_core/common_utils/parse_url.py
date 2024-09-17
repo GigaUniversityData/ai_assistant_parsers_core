@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from urllib.parse import urlparse
+from urllib.parse import urlparse, ParseResult
 
 import tldextract
 from tldextract.tldextract import ExtractResult
@@ -20,6 +20,10 @@ def extract_url(url: str) -> ExtractResult:
     parsed_url = tldextract.extract(url)
     # subdomain = subdomain.replace("www.", "")
     return parsed_url
+
+
+def parse_url(url: str) -> ParseResult:
+    return urlparse(url)
 
 
 def get_url_path(url: str) -> str:
