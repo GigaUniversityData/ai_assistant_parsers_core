@@ -8,7 +8,7 @@ from ai_assistant_parsers_core.parsers.utils.restructure_blocks import rename_al
 
 
 class RestructureTablesParsingRefiner(ABCParsingRefiner):
-    def refine(self, soup: BeautifulSoup) -> str:
+    def refine(self, soup: BeautifulSoup) -> None:
         clean_all_by_select(soup, ".table__col-title")  # Имеет `display: none;`
         rename_all_by_select(soup, "div.table", "table")
         rename_all_by_select(soup, "div.table__row", "tr")
@@ -18,5 +18,3 @@ class RestructureTablesParsingRefiner(ABCParsingRefiner):
             ".table__row_header > td.table__cell",
             "th",
         )
-
-        return str(soup)
