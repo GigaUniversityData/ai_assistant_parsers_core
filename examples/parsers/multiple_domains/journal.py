@@ -1,7 +1,7 @@
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 
 
-_ALLOWED_SUPPORTED_SUBDOMAINS = [
+_ALLOWED_SUBDOMAINS_PATHS = [
     "aasjournal.spbu.ru",
     "applmathjournal.spbu.ru",
     "artsjournal.spbu.ru",
@@ -18,6 +18,6 @@ _ALLOWED_SUPPORTED_SUBDOMAINS = [
 class JournalParser(SimpleSelectDomainBaseParser):
     def __init__(self) -> None:
         super().__init__(
-            allowed_domains_paths=_ALLOWED_SUPPORTED_SUBDOMAINS,
+            allowed_domains_paths=_ALLOWED_SUBDOMAINS_PATHS,
             select_arguments=[".pkp_structure_main"],
         )
