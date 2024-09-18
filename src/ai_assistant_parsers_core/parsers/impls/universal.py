@@ -1,4 +1,5 @@
 """Модуль для ``UniversalParser``."""
+from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.common_utils.universal_clean_html import universal_clean_html
 
@@ -16,7 +17,7 @@ class UniversalParser(ABCParser):
 
         return True
 
-    def parse(self, html: str) -> str:
+    def parse(self, soup: BeautifulSoup) -> str:
         """Реализует метод ``parse`` базового абстрактного класса."""
 
-        return universal_clean_html(html)
+        return universal_clean_html(soup)

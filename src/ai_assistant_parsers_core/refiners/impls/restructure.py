@@ -26,15 +26,11 @@ STYLE_TAGS_REGEX = re.compile(r"""
 class RestructureParsingRefiner(ABCParsingRefiner):
     """Производит изменение структуры "очищенного HTML-кода" для улучшения его читаемости."""
 
-    def refine(self, html: str) -> str:
+    def refine(self, soup: BeautifulSoup) -> None:
         """Реализует метод ``refine`` базового абстрактного класса."""
-
-        soup = BeautifulSoup(html, "html5lib")
 
         _clean_empty_style_tags(soup)
         _clean_empty_list_items(soup)
-
-        return str(soup)
 
 
 def _clean_empty_style_tags(soup: BeautifulSoup) -> None:

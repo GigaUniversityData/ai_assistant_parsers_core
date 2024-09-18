@@ -2,17 +2,19 @@
 
 import abc
 
+from bs4 import BeautifulSoup
+
 
 class ABCParsingRefiner(abc.ABC):
     """Базовый абстрактный refiner."""
 
     @abc.abstractmethod
-    def refine(self, html: str) -> str:
+    def refine(self, soup: BeautifulSoup) -> None:
         """Улучшает очищенный HTML-код после парсинга.
 
         Args:
-            html (str): HTML-код.
+            soup (BeautifulSoup): Объект beautiful soup.
 
         Returns:
-            str: Улучшенный HTML-код.
+            None: Улучшают HTML-код объекта ``soup``.
         """

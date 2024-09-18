@@ -64,7 +64,7 @@ AI Assistant Parsers Core - это ядро библиотеки, предост
 
 Больше примеров!
 ----------------
-Примеры находятся в папке `examples <https://github.com/GigaUniversity/ai_assistant_parsers_core/examples>`_
+Примеры находятся в папке `examples <https://github.com/GigaUniversity/ai_assistant_parsers_core/tree/main/examples>`_
 
 Основная документация
 ---------------------

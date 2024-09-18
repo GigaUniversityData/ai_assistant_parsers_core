@@ -2,6 +2,8 @@
 
 import abc
 
+from bs4 import BeautifulSoup
+
 
 class ABCParser(abc.ABC):
     """Базовый абстрактный парсер."""
@@ -18,12 +20,12 @@ class ABCParser(abc.ABC):
         """
 
     @abc.abstractmethod
-    def parse(self, html: str) -> str:
+    def parse(self, soup: BeautifulSoup) -> BeautifulSoup:
         """Парсит HTML-код, чтобы получить очищенный HTML-код.
 
         Args:
-            html (str): HTML-код.
+            soup (BeautifulSoup): Объект beautiful soup.
 
         Returns:
-            str: Очищенный HTML-код.
+            BeautifulSoup: Очищенный HTML-код (Другой объект `BeautifulSoup`).
         """

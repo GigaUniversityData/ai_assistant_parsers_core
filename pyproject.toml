@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ai_assistant_parsers_core"
-version = "0.6.0"
+version = "0.6.1"
 description = ""
 authors = ["LEv145"]
 readme = "README.rst"
@@ -10,6 +10,8 @@ packages = [{include = "ai_assistant_parsers_core", from = "src"}]
 python = "^3.10"
 beautifulsoup4 = "^4.12.3"
 tldextract = "^5.1.2"
+html2text = "^2024.2.26"
+html5lib = "^1.1"
 
 
 [tool.poetry.group.dev.dependencies]
