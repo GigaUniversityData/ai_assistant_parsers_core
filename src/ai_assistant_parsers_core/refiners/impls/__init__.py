@@ -6,8 +6,4 @@ from .restructure import (
     STYLE_TAGS_REGEX,
 )
 
-__all__ = [
-    "CleanParsingRefiner",
-    "RestructureParsingRefiner",
-    "STYLE_TAGS_REGEX",
-]
+__all__ = ["CleanParsingRefiner", "RestructureParsingRefiner", "STYLE_TAGS_REGEX"]
