@@ -11,7 +11,7 @@ from ..abc import ABCParsingRefiner
 class CleanParsingRefiner(ABCParsingRefiner):
     """Производит универсальную очистку "очищенного HTML-кода"."""
 
-    def refine(self, soup: BeautifulSoup) -> str:
+    def refine(self, soup: BeautifulSoup) -> None:
         """Реализует метод ``refine`` базового абстрактного класса."""
 
         for tag in ["script", "style", "noscript"]:
@@ -22,8 +22,6 @@ class CleanParsingRefiner(ABCParsingRefiner):
         #clean_empty_tags(soup)
         #clean_tags(soup, ["clear", "cls"])
         _clear_javascript_scheme_from_links(soup)
-
-        return str(soup)
 
 
 def _clear_javascript_scheme_from_links(soup: BeautifulSoup) -> None:

@@ -9,12 +9,12 @@ class ABCParsingRefiner(abc.ABC):
     """Базовый абстрактный refiner."""
 
     @abc.abstractmethod
-    def refine(self, soup: BeautifulSoup) -> str:
+    def refine(self, soup: BeautifulSoup) -> None:
         """Улучшает очищенный HTML-код после парсинга.
 
         Args:
             soup (BeautifulSoup): Объект beautiful soup.
 
         Returns:
-            str: Улучшенный HTML-код.
+            None: Улучшают HTML-код объекта ``soup``.
         """
