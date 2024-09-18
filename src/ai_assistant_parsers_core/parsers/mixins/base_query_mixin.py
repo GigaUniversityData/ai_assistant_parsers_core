@@ -20,17 +20,17 @@ class BaseQueryMixin(abc.ABC):
         С точки зрения кода методы ``_clean_parsed_html`` и ``_restructure_parsed_html`` ничем не различаются
         и ничего не делают. Их работа зависит лишь от того, как их реализовать.
     """
-    def parse(self, soup: BeautifulSoup) -> str:
+    def parse(self, soup: BeautifulSoup) -> BeautifulSoup:
         """Реализует метод ``parse`` базового абстрактного класса."""
         source_html = soup
-        cleaned_html = BeautifulSoup("<html><body></body></html>", "html.parser")
+        cleaned_html = BeautifulSoup("<html><head></head><body></body></html>", "html5lib")
 
         self._prepare_result(source_html, cleaned_html)
 
         self._clean_parsed_html(cleaned_html)
         self._restructure_parsed_html(cleaned_html)
 
-        return str(cleaned_html)
+        return cleaned_html
 
     @abc.abstractmethod
     def _prepare_result(self, source_html: BeautifulSoup, cleaned_html: BeautifulSoup) -> None:
