@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, Tag
 from ai_assistant_parsers_core.common_utils.beautiful_soup import clean_tags, clean_comments
 
 
-def universal_clean_html(soup: BeautifulSoup) -> str:
+def universal_clean_html(soup: BeautifulSoup) -> BeautifulSoup:
     """Очищает HTML-код.
 
     Args:
@@ -34,7 +34,7 @@ def universal_clean_html(soup: BeautifulSoup) -> str:
 
     soup.name = "html"
 
-    return str(soup)
+    return soup
 
 
 def _clean_specific_css(soup: BeautifulSoup | Tag) -> None:
