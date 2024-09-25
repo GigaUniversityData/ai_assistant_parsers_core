@@ -46,7 +46,7 @@ class TestDomainMixin(TestCase):
         for url in FAKE_URLS:
            self.assertFalse(obj.check(url))
 
-    def test_check_with_fnmatch(self):
+    def test_check_with_excluded_paths(self):
         obj = DomainMixin(allowed_domains_paths=["spbu.ru"], excluded_paths=["/museum/web-sites/*"])
 
         self.assertTrue(obj.check("https://spbu.ru/"))
@@ -60,3 +60,18 @@ class TestDomainMixin(TestCase):
         self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/"))
         self.assertFalse(obj.check("https://spbu.ru/museum/web-sites/page_1"))
         self.assertFalse(obj.check("https://spbu.ru/museum/web-sites/page_1/page_2"))
+
+    def test_check_with_included_paths(self):
+        obj = DomainMixin(allowed_domains_paths=["spbu.ru"], included_paths=["/museum/web-sites/*"])
+
+        self.assertFalse(obj.check("https://spbu.ru/"))
+        self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/"))
+        self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/page_1"))
+        self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/page_1/page_2"))
+
+        obj = DomainMixin(allowed_domains_paths=["spbu.ru"], included_paths=["/museum/web-sites/?*"])
+
+        self.assertFalse(obj.check("https://spbu.ru/"))
+        self.assertFalse(obj.check("https://spbu.ru/museum/web-sites/"))
+        self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/page_1"))
+        self.assertTrue(obj.check("https://spbu.ru/museum/web-sites/page_1/page_2"))

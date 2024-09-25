@@ -34,6 +34,7 @@ class DomainMixin():
         self,
         allowed_domains_paths: list[str],
         excluded_paths: list[str] | None = None,
+        included_paths: list[str] | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -43,6 +44,7 @@ class DomainMixin():
 
         self._allowed_domains_paths = allowed_domains_paths
         self._excluded_paths = excluded_paths
+        self._included_paths = included_paths
 
     def check(self, url: str) -> bool:
         """Реализует метод ``check`` базового абстрактного класса."""
@@ -52,6 +54,7 @@ class DomainMixin():
         return (
             domain_path in self._allowed_domains_paths
             and not self.__check_is_path_excluded(url_path)
+            and self.__check_is_path_included(url_path)
         )
 
     def __check_is_path_excluded(self, path: str) -> bool:
@@ -66,4 +69,21 @@ class DomainMixin():
         return any(
             fnmatchcase(path, pattern)
             for pattern in self._excluded_paths
+        )
+
+    def __check_is_path_included(self, path: str) -> bool:
+        """Проверяет, поддерживается ли URL-путь.
+
+        Args:
+            path (str): URL-путь.
+
+        Returns:
+            bool: Булевый результат.
+        """
+        if self._included_paths is None:
+            return True
+
+        return any(
+            fnmatchcase(path, pattern)
+            for pattern in self._included_paths
         )
