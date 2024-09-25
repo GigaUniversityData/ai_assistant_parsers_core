@@ -21,9 +21,11 @@ class SimpleFindDomainBaseParser(DomainMixin, FindQueryMixin, ABCParser):
         allowed_domains_paths: list[str],
         find_arguments: list[dict[str, t.Any]],
         excluded_paths: list[str] | None = None,
+        included_paths: list[str] | None = None,
     ) -> None:
         super().__init__(
             allowed_domains_paths=allowed_domains_paths,
             excluded_paths=excluded_paths,
+            included_paths=included_paths,
             find_arguments=find_arguments,
         )

@@ -19,9 +19,11 @@ class SimpleSelectDomainBaseParser(DomainMixin, SelectQueryMixin, ABCParser):
         allowed_domains_paths: list[str],
         select_arguments: list[str],
         excluded_paths: list[str] | None = None,
+        included_paths: list[str] | None = None,
     ) -> None:
         super().__init__(
             allowed_domains_paths=allowed_domains_paths,
             excluded_paths=excluded_paths,
+            included_paths=included_paths,
             select_arguments=select_arguments,
         )
