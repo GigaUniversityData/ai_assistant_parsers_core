@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select
-from ai_assistant_parsers_core.parsers import SimpleSelectPageBaseParser
+from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 
 
-class AbiturientMainPageParser(SimpleSelectPageBaseParser):
+class AbiturientMainPageParser(SimpleSelectDomainBaseParser):
     def __init__(self) -> None:
         super().__init__(
-            allowed_paths=["abiturient.spbu.ru/"],
+            allowed_domains_paths=["abiturient.spbu.ru"],
+            included_paths=["/"],
             select_arguments=["main"],
         )
 
