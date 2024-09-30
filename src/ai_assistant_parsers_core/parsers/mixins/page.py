@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import warnings
 from ai_assistant_parsers_core.common_utils.parse_url import get_url_path, parse_url
 
 
@@ -19,6 +20,8 @@ class PageMixin():
         allowed_paths: list[str],
         **kwargs,
     ) -> None:
+        warnings.warn("Это устарело, используйте `DomainMixin` вместо этого.", DeprecationWarning)
+
         super().__init__(**kwargs)
 
         self._allowed_paths = [path for path in allowed_paths]
