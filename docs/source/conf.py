@@ -13,8 +13,8 @@ sys.path.insert(0, os.path.abspath("../../src"))
 
 
 project = "AI assistant parsers core"
-copyright = "2024, LEv145"
-author = "LEv145"
+copyright = "2024, AI Assistant"
+author = "AI Assistant"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
