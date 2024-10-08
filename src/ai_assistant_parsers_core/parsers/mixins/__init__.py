@@ -11,9 +11,4 @@ from .select_query import (
     SelectQueryMixin,
 )
 
-__all__ = [
-    "BaseQueryMixin",
-    "DomainMixin",
-    "FindQueryMixin",
-    "SelectQueryMixin",
-]
+__all__ = ["BaseQueryMixin", "DomainMixin", "FindQueryMixin", "SelectQueryMixin"]

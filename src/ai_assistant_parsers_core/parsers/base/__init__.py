@@ -5,7 +5,4 @@ from .simple_select_domain import (
     SimpleSelectDomainBaseParser,
 )
 
-__all__ = [
-    "SimpleFindDomainBaseParser",
-    "SimpleSelectDomainBaseParser",
-]
+__all__ = ["SimpleFindDomainBaseParser", "SimpleSelectDomainBaseParser"]
