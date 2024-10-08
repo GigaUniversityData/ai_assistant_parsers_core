@@ -2,7 +2,7 @@
 name = "ai_assistant_parsers_core"
 version = "0.9.0"
 description = ""
-authors = ["LEv145"]
+authors = ["AI Assistant"]
 readme = "README.rst"
 packages = [{include = "ai_assistant_parsers_core", from = "src"}]
 
