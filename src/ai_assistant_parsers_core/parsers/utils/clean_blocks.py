@@ -7,7 +7,6 @@ import typing as t
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 
-# TODO?: Можно перейти от словаря к ``**kwargs``
 def clean_one_by_find(soup: BeautifulSoup | Tag, args: dict[str, t.Any]):
     """Очищает один HTML-блок по аргументам через ``soup.find``.
 

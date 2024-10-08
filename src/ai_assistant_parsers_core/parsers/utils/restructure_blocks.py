@@ -32,7 +32,7 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
     _rename_element(tag, replace_name=replace_name)
 
 
-# TODO: Это работает с html5lib, но релевантно ли это?
+# TODO: Оценить полезность метода в будущем. Этот метод работает с html5lib, но является ли он релевантным?
 def convert_tables_to_divs(soup: BeautifulSoup | Tag):
     """Преобразует все таблицы в HTML-коде в ``<div>`` блоки.
     Это полезно, если на сайте присутствует табличная вёрстка, которая портит структуру HTML-кода.
