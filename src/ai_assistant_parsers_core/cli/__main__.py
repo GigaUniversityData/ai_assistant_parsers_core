@@ -1,11 +1,11 @@
-import asyncclick
+import asyncclick as click
 from .commands import parse_one
 
 
 COMMANDS = [parse_one]
 
 
-@asyncclick.group()
+@click.group()
 def cli():
     pass
 

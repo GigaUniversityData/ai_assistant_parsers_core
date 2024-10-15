@@ -2,8 +2,7 @@ import importlib
 import json
 from pathlib import Path
 
-import click
-import asyncclick
+import asyncclick as click
 from bs4 import BeautifulSoup
 from aiohttp import ClientSession
 from fake_headers import Headers
@@ -21,10 +20,10 @@ from ai_assistant_parsers_core.cli.utils.parsers import (
 )
 
 
-@asyncclick.command()
-@asyncclick.argument("module_name", type=str)
-@asyncclick.argument("output_dir", type=click.Path)
-@asyncclick.argument("url", type=str)
+@click.command()
+@click.argument("module_name", type=str)
+@click.argument("output_dir", type=click.Path(path_type=Path))
+@click.argument("url", type=str)
 async def parse_one(module_name: str, output_dir: Path, url: str):
     output_dir.mkdir(exist_ok=True, parents=True)
 
@@ -54,8 +53,8 @@ async def _process_url(
     soup = BeautifulSoup(html, "html5lib")
     parser = get_parser_by_url(url, parsers=parsers)
 
-    _process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, soup=soup)
-    _write_data_to_files(cleaned_soup=soup, url=url, parser=parser, output_dir=output_dir)
+    cleaned_soup = _process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, soup=soup)
+    _write_data_to_files(cleaned_soup=cleaned_soup, url=url, parser=parser, output_dir=output_dir)
 
 
 def _process_html(
@@ -63,11 +62,12 @@ def _process_html(
     parsing_refiners: list[ABCParsingRefiner],
     url: str,
     soup: BeautifulSoup,
-) -> None:
+) -> BeautifulSoup:
     cleaned_soup = parser.parse(soup)
     converts_relative_links_to_absolute(soup=cleaned_soup, base_url=url)
     for parsing_refiner in parsing_refiners:
-        parsing_refiner.refine(soup)
+        parsing_refiner.refine(cleaned_soup)
+    return cleaned_soup
 
 
 def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
