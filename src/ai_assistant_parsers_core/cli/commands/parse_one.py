@@ -2,7 +2,8 @@ import importlib
 import json
 from pathlib import Path
 
-import asyncclick as click
+import click
+import asyncclick
 from bs4 import BeautifulSoup
 from aiohttp import ClientSession
 from fake_headers import Headers
@@ -20,10 +21,10 @@ from ai_assistant_parsers_core.cli.utils.parsers import (
 )
 
 
-@click.command()
-@click.argument("module_name", type=str)
-@click.argument("output_dir", type=click.Path)
-@click.argument("url", type=str)
+@asyncclick.command()
+@asyncclick.argument("module_name", type=str)
+@asyncclick.argument("output_dir", type=click.Path)
+@asyncclick.argument("url", type=str)
 async def parse_one(module_name: str, output_dir: Path, url: str):
     output_dir.mkdir(exist_ok=True, parents=True)
 
