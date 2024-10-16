@@ -13,7 +13,7 @@ class PlaywrightFetcher(ABCFetcher):
         page = await browser.new_page()
         await page.goto(url)
 
-        text = await page.evaluate("() => document.body.innerText")
+        text = await page.content()
 
         await browser.close()
 
