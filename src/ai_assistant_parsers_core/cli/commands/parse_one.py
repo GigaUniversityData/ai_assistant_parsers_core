@@ -32,20 +32,18 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     parsers = module.PARSERS
     parsing_refiners = getattr(module, "PARSING_REFINERS", [])
     fetchers_config = getattr(module, "FETCHERS", {})
+    default_fetcher = AiohttpFetcher(
+        client=ClientSession(headers=Headers(os="mac", headers=True).generate()),
+    )
 
-    async with ClientSession(
-        headers=Headers(os="mac", headers=True).generate(),
-    ) as client:
-        default_fetcher = AiohttpFetcher(client=client)
-
-        await _process_url(
-            output_dir=output_dir,
-            parsers=parsers,
-            parsing_refiners=parsing_refiners,
-            fetchers_config=fetchers_config,
-            default_fetcher=default_fetcher,
-            url=url,
-        )
+    await _process_url(
+        output_dir=output_dir,
+        parsers=parsers,
+        parsing_refiners=parsing_refiners,
+        fetchers_config=fetchers_config,
+        default_fetcher=default_fetcher,
+        url=url,
+    )
 
 
 async def _process_url(
@@ -62,6 +60,7 @@ async def _process_url(
 
     cleaned_soup = _process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, soup=soup)
     _write_data_to_files(cleaned_soup=cleaned_soup, url=url, parser=parser, output_dir=output_dir)
+    await _close_fetchers(default_fetcher=default_fetcher, fetchers_config=fetchers_config)
 
 
 def _process_html(
@@ -103,3 +102,9 @@ def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParse
     path = result_dir / "meta.json"
     with open(path, "w") as fp:
         json.dump(metadata, fp=fp, indent=4)
+
+
+async def _close_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str, ABCFetcher]) -> None:
+    await default_fetcher.close()
+    for _, fetcher in fetchers_config.items():
+        await fetcher.close()
