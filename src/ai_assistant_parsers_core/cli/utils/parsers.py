@@ -1,6 +1,5 @@
 from fnmatch import fnmatchcase
 from hashlib import md5
-from aiohttp import ClientSession
 
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import ABCFetcher
