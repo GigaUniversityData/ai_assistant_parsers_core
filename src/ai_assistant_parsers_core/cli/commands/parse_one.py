@@ -28,7 +28,7 @@ from ai_assistant_parsers_core.cli.utils.parsers import (
 async def parse_one(module_name: str, output_dir: Path, url: str):
     output_dir.mkdir(exist_ok=True, parents=True)
 
-    module = importlib.import_module(module_name)
+    module = importlib.import_module(f"{module_name}.settings")
     parsers = module.PARSERS
     parsing_refiners = getattr(module, "PARSING_REFINERS", [])
     fetchers_config = getattr(module, "FETCHERS", {})
