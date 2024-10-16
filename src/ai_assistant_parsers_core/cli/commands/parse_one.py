@@ -11,12 +11,13 @@ from ai_assistant_parsers_core.common_utils.parse_url import extract_url
 from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
+from ai_assistant_parsers_core.fetchers import ABCFetcher, AiohttpFetcher
 
 from ai_assistant_parsers_core.cli.utils.parsers import (
     get_parser_by_url,
-    fetch_html_by_url,
     hash_string,
     get_full_parser_name,
+    fetch_html_by_url,
 )
 
 
@@ -29,27 +30,33 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
 
     module = importlib.import_module(module_name)
     parsers = module.PARSERS
-    parsing_refiners = module.PARSING_REFINERS
+    parsing_refiners = getattr(module, "PARSING_REFINERS", [])
+    fetchers_config = getattr(module, "FETCHERS", {})
 
-    headers = Headers(os="mac", headers=True).generate()
-    async with ClientSession(headers=headers) as client:
+    async with ClientSession(
+        headers=Headers(os="mac", headers=True).generate(),
+    ) as client:
+        default_fetcher = AiohttpFetcher(client=client)
+
         await _process_url(
-            client=client,
             output_dir=output_dir,
             parsers=parsers,
             parsing_refiners=parsing_refiners,
+            fetchers_config=fetchers_config,
+            default_fetcher=default_fetcher,
             url=url,
         )
 
 
 async def _process_url(
-    client: ClientSession,
     output_dir: Path,
     parsers: list[ABCParser],
     parsing_refiners: list[ABCParsingRefiner],
+    fetchers_config: dict[str, ABCFetcher],
+    default_fetcher: ABCFetcher,
     url: str,
 ) -> None:
-    html = await fetch_html_by_url(url, client=client)
+    html = await fetch_html_by_url(url, config=fetchers_config, default_fetcher=default_fetcher)
     soup = BeautifulSoup(html, "html5lib")
     parser = get_parser_by_url(url, parsers=parsers)
 

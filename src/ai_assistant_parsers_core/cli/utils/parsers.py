@@ -1,7 +1,9 @@
+from fnmatch import fnmatchcase
 from hashlib import md5
 from aiohttp import ClientSession
 
 from ai_assistant_parsers_core.parsers import ABCParser
+from ai_assistant_parsers_core.fetchers import ABCFetcher
 
 
 def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
@@ -11,12 +13,12 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
     raise RuntimeError
 
 
-async def fetch_html_by_url(url: str, client: ClientSession) -> str:
-    async with client.get(url) as response:
-        try:
-            return await response.text()
-        except UnicodeDecodeError:
-            return await response.text(encoding="windows-1251")
+async def fetch_html_by_url(url: str, config: dict[str, ABCFetcher], default_fetcher: ABCFetcher) -> str:
+    for pattern, fetcher in config.items():
+        if fnmatchcase(url, pattern):
+            return await fetcher.fetch(url)
+
+    return await default_fetcher.fetch(url)
 
 
 def get_full_parser_name(parser: ABCParser) -> str:
