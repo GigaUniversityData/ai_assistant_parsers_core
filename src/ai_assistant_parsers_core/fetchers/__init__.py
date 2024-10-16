@@ -3,7 +3,7 @@ from .abc import (
 )
 from .impls import (
     AiohttpFetcher,
-    PlaywrightFetcher,
+    SeleniumFetcher,
 )
 
-__all__ = ["ABCFetcher", "AiohttpFetcher", "PlaywrightFetcher"]
+__all__ = ["ABCFetcher", "AiohttpFetcher", "SeleniumFetcher"]

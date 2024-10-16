@@ -1,8 +1,8 @@
 from .aiohttp import (
     AiohttpFetcher,
 )
-from .playwright import (
-    PlaywrightFetcher,
+from .selenium import (
+    SeleniumFetcher,
 )
 
-__all__ = ["AiohttpFetcher", "PlaywrightFetcher"]
+__all__ = ["AiohttpFetcher", "SeleniumFetcher"]

@@ -15,7 +15,7 @@ html5lib = "^1.1"
 aiohttp = "^3.10.10"
 fake-headers = "^1.0.2"
 asyncclick = "^8.1.7.2"
-playwright = "^1.47.0"
+selenium = "^4.25.0"
 
 
 [tool.poetry.group.dev.dependencies]
