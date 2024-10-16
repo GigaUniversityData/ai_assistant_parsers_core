@@ -10,9 +10,8 @@ def cli():
     pass
 
 
-for command in COMMANDS:
-    cli.add_command(command)
-
-
 if __name__ == "__main__":
+    for command in COMMANDS:
+        cli.add_command(command)
+
     cli()

@@ -30,8 +30,8 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     module = importlib.import_module(module_name)
     parsers = module.PARSERS
     parsing_refiners = module.PARSING_REFINERS
-    headers = Headers(os="mac", headers=True).generate()
 
+    headers = Headers(os="mac", headers=True).generate()
     async with ClientSession(headers=headers) as client:
         await _process_url(
             client=client,
@@ -67,6 +67,7 @@ def _process_html(
     converts_relative_links_to_absolute(soup=cleaned_soup, base_url=url)
     for parsing_refiner in parsing_refiners:
         parsing_refiner.refine(cleaned_soup)
+
     return cleaned_soup
 
 
