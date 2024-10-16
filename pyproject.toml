@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ai_assistant_parsers_core"
-version = "0.9.1"
+version = "0.10.0"
 description = ""
 authors = ["AI Assistant"]
 readme = "README.rst"
@@ -15,6 +15,7 @@ html5lib = "^1.1"
 aiohttp = "^3.10.10"
 fake-headers = "^1.0.2"
 asyncclick = "^8.1.7.2"
+playwright = "^1.47.0"
 
 
 [tool.poetry.group.dev.dependencies]
