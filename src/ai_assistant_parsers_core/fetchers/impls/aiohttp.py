@@ -1,4 +1,4 @@
-import aiohttp
+from aiohttp import ClientSession
 
 from ..abc import ABCFetcher
 
