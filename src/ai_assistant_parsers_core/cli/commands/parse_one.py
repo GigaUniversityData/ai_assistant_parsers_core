@@ -12,7 +12,7 @@ from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_mar
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import AiohttpFetcher
 
-from ai_assistant_parsers_core.cli.utils.parsing import process_url, open_fetchers, close_fetchers
+from ai_assistant_parsers_core.cli.functions.parsing import process_url, open_fetchers, close_fetchers
 
 
 @click.command()
