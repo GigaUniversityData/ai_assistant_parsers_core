@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ai_assistant_parsers_core"
-version = "0.11.5"
+version = "0.12.0"
 description = ""
 authors = ["AI Assistant"]
 readme = "README.rst"
