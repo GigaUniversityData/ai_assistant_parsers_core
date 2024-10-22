@@ -57,18 +57,18 @@ def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParse
     result_dir = output_dir / url_hash
     result_dir.mkdir(exist_ok=True)
 
-    print(parser_name)
+    click.echo(parser_name)
 
     path = result_dir / "result.html"
     with open(path, "w") as fp:
         fp.write(html)
-    print(f"file://{path.absolute()}")
+    click.echo(f"file://{path.absolute()}")
 
     path = result_dir / "result.md"
     with open(path, "w") as fp:
         fp.write(turn_html_into_markdown(html))
 
-    print(f"file://{path.absolute()}")
+    click.echo(f"file://{path.absolute()}")
 
     metadata = {"parser_name": parser_name, "url": url, "hash": url_hash}
     path = result_dir / "meta.json"
