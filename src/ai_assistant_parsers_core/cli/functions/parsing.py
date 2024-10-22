@@ -1,4 +1,5 @@
 from fnmatch import fnmatchcase
+from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 
@@ -9,30 +10,37 @@ from ai_assistant_parsers_core.refiners import ABCParsingRefiner
 from ai_assistant_parsers_core.fetchers import ABCFetcher
 
 
+@dataclass
+class ProcessURLResult:
+    raw_html: BeautifulSoup
+    cleaned_html: BeautifulSoup
+    parser: ABCParser
+
+
 async def process_url(
     parsers: list[ABCParser],
     parsing_refiners: list[ABCParsingRefiner],
     fetchers_config: dict[str, ABCFetcher],
     default_fetcher: ABCFetcher,
     url: str,
-) -> tuple[BeautifulSoup, ABCParser]:
+) -> ProcessURLResult:
     html = await fetch_html_by_url(url, fetchers_config=fetchers_config, default_fetcher=default_fetcher)
 
-    soup = BeautifulSoup(html, "html5lib")
+    raw_soup = BeautifulSoup(html, "html5lib")
 
     parser = get_parser_by_url(url, parsers=parsers)
-    cleaned_soup = process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, soup=soup)
+    cleaned_soup = process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, raw_soup=raw_soup)
 
-    return cleaned_soup, parser
+    return ProcessURLResult(raw_html=raw_soup, cleaned_html=cleaned_soup, parser=parser)
 
 
 def process_html(
     parser: ABCParser,
     parsing_refiners: list[ABCParsingRefiner],
     url: str,
-    soup: BeautifulSoup,
+    raw_soup: BeautifulSoup,
 ) -> BeautifulSoup:
-    cleaned_soup = parser.parse(soup)
+    cleaned_soup = parser.parse(raw_soup)
     converts_relative_links_to_absolute(soup=cleaned_soup, base_url=url)
     for parsing_refiner in parsing_refiners:
         parsing_refiner.refine(cleaned_soup)

@@ -32,7 +32,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
 
     await open_fetchers(default_fetcher=default_fetcher, fetchers_config=fetchers_config)
 
-    cleaned_soup, parser = await process_url(
+    result = await process_url(
         parsers=parsers,
         parsing_refiners=parsing_refiners,
         fetchers_config=fetchers_config,
@@ -41,7 +41,12 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     )
 
     await close_fetchers(default_fetcher=default_fetcher, fetchers_config=fetchers_config)
-    _write_data_to_files(cleaned_soup=cleaned_soup, url=url, parser=parser, output_dir=output_dir)
+    _write_data_to_files(
+        cleaned_soup=result.cleaned_html,
+        url=url,
+        parser=result.parser,
+        output_dir=output_dir
+    )
 
 
 def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
