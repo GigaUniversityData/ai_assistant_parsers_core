@@ -12,7 +12,7 @@ from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_mar
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import AiohttpFetcher
 
-from ai_assistant_parsers_core.cli.functions.parsing import process_url, open_fetchers, close_fetchers
+from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers
 
 
 @click.command()
@@ -32,7 +32,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
 
     await open_fetchers(default_fetcher=default_fetcher, fetchers_config=fetchers_config)
 
-    result = await process_url(
+    result = await parse_by_url(
         parsers=parsers,
         parsing_refiners=parsing_refiners,
         fetchers_config=fetchers_config,

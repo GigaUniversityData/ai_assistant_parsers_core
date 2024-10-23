@@ -11,30 +11,30 @@ from ai_assistant_parsers_core.fetchers import ABCFetcher
 
 
 @dataclass
-class ProcessURLResult:
+class ParsingResult:
     raw_html: BeautifulSoup
     cleaned_html: BeautifulSoup
     parser: ABCParser
 
 
-async def process_url(
+async def parse_by_url(
     parsers: list[ABCParser],
     parsing_refiners: list[ABCParsingRefiner],
     fetchers_config: dict[str, ABCFetcher],
     default_fetcher: ABCFetcher,
     url: str,
-) -> ProcessURLResult:
+) -> ParsingResult:
     html = await fetch_html_by_url(url, fetchers_config=fetchers_config, default_fetcher=default_fetcher)
 
     raw_soup = BeautifulSoup(html, "html5lib")
 
     parser = get_parser_by_url(url, parsers=parsers)
-    cleaned_soup = process_html(parser=parser, parsing_refiners=parsing_refiners, url=url, raw_soup=raw_soup)
+    cleaned_soup = process_parsed_html(parser=parser, parsing_refiners=parsing_refiners, url=url, raw_soup=raw_soup)
 
-    return ProcessURLResult(raw_html=raw_soup, cleaned_html=cleaned_soup, parser=parser)
+    return ParsingResult(raw_html=raw_soup, cleaned_html=cleaned_soup, parser=parser)
 
 
-def process_html(
+def process_parsed_html(
     parser: ABCParser,
     parsing_refiners: list[ABCParsingRefiner],
     url: str,
