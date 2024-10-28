@@ -37,3 +37,6 @@ class AiohttpFetcher(ABCFetcher):
 
     async def close(self) -> None:
         await self._client.close()
+
+    def is_open(self) -> bool:
+        return self._client is not None

@@ -51,13 +51,15 @@ def process_parsed_html(
 async def open_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str, ABCFetcher]) -> None:
     await default_fetcher.open()
     for _, fetcher in fetchers_config.items():
-        await fetcher.open()
+        if not fetcher.is_open():
+            await fetcher.open()
 
 
 async def close_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str, ABCFetcher]) -> None:
     await default_fetcher.close()
     for _, fetcher in fetchers_config.items():
-        await fetcher.close()
+        if fetcher.is_open():
+            await fetcher.close()
 
 
 async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher], default_fetcher: ABCFetcher) -> str:

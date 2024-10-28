@@ -27,3 +27,6 @@ class SeleniumFetcher(ABCFetcher):
 
     async def close(self) -> None:
         self._webdriver.close()
+
+    def is_open(self) -> bool:
+        return self._webdriver is not None
