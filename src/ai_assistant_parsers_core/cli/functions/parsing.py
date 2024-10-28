@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.parse_url import get_url_path
+from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_path
 from ai_assistant_parsers_core.common_utils.beautiful_soup import converts_relative_links_to_absolute
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
@@ -64,8 +64,9 @@ async def close_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str,
 
 async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher], default_fetcher: ABCFetcher) -> str:
     for pattern, fetcher in fetchers_config.items():
-        url_path = get_url_path(url)
-        if fnmatchcase(url_path, pattern):
+        parsed_url = parse_url(url)
+        check_path = normalize_path(f"{parsed_url.netloc}{parsed_url.path}")
+        if fnmatchcase(check_path, pattern):
             return await fetcher.fetch(url)
 
     return await default_fetcher.fetch(url)
