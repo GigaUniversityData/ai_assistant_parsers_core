@@ -41,11 +41,13 @@ class SeleniumFetcher(ABCFetcher):
     def _add_headless_to_options(self) -> None:
         options = self._webdriver_arguments.get("options")
         if options is None:
-            if isinstance(self._webdriver, FirefoxWebDriver):
+            if self._webdriver_class == FirefoxWebDriver:
                 options = FirefoxOptions()
-            elif isinstance(self._webdriver, ChromeWebDriver):
+                options.add_argument("--headless")
+            elif self._webdriver_class == ChromeWebDriver:
                 options = ChromeOptions()
+                options.add_argument("--headless")
             else:
                 return
-        options.headless = True
+
         self._webdriver_arguments["options"] = options
