@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://law.spbu.ru/science/
+- https://law.spbu.ru/pregraduatestudy/
+"""
+
 from bs4 import BeautifulSoup, Tag
 
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select
@@ -23,7 +29,7 @@ class LawDomainParser(SimpleSelectDomainBaseParser):
         clean_one_by_select(soup, ".submenu")
         clean_one_by_select(soup, ".submenu-second")
 
-        # Особые страницы
+        # Особые страницы #
 
         # /aboutfaculty/teachers/*
         clean_one_by_select(soup, ".otherlecturer-")

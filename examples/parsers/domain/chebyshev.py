@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://chebyshev.spbu.ru/o-laboratorii/
+- https://chebyshev.spbu.ru/lecture-notes/
+"""
+
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.parsers import ABCParser, DomainMixin, BaseQueryMixin

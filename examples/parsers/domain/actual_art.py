@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://actual-art.spbu.ru/
+- https://actual-art.spbu.ru/o-konferentsii/orgkomitet.html
+"""
+
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 
 

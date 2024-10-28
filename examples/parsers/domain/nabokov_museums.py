@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://nabokov.museums.spbu.ru/ru/ekskursii.html
+- https://nabokov.museums.spbu.ru/ru/nauchnye-issledovaniya.html
+"""
+
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select, clean_all_by_select

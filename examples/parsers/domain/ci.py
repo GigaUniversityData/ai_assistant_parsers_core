@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://ci.spbu.ru/
+- https://ci.spbu.ru/category/svedenia_o_kitae/confucius/
+"""
+
 import re
 
 from bs4 import BeautifulSoup

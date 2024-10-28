@@ -1,3 +1,9 @@
+"""
+Страницы для теста:
+- https://pr.spbu.ru/smi
+- https://pr.spbu.ru/social-network
+"""
+
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select

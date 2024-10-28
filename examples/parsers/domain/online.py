@@ -1,3 +1,11 @@
+"""
+Страницы для теста:
+- https://online.spbu.ru/nashi-kursy/
+- https://online.spbu.ru/audiolekcii/
+- https://online.spbu.ru/psixologiya-otdyxa/
+- https://online.spbu.ru/leksikologiya-ispanskogo-yazyka/
+"""
+
 import re
 from bs4 import BeautifulSoup
 
