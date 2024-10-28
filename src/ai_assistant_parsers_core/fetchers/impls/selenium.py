@@ -48,3 +48,4 @@ class SeleniumFetcher(ABCFetcher):
             else:
                 return
         options.headless = True
+        self._webdriver_arguments["options"] = options
