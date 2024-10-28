@@ -19,6 +19,9 @@ class AiohttpFetcher(ABCFetcher):
         self._client = ClientSession(**self._client_arguments)
 
     async def fetch(self, url: str) -> str:
+        if not self.is_open():
+            raise RuntimeError("Fetcher is not open")
+
         async with self._client.get(url) as response:
             byte_string = await response.read()
 
@@ -37,6 +40,7 @@ class AiohttpFetcher(ABCFetcher):
 
     async def close(self) -> None:
         await self._client.close()
+        self._client = None
 
     def is_open(self) -> bool:
         return self._client is not None
