@@ -16,6 +16,7 @@ aiohttp = "^3.10.10"
 fake-headers = "^1.0.2"
 asyncclick = "^8.1.7.2"
 selenium = "^4.25.0"
+charset-normalizer = "^3.4.0"
 
 
 [tool.poetry.group.dev.dependencies]
