@@ -1,6 +1,8 @@
 import typing as t
 
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
+from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver, Options as ChromeOptions
 
 from ..abc import ABCFetcher
 
@@ -19,6 +21,7 @@ class SeleniumFetcher(ABCFetcher):
         self._webdriver_arguments = webdriver_arguments
 
     async def open(self) -> None:
+        self._add_headless_to_options()
         self._webdriver = self._webdriver_class(**self._webdriver_arguments)
 
     async def fetch(self, url: str) -> str:
@@ -34,3 +37,14 @@ class SeleniumFetcher(ABCFetcher):
 
     def is_open(self) -> bool:
         return self._webdriver is not None
+
+    def _add_headless_to_options(self) -> None:
+        options = self._webdriver_arguments.get("options")
+        if options is None:
+            if isinstance(self._webdriver, FirefoxWebDriver):
+                options = FirefoxOptions()
+            elif isinstance(self._webdriver, ChromeWebDriver):
+                options = ChromeOptions()
+            else:
+                return
+        options.headless = True
