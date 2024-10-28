@@ -23,12 +23,10 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     output_dir.mkdir(exist_ok=True, parents=True)
 
     config = importlib.import_module(f"{module_name}.settings")
-    default_fetcher = AiohttpFetcher(
-        client=ClientSession(headers=Headers(os="mac", headers=True).generate()),
-    )
+    default_fetcher = AiohttpFetcher(dict(headers=Headers(os="mac", headers=True).generate()))
     parsers = config.PARSERS
     parsing_refiners = getattr(config, "PARSING_REFINERS", [])
-    fetchers_config = getattr(config, "FETCHERS", {})
+    fetchers_config = getattr(config, "FETCHERS_CONFIG", {})
 
     await open_fetchers(default_fetcher=default_fetcher, fetchers_config=fetchers_config)
 
