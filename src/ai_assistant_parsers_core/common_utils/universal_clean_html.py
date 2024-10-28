@@ -23,11 +23,10 @@ def universal_clean_html(soup: BeautifulSoup) -> BeautifulSoup:
         if isinstance(found_tag, Tag):
             soup = found_tag
 
-
     clean_tags(soup, ["script", "style", "noscript", "nav", "head", "footer", "header"])
-    #_clean_specific_css(soup)
     clean_comments(soup)
-    #clean_empty_tags(soup)
+    # _clean_specific_css(soup)
+    # clean_empty_tags(soup)
 
     # Очитка атрибутов
     _clean_attributes(soup)
@@ -44,7 +43,15 @@ def _clean_specific_css(soup: BeautifulSoup | Tag) -> None:
         soup (BeautifulSoup | Tag): Объект beautiful soup.
     """
 
-    for tag in soup.select('div[id*="google-cache-hdr"], div[id*="wm-ipp"], div[class*="bread"], ul[class*="bread"], div[class*="menu"], li[class*="menu"], section[class*="anchors"]'):
+    for tag in soup.select(
+        'div[id*="google-cache-hdr"], '
+        'div[id*="wm-ipp"], '
+        'div[class*="bread"], '
+        'ul[class*="bread"], '
+        'div[class*="menu"], '
+        'li[class*="menu"], '
+        'section[class*="anchors"]'
+    ):
         tag.decompose()
 
 
