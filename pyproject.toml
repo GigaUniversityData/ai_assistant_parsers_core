@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ai_assistant_parsers_core"
-version = "0.14.6"
-description = ""
+version = "0.15.0"
+description = "AI Assistant Parsers Core - это ядро библиотеки, предоставляющее набор общих абстрактных классов и утилит для разработки парсеров, специализированных под различные высшие учебные заведения (ВУЗы)."
 authors = ["AI Assistant"]
 readme = "README.rst"
 packages = [{include = "ai_assistant_parsers_core", from = "src"}]
