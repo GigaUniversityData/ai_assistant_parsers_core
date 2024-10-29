@@ -32,7 +32,7 @@ class SeleniumFetcher(ABCFetcher):
         return self._webdriver.page_source
 
     async def close(self) -> None:
-        self._webdriver.close()
+        self._webdriver.quit()
         self._webdriver = None
 
     def is_open(self) -> bool:
