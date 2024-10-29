@@ -1,3 +1,5 @@
+"""Модуль для ``turn_html_into_markdown``."""
+
 import re
 import enum
 
@@ -10,11 +12,13 @@ html2text.config.UNIFIABLE["gt"] = "\\>"
 
 
 class ImageStrategy(enum.Enum):
+    """Стратегия обработки таблиц."""
     DROP = enum.auto()
     USE_ALT = enum.auto()
 
 
 class TableStrategy(enum.Enum):
+    """Стратегия обработки картинок."""
     BYPASS = enum.auto()
     PAD = enum.auto()
 
@@ -23,7 +27,17 @@ def turn_html_into_markdown(
     html: str,
     image_strategy: ImageStrategy = ImageStrategy.DROP,
     table_strategy: TableStrategy = TableStrategy.BYPASS,
-):
+) -> str:
+    """Преобразовывает HTML в Markdown.
+
+    Args:
+        html (str): HTML-код.
+        image_strategy (ImageStrategy, optional): Стратегия обработки картинок. По-умолчанию ImageStrategy.DROP.
+        table_strategy (TableStrategy, optional): Стратегия обработки таблиц. По-умолчанию TableStrategy.BYPASS.
+
+    Returns:
+        str: Markdown.
+    """
     html = _prepare_data(html, table_strategy=table_strategy)
 
     text_maker = html2text.HTML2Text(bodywidth=0)

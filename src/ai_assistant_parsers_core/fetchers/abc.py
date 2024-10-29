@@ -1,19 +1,34 @@
+"""Абстракции для фетчеров."""
+
 import abc
 
 
 class ABCFetcher(abc.ABC):
-    @abc.abstractmethod
-    async def fetch(self, url: str) -> str:
-        pass
+    """Абстрактный фетчер."""
 
     @abc.abstractmethod
     async def open(self) -> None:
-        pass
+        """Открывает фетчер."""
+
+    @abc.abstractmethod
+    async def fetch(self, url: str) -> str:
+        """Извлекает HTML из URL-адреса.
+
+        Args:
+            url (str): URL-адрес.
+
+        Returns:
+            str: HTML-код.
+        """
 
     @abc.abstractmethod
     async def close(self) -> None:
-        pass
+        """Закрывает фетчер."""
 
     @abc.abstractmethod
     def is_open(self) -> bool:
-        pass
+        """Проверяет открыт ли фетчер.
+
+        Returns:
+            bool: Результат.
+        """

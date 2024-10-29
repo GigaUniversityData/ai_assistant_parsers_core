@@ -1,3 +1,5 @@
+"""Команды ``parse_one``."""
+
 from hashlib import md5
 import importlib
 import json
@@ -5,7 +7,6 @@ from pathlib import Path
 
 import asyncclick as click
 from bs4 import BeautifulSoup
-from aiohttp import ClientSession
 from fake_headers import Headers
 from ai_assistant_parsers_core.common_utils.parse_url import extract_url
 from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_markdown
@@ -20,6 +21,22 @@ from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_f
 @click.argument("output_dir", type=click.Path(path_type=Path))
 @click.argument("url", type=str)
 async def parse_one(module_name: str, output_dir: Path, url: str):
+    """Парсит один URL-адрес, основываясь на конфигурации модуля.
+
+    Пример ``settings.py`` со всеми параметрами:
+    ```
+    PARSERS = [WWWDomainParser(), UniversalParser()]
+
+    # Опциональные
+    PARSING_REFINERS = [CleanParsingRefiner(), RestructureParsingRefiner()]
+
+    selenium_fetcher = SeleniumFetcher(webdriver.Firefox)
+    FETCHERS_CONFIG = {
+        "www.spbstu.ru/abit/master/to-choose-the-direction-of-training/education-program/": fetcher,
+    }
+    ```
+    """
+
     output_dir.mkdir(exist_ok=True, parents=True)
 
     config = importlib.import_module(f"{module_name}.settings")

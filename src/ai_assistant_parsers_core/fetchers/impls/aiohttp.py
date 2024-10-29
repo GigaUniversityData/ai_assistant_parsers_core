@@ -1,3 +1,5 @@
+"""Модуль для ``AiohttpFetcher``."""
+
 import typing as t
 from contextlib import suppress
 
@@ -8,6 +10,8 @@ from ..abc import ABCFetcher
 
 
 class AiohttpFetcher(ABCFetcher):
+    """Фетчер на основе ``aiohttp``."""
+
     def __init__(self, client_arguments: dict[str, t.Any] | None = None) -> None:
         if client_arguments is None:
             client_arguments = {}
@@ -16,9 +20,11 @@ class AiohttpFetcher(ABCFetcher):
         self._client_arguments = client_arguments
 
     async def open(self) -> None:
+        """Открывает фетчер."""
         self._client = ClientSession(**self._client_arguments)
 
     async def fetch(self, url: str) -> str:
+        """Извлекает HTML из URL-адреса."""
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
@@ -39,8 +45,10 @@ class AiohttpFetcher(ABCFetcher):
             raise RuntimeError("The encoding could not be detected automatically") from None
 
     async def close(self) -> None:
+        """Закрывает фетчер."""
         await self._client.close()
         self._client = None
 
     def is_open(self) -> bool:
+        """Проверяет открыт ли фетчер."""
         return self._client is not None

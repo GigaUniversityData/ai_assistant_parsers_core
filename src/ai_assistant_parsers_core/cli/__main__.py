@@ -1,3 +1,5 @@
+"""Модуль для запуска CLI-утилит."""
+
 import asyncclick as click
 from .commands import parse_one
 
@@ -7,6 +9,7 @@ COMMANDS = [parse_one]
 
 @click.group()
 def cli():
+    """CLI утилиты для парсинга."""
     pass
 
 
