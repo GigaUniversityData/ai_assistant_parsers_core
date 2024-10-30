@@ -2,9 +2,12 @@
 
 import typing as t
 
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver, Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 from ..abc import ABCFetcher
 
@@ -14,19 +17,20 @@ class SeleniumFetcher(ABCFetcher):
 
     def __init__(
         self,
-        webdriver_class: type[WebDriver],
+        webdriver_class: type[ChromeWebDriver | FirefoxWebDriver],
         webdriver_arguments: dict[str, t.Any] | None = None,
     ) -> None:
         if webdriver_arguments is None:
             webdriver_arguments = {}
 
-        self._webdriver: WebDriver | None = None
+        self._webdriver: ChromeWebDriver | FirefoxWebDriver | None = None
         self._webdriver_class = webdriver_class
         self._webdriver_arguments = webdriver_arguments
 
     async def open(self) -> None:
         """Открывает фетчер."""
         self._add_headless_to_options()
+        self._add_service_to_options()
         self._webdriver = self._webdriver_class(**self._webdriver_arguments)
 
     async def fetch(self, url: str) -> str:
@@ -57,7 +61,17 @@ class SeleniumFetcher(ABCFetcher):
             elif self._webdriver_class == ChromeWebDriver:
                 options = ChromeOptions()
                 options.add_argument("--headless")
-            else:
-                return
 
         self._webdriver_arguments["options"] = options
+
+    def _add_service_to_options(self) -> None:
+        """Добавляет сервис для авто-установки драйверов."""
+
+        service = self._webdriver_arguments.get("service")
+        if service is None:
+            if self._webdriver_class == FirefoxWebDriver:
+                service = FirefoxService(GeckoDriverManager().install())
+            elif self._webdriver_class == ChromeWebDriver:
+                service = ChromeService(ChromeDriverManager().install())
+
+        self._webdriver_arguments["service"] = service
