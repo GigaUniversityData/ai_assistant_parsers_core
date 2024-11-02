@@ -53,15 +53,15 @@ def turn_html_into_markdown(
             text_maker.default_image_alt = "image"
             text_maker.images_to_alt = True
 
-    # https://github.com/Alir3z4/html2text/issues/370
-    if not _check_has_nested_table(html):
-        match table_strategy:
-            case TableStrategy.BYPASS:
-                text_maker.bypass_tables = True
-            case TableStrategy.PAD:
+    match table_strategy:
+        case TableStrategy.BYPASS:
+            text_maker.bypass_tables = True
+        case TableStrategy.PAD:
+            # https://github.com/Alir3z4/html2text/issues/370
+            if not _check_has_nested_table(html):
                 text_maker.pad_tables = True
-    else:
-        text_maker.ignore_tables = True
+            else:
+                text_maker.ignore_tables = True
 
     result = text_maker.handle(html)
 
