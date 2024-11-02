@@ -27,6 +27,12 @@ class SeleniumFetcher(ABCFetcher):
         self._webdriver_class = webdriver_class
         self._webdriver_arguments = webdriver_arguments
 
+    def before_getting_page(self) -> None:
+        pass
+
+    def after_getting_page(self) -> None:
+        pass
+
     async def open(self) -> None:
         """Открывает фетчер."""
         self._add_headless_to_options()
@@ -38,7 +44,9 @@ class SeleniumFetcher(ABCFetcher):
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
+        self.before_getting_page()
         self._webdriver.get(url)
+        self.after_getting_page()
         return self._webdriver.page_source
 
     async def close(self) -> None:
