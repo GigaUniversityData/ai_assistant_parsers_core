@@ -5,6 +5,7 @@ import enum
 
 from bs4 import BeautifulSoup
 import html2text
+from pymarkdown.api import PyMarkdownApi, PyMarkdownApiException
 
 
 html2text.config.RE_MD_CHARS_MATCHER_ALL = re.compile(r"([`*_{}\[\]()#!~|\-+])")
@@ -27,6 +28,7 @@ def turn_html_into_markdown(
     html: str,
     image_strategy: ImageStrategy = ImageStrategy.DROP,
     table_strategy: TableStrategy = TableStrategy.BYPASS,
+    try_fix_markdown: bool = False,
 ) -> str:
     """Преобразовывает HTML в Markdown.
 
@@ -34,6 +36,8 @@ def turn_html_into_markdown(
         html (str): HTML-код.
         image_strategy (ImageStrategy, optional): Стратегия обработки картинок. По-умолчанию ImageStrategy.DROP.
         table_strategy (TableStrategy, optional): Стратегия обработки таблиц. По-умолчанию TableStrategy.BYPASS.
+        try_fix_markdown (bool, optional): Если `True`, то `pymarkdown` попытается исправить проблемы
+            Markdown на выходе.
 
     Returns:
         str: Markdown.
@@ -63,9 +67,15 @@ def turn_html_into_markdown(
             else:
                 text_maker.ignore_tables = True
 
-    result = text_maker.handle(html)
+    markdown = text_maker.handle(html)
+    if try_fix_markdown:
+        try:
+            fixed_result = PyMarkdownApi().fix_string(markdown)
+            markdown = fixed_result.fixed_file
+        except PyMarkdownApiException as this_exception:
+            pass
 
-    return result
+    return markdown
 
 
 def _prepare_data(html: str, table_strategy: TableStrategy):

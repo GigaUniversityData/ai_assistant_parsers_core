@@ -18,6 +18,7 @@ asyncclick = "^8.1.7.2"
 selenium = "^4.25.0"
 charset-normalizer = "^3.4.0"
 webdriver-manager = {git = "https://github.com/GigaUniversityData/webdriver_manager"}
+pymarkdownlnt = "^0.9.24"
 
 [tool.poetry.group.dev.dependencies]
 mkinit = "^1.1.0"
