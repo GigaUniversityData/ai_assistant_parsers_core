@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_path
-from ai_assistant_parsers_core.common_utils.beautiful_soup import converts_relative_links_to_absolute
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
 from ai_assistant_parsers_core.fetchers import ABCFetcher
@@ -32,8 +31,8 @@ async def parse_by_url(
     Args:
         parsers (list[ABCParser]): Список парсеров.
         parsing_refiners (list[ABCParsingRefiner]): Список рефайнеров парсеров.
-        fetchers_config (dict[str, ABCFetcher]): Конвиг для фетчеров
-        default_fetcher (ABCFetcher): Фетчер по-уможчаню.
+        fetchers_config (dict[str, ABCFetcher]): Конфиг для фетчеров
+        default_fetcher (ABCFetcher): Фетчер по умолчанию.
         url (str): URL-адрес для парсинга.
 
     Returns:
@@ -67,9 +66,8 @@ def process_parsed_html(
         BeautifulSoup: Очищенный HTML.
     """
     cleaned_soup = parser.parse(raw_soup)
-    converts_relative_links_to_absolute(soup=cleaned_soup, base_url=url)
     for parsing_refiner in parsing_refiners:
-        parsing_refiner.refine(cleaned_soup)
+        parsing_refiner.refine(cleaned_soup, url=url)
 
     return cleaned_soup
 

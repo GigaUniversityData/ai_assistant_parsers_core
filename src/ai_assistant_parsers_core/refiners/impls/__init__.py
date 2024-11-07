@@ -1,9 +1,6 @@
-from .clean import (
-    CleanParsingRefiner,
-)
-from .restructure import (
-    RestructureParsingRefiner,
+from .default import (
+    DefaultRefiner,
     STYLE_TAGS_REGEX,
 )
 
-__all__ = ["CleanParsingRefiner", "RestructureParsingRefiner", "STYLE_TAGS_REGEX"]
+__all__ = ["DefaultRefiner", "STYLE_TAGS_REGEX"]
