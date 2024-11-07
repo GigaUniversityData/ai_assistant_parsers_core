@@ -118,7 +118,7 @@ def _get_tag_text_without_spaces(tag: Tag) -> str:
 
 def _clean_all_excess_tags_from_links(soup: BeautifulSoup):
     for link in soup.select("a"):
-        for attr_key in link.attrs.keys():
+        for attr_key in tuple(link.attrs.keys()):
             if attr_key == "href":
                 continue
             del link[attr_key]
