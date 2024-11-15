@@ -65,9 +65,16 @@ def process_parsed_html(
     Returns:
         BeautifulSoup: Очищенный HTML.
     """
-    cleaned_soup = parser.parse(raw_soup)
+    try:
+        cleaned_soup = parser.parse(raw_soup)
+    except Exception as error:
+        raise ParsingError(url=url, parser=parser, html=str(raw_soup)) from error
+
     for parsing_refiner in parsing_refiners:
-        parsing_refiner.refine(cleaned_soup, url=url)
+        try:
+            parsing_refiner.refine(cleaned_soup, url=url)
+        except Exception as error:
+            raise RefineError(url=url, refiner=parsing_refiner, html=str(cleaned_soup)) from error
 
     return cleaned_soup
 
@@ -113,7 +120,10 @@ async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher], de
         parsed_url = parse_url(url)
         check_path = normalize_path(f"{parsed_url.netloc}{parsed_url.path}")
         if fnmatchcase(check_path, pattern):
-            return await fetcher.fetch(url)
+            try:
+                return await fetcher.fetch(url)
+            except Exception as error:
+                raise FetchingError(url=url, fetcher=fetcher) from error
 
     return await default_fetcher.fetch(url)
 
@@ -135,3 +145,36 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
         if parser.check(url=url):
             return parser
     raise RuntimeError("Required parser for this URL does not exist")
+
+
+class BaseParsingError(Exception):
+    pass
+
+
+class FetchingError(BaseParsingError):
+    def __init__(self, url: str, fetcher: ABCFetcher):
+        self.url = url
+        self.fetcher = fetcher
+
+    def __str__(self):
+        return f"Error when fetching {self.url} by {self.fetcher}"
+
+
+class RefineError(BaseParsingError):
+    def __init__(self, url: str, refiner: ABCParsingRefiner, html: str):
+        self.url = url
+        self.refiner = refiner
+        self.html = html
+
+    def __str__(self):
+        return f"Error when refine with {self.url} by {self.refiner}"
+
+
+class ParsingError(BaseParsingError):
+    def __init__(self, url: str, parser: ABCParser, html: str):
+        self.url = url
+        self.parser = parser
+        self.html = html
+
+    def __str__(self):
+        return f"Error when parsing with {self.url} by {self.parser}"
