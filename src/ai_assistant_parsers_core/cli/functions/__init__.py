@@ -1,5 +1,9 @@
 from .parsing import (
+    BaseParsingError,
+    FetchingError,
+    ParsingError,
     ParsingResult,
+    RefineError,
     close_fetchers,
     fetch_html_by_url,
     get_parser_by_url,
@@ -9,7 +13,11 @@ from .parsing import (
 )
 
 __all__ = [
+    "BaseParsingError",
+    "FetchingError",
+    "ParsingError",
     "ParsingResult",
+    "RefineError",
     "close_fetchers",
     "fetch_html_by_url",
     "get_parser_by_url",

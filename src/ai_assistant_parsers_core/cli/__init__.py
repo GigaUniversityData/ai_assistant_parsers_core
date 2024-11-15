@@ -2,7 +2,11 @@ from .commands import (
     parse_one,
 )
 from .functions import (
+    BaseParsingError,
+    FetchingError,
+    ParsingError,
     ParsingResult,
+    RefineError,
     close_fetchers,
     fetch_html_by_url,
     get_parser_by_url,
@@ -12,7 +16,11 @@ from .functions import (
 )
 
 __all__ = [
+    "BaseParsingError",
+    "FetchingError",
+    "ParsingError",
     "ParsingResult",
+    "RefineError",
     "close_fetchers",
     "fetch_html_by_url",
     "get_parser_by_url",
