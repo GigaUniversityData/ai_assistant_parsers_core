@@ -1,5 +1,7 @@
 """Модуль для ``BaseQueryMixin``."""
 
+import typing as t
+import inspect
 import abc
 from bs4 import BeautifulSoup
 
@@ -20,15 +22,15 @@ class BaseQueryMixin(abc.ABC):
         С точки зрения кода методы ``_clean_parsed_html`` и ``_restructure_parsed_html`` ничем не различаются
         и ничего не делают. Их работа зависит лишь от того, как их реализовать.
     """
-    def parse(self, soup: BeautifulSoup) -> BeautifulSoup:
+    def parse(self, soup: BeautifulSoup, url: str) -> BeautifulSoup:
         """Реализует метод ``parse`` базового абстрактного класса."""
         source_html = soup
         cleaned_html = BeautifulSoup("<html><head></head><body></body></html>", "html5lib")
 
         self._prepare_result(source_html, cleaned_html)
 
-        self._clean_parsed_html(cleaned_html)
-        self._restructure_parsed_html(cleaned_html)
+        self.__call_function_with_optional_url(self._clean_parsed_html, cleaned_html, url=url)
+        self.__call_function_with_optional_url(self._restructure_parsed_html, cleaned_html, url=url)
 
         return cleaned_html
 
@@ -66,3 +68,10 @@ class BaseQueryMixin(abc.ABC):
         Args:
             soup (BeautifulSoup): HTML-код.
         """
+
+    def __call_function_with_optional_url(self, function: t.Callable, cleaned_html: BeautifulSoup, url: str):
+        signature = inspect.signature(function)
+        if "url" in signature.parameters:
+            function(cleaned_html, url=url)
+        else:
+            function(cleaned_html)

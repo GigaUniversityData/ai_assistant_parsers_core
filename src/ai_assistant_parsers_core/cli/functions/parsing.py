@@ -66,7 +66,7 @@ def process_parsed_html(
         BeautifulSoup: Очищенный HTML.
     """
     try:
-        cleaned_soup = parser.parse(raw_soup)
+        cleaned_soup = parser.parse(raw_soup, url=url)
     except Exception as error:
         raise ParsingError(url=url, parser=parser, html=str(raw_soup)) from error
 
