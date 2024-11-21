@@ -20,11 +20,12 @@ class ABCParser(abc.ABC):
         """
 
     @abc.abstractmethod
-    def parse(self, soup: BeautifulSoup) -> BeautifulSoup:
+    def parse(self, soup: BeautifulSoup, url: str) -> BeautifulSoup:
         """Парсит HTML-код, чтобы получить очищенный HTML-код.
 
         Args:
             soup (BeautifulSoup): Объект beautiful soup.
+            url (str): URL-адрес веб-сайта.
 
         Returns:
             BeautifulSoup: Очищенный HTML-код (Другой объект `BeautifulSoup`).

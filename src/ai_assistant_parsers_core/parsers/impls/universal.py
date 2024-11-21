@@ -17,7 +17,7 @@ class UniversalParser(ABCParser):
 
         return True
 
-    def parse(self, soup: BeautifulSoup) -> BeautifulSoup:
+    def parse(self, soup: BeautifulSoup, url: str) -> BeautifulSoup:
         """Реализует метод ``parse`` базового абстрактного класса."""
 
         return universal_clean_html(soup)

@@ -49,7 +49,7 @@ AI Assistant Parsers Core - это ядро библиотеки, предост
 
        def __init__(self) -> None:
            super().__init__(
-               supported_subdomains=["rgust.ru"],  # Парсим страницы, которые не умеют поддомена
+               supported_subdomains=["rgust.ru"],  # Парсим страницы, которые не имеют поддомена
                select_arguments=[
                    "section.content",  # Тег, содержащий основной контент
                ],
