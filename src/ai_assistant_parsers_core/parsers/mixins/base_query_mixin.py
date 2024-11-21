@@ -69,7 +69,7 @@ class BaseQueryMixin(abc.ABC):
             soup (BeautifulSoup): HTML-код.
         """
 
-    def __call_function_with_optional_url(self, function: t.Callable, cleaned_html: BeautifulSoup, url: str):
+    def __call_function_with_optional_url(self, function: t.Callable, cleaned_html: BeautifulSoup, url: str) -> None:
         signature = inspect.signature(function)
         if "url" in signature.parameters:
             function(cleaned_html, url=url)
