@@ -5,6 +5,7 @@ from contextlib import suppress
 
 import charset_normalizer
 from aiohttp import ClientSession
+from aiohttp_retry import RetryClient, ExponentialRetry
 
 from ..abc import ABCFetcher
 
@@ -17,18 +18,29 @@ class AiohttpFetcher(ABCFetcher):
             client_arguments = {}
 
         self._client: ClientSession | None = None
+        self._retry_client: RetryClient | None = None
         self._client_arguments = client_arguments
 
     async def open(self) -> None:
         """Открывает фетчер."""
         self._client = ClientSession(**self._client_arguments)
+        self._retry_client = RetryClient(
+            client_session=self._client,
+            retry_options=ExponentialRetry(
+                attempts=5,
+                start_timeout=0.5,
+                max_timeout=30.0,
+                factor=2.0,
+                statuses={500, 502, 503, 504, 429},
+            ),
+        )
 
     async def fetch(self, url: str) -> str:
         """Извлекает HTML из URL-адреса."""
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
-        async with self._client.get(url) as response:
+        async with self._retry_client.get(url) as response:
             byte_string = await response.read()
 
             with suppress(UnicodeDecodeError):
@@ -48,7 +60,8 @@ class AiohttpFetcher(ABCFetcher):
         """Закрывает фетчер."""
         await self._client.close()
         self._client = None
+        self._retry_client = None
 
     def is_open(self) -> bool:
         """Проверяет открыт ли фетчер."""
-        return self._client is not None
+        return self._client is not None and self._retry_client is not None
