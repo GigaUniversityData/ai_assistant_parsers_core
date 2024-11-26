@@ -23,7 +23,6 @@ async def parse_by_url(
     parsers: list[ABCParser],
     parsing_refiners: list[ABCParsingRefiner],
     fetchers_config: dict[str, ABCFetcher],
-    default_fetcher: ABCFetcher,
     url: str,
 ) -> ParsingResult:
     """Парсит по URL-адресу.
@@ -32,13 +31,12 @@ async def parse_by_url(
         parsers (list[ABCParser]): Список парсеров.
         parsing_refiners (list[ABCParsingRefiner]): Список рефайнеров парсеров.
         fetchers_config (dict[str, ABCFetcher]): Конфиг для фетчеров
-        default_fetcher (ABCFetcher): Фетчер по умолчанию.
         url (str): URL-адрес для парсинга.
 
     Returns:
         ParsingResult: Результат парсинга.
     """
-    html = await fetch_html_by_url(url, fetchers_config=fetchers_config, default_fetcher=default_fetcher)
+    html = await fetch_html_by_url(url, fetchers_config=fetchers_config)
 
     raw_soup = BeautifulSoup(html, "html5lib")
 
@@ -79,39 +77,34 @@ def process_parsed_html(
     return cleaned_soup
 
 
-async def open_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str, ABCFetcher]) -> None:
+async def open_fetchers(fetchers_config: dict[str, ABCFetcher]) -> None:
     """Отрывает все фетчеры.
 
     Args:
-        default_fetcher (ABCFetcher): Фетчер по-умолчанию.
         fetchers_config (dict[str, ABCFetcher]): Конфиг фетчеров.
     """
-    await default_fetcher.open()
     for _, fetcher in fetchers_config.items():
         if not fetcher.is_open():
             await fetcher.open()
 
 
-async def close_fetchers(default_fetcher: ABCFetcher, fetchers_config: dict[str, ABCFetcher]) -> None:
+async def close_fetchers(fetchers_config: dict[str, ABCFetcher]) -> None:
     """Закрывает все фетчеры.
 
     Args:
-        default_fetcher (ABCFetcher): Фетчер по-умолчанию.
         fetchers_config (dict[str, ABCFetcher]): Конфиг фетчеров.
     """
-    await default_fetcher.close()
     for _, fetcher in fetchers_config.items():
         if fetcher.is_open():
             await fetcher.close()
 
 
-async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher], default_fetcher: ABCFetcher) -> str:
+async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher]) -> str:
     """Извлекает HTML по URL-адресу.
 
     Args:
         url (str): URL-адрес.
         fetchers_config (dict[str, ABCFetcher]): Конфиг фетчеров.
-        default_fetcher (ABCFetcher): Фетчер по-умолчанию.
 
     Returns:
         str: Извлечённый HTML-код.
@@ -125,7 +118,7 @@ async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher], de
             except Exception as error:
                 raise FetchingError(url=url, fetcher=fetcher) from error
 
-    return await default_fetcher.fetch(url)
+    raise RuntimeError(f"Fetcher for {url} does not exist.")
 
 
 def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
