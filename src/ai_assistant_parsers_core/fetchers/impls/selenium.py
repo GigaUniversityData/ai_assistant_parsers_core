@@ -2,6 +2,7 @@
 
 import typing as t
 
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver, Options as ChromeOptions
@@ -19,6 +20,7 @@ class SeleniumFetcher(ABCFetcher):
         self,
         webdriver_class: type[ChromeWebDriver | FirefoxWebDriver],
         webdriver_arguments: dict[str, t.Any] | None = None,
+        timeout: int = 10,
     ) -> None:
         if webdriver_arguments is None:
             webdriver_arguments = {}
@@ -26,12 +28,12 @@ class SeleniumFetcher(ABCFetcher):
         self._webdriver: ChromeWebDriver | FirefoxWebDriver | None = None
         self._webdriver_class = webdriver_class
         self._webdriver_arguments = webdriver_arguments
+        self._timeout = timeout
 
-    def before_getting_page(self) -> None:
-        pass
-
-    def after_getting_page(self) -> None:
-        pass
+    def wait_for_page_load(self) -> None:
+        WebDriverWait(self._webdriver, self._timeout).until(
+            lambda driver: driver.execute_script("return document.readyState") == "complete"
+        )
 
     async def open(self) -> None:
         """Открывает фетчер."""
@@ -44,9 +46,8 @@ class SeleniumFetcher(ABCFetcher):
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
-        self.before_getting_page()
         self._webdriver.get(url)
-        self.after_getting_page()
+        self.wait_for_page_load()
         return self._webdriver.page_source
 
     async def close(self) -> None:
