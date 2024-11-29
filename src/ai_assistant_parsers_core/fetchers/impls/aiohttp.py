@@ -4,7 +4,7 @@ import typing as t
 from contextlib import suppress
 
 import charset_normalizer
-from aiohttp import ClientSession, ConnectionTimeoutError
+from aiohttp import ClientSession, ClientConnectorCertificateError
 from aiohttp_retry import RetryClient, ExponentialRetry
 
 from ..abc import ABCFetcher
@@ -44,7 +44,7 @@ class AiohttpFetcher(ABCFetcher):
             async with self._retry_client.get(url) as response:
                 byte_string = await response.read()
                 encoding = response.get_encoding()
-        except ConnectionTimeoutError:
+        except ClientConnectorCertificateError:
             async with self._retry_client.get(url, ssl=False) as response:
                 byte_string = await response.read()
                 encoding = response.get_encoding()
