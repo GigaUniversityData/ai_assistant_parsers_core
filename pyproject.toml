@@ -19,6 +19,7 @@ selenium = "^4.25.0"
 charset-normalizer = "^3.4.0"
 pymarkdownlnt = "^0.9.24"
 webdriver-manager = "4.0.2"
+aiohttp-retry = "^2.9.1"
 
 [tool.poetry.group.dev.dependencies]
 mkinit = "^1.1.0"
