@@ -31,7 +31,6 @@ class AiohttpFetcher(ABCFetcher):
                 start_timeout=0.5,
                 max_timeout=30.0,
                 factor=2.0,
-                statuses={500, 502, 503, 504, 429},
             ),
         )
 
