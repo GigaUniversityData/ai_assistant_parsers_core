@@ -23,7 +23,7 @@ class AiohttpFetcher(ABCFetcher):
 
     async def open(self) -> None:
         """Открывает фетчер."""
-        self._client = ClientSession(**self._client_arguments)
+        self._client = ClientSession(raise_for_status=True, **self._client_arguments)
         self._retry_client = RetryClient(
             client_session=self._client,
             retry_options=ExponentialRetry(
