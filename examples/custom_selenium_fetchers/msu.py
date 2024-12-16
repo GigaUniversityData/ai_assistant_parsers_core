@@ -1,7 +1,7 @@
 """
 Фетчер для сайта ``https://msu.ru/*``
 
-реализует ожидание загрузки класса ``page`` перед началом сбора данных.
+Реализует ожидание загрузки класса ``page`` перед началом сбора данных.
 """
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,7 +11,7 @@ from ai_assistant_parsers_core.fetchers import SeleniumFetcher
 
 
 class CustomSeleniumFetcher(SeleniumFetcher):
-    def after_getting_page(self) -> None:
+    def wait_for_page_load(self) -> None:
         try:
             WebDriverWait(self._webdriver, 10).until(
                 EC.presence_of_element_located(
