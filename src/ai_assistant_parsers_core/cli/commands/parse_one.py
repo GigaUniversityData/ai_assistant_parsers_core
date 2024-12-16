@@ -47,7 +47,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     parsers = config.PARSERS
     parsing_refiners = getattr(config, "PARSING_REFINERS", [])
     fetchers_config = getattr(config, "FETCHERS_CONFIG", {})
-    fetchers_config = default_fetchers_config | fetchers_config
+    fetchers_config = merge_configs(default_fetchers_config, fetchers_config)
 
     await open_fetchers(fetchers_config=fetchers_config)
 
@@ -65,6 +65,14 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
         parser=result.parser,
         output_dir=output_dir
     )
+
+
+def merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
+    merged_config = fetchers_config.copy()
+    for key, value in default_fetchers_config.items():
+        if key not in merged_config:
+            merged_config[key] = value
+    return merged_config
 
 
 def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
