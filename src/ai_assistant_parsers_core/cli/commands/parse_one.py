@@ -51,20 +51,25 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
 
     await open_fetchers(fetchers_config=fetchers_config)
 
-    result = await parse_by_url(
-        parsers=parsers,
-        parsing_refiners=parsing_refiners,
-        fetchers_config=fetchers_config,
-        url=url,
-    )
-
-    await close_fetchers(fetchers_config=fetchers_config)
-    _write_data_to_files(
-        cleaned_soup=result.cleaned_html,
-        url=url,
-        parser=result.parser,
-        output_dir=output_dir
-    )
+    # noinspection PyBroadException
+    try:
+        result = await parse_by_url(
+            parsers=parsers,
+            parsing_refiners=parsing_refiners,
+            fetchers_config=fetchers_config,
+            url=url,
+        )
+    except Exception:
+        pass
+    else:
+        _write_data_to_files(
+            cleaned_soup=result.cleaned_html,
+            url=url,
+            parser=result.parser,
+            output_dir=output_dir
+        )
+    finally:
+        await close_fetchers(fetchers_config=fetchers_config)
 
 
 def merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
