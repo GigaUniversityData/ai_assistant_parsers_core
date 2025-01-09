@@ -17,7 +17,7 @@ def rename_all_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
         replace_name (str): Имя для замены.
     """
     for tag in soup.select(selector):
-        _rename_element(tag, replace_name=replace_name)
+        _rename_one_element(tag, replace_name=replace_name)
 
 
 def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name: str) -> None:
@@ -29,17 +29,10 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
         replace_name (str): Имя для замены.
     """
     tag = soup.select_one(selector)
-    _rename_element(tag, replace_name=replace_name)
+    _rename_one_element(tag, replace_name=replace_name)
 
 
-
-    Args:
-        soup (BeautifulSoup | Tag): Объект beautiful soup.
-    """
-    rename_all_by_select(soup, "table", replace_name="div")
-
-
-def _rename_element(tag: Tag | None, replace_name: str) -> None:
+def _rename_one_element(tag: Tag | None, replace_name: str) -> None:
     if tag is None:
         return
 
