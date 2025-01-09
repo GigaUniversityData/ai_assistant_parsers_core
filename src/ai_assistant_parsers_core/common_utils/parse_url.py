@@ -8,7 +8,7 @@ import tldextract
 from tldextract.tldextract import ExtractResult
 
 
-def extract_url(url: str) -> ExtractResult:
+def extract_path(url: str) -> ExtractResult:
     """Получает поддомен из URL-адреса.
 
     Args:
@@ -38,7 +38,7 @@ def get_url_path(url: str) -> str:
     Returns:
         str: URL-путь.
     """
-    return normalize_path(urlparse(url).path)
+    return normalize_path(parse_url(url).path)
 
 
 def normalize_path(path: str) -> str:
