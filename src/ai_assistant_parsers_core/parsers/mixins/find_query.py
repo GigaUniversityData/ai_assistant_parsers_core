@@ -6,7 +6,7 @@ import typing as t
 
 from bs4 import BeautifulSoup
 
-from .base_query_mixin import BaseQueryMixin
+from .base_query import BaseQueryMixin
 
 
 class FindQueryMixin(BaseQueryMixin):

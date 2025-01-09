@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from bs4 import BeautifulSoup
 
-from .base_query_mixin import BaseQueryMixin
+from .base_query import BaseQueryMixin
 
 
 class SelectQueryMixin(BaseQueryMixin):

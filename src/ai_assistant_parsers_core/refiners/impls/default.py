@@ -9,6 +9,7 @@ from ai_assistant_parsers_core.common_utils.beautiful_soup import (
     converts_relative_links_to_absolute,
 )
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_all_by_select
+from ai_assistant_parsers_core.common_utils.magic_path import MagicPath
 
 from ..abc import ABCParsingRefiner
 
@@ -36,12 +37,12 @@ class DefaultRefiner(ABCParsingRefiner):
     производит изменение структуры "очищенного HTML-кода" для улучшения его читаемости.
     """
 
-    def refine(self, soup: BeautifulSoup, url: str) -> None:
+    def refine(self, soup: BeautifulSoup, path: MagicPath) -> None:
         """Реализует метод ``refine`` базового абстрактного класса."""
-        self._clear(soup, url)
-        self._restructure(soup, url)
+        self._clear(soup, path)
+        self._restructure(soup, path)
 
-    def _clear(self, soup, url: str) -> None:
+    def _clear(self, soup, path: MagicPath) -> None:
         for tag in ["script", "style", "noscript"]:
             clean_all_by_select(soup, tag)
 
@@ -53,8 +54,8 @@ class DefaultRefiner(ABCParsingRefiner):
         _clean_empty_list_items(soup)
         _clean_all_excess_tags_from_links(soup)
 
-    def _restructure(self, soup, url: str) -> None:
-        converts_relative_links_to_absolute(soup, base_url=url)
+    def _restructure(self, soup, path: MagicPath) -> None:
+        converts_relative_links_to_absolute(soup, base_url=path.url)
 
 
 def _clear_javascript_scheme_from_links(soup: BeautifulSoup) -> None:

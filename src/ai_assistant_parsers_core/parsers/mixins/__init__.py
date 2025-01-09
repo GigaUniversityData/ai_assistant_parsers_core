@@ -1,4 +1,4 @@
-from .base_query_mixin import (
+from .base_query import (
     BaseQueryMixin,
 )
 from .domain import (
