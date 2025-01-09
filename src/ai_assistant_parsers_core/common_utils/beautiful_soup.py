@@ -55,7 +55,7 @@ def converts_relative_links_to_absolute(soup: BeautifulSoup | Tag, base_url: str
 
 
 def clean_comments(soup: BeautifulSoup | Tag) -> None:
-    """Удаляет блоки коментариев.
+    """Удаляет блоки комментариев.
 
     Args:
         soup (BeautifulSoup | Tag): Объект beautiful soup.
