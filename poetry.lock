@@ -171,22 +171,6 @@ test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypo
 trio = ["trio (>=0.26.1)"]
 
 [[package]]
-name = "application-properties"
-version = "0.8.2"
-description = "A simple, easy to use, unified manner of accessing program properties."
-optional = false
-python-versions = ">=3.8.0"
-files = [
-    {file = "application_properties-0.8.2-py3-none-any.whl", hash = "sha256:a4fe684e4d95fc45054d3316acf763a7b0f29342ccea02eee09de53004f0139c"},
-    {file = "application_properties-0.8.2.tar.gz", hash = "sha256:e5e6918c8e29ab57175567d51dfa39c00a1d75b3205625559bb02250f50f0420"},
-]
-
-[package.dependencies]
-pyyaml = ">=5.4.1"
-tomli = ">=2.0.1"
-typing-extensions = ">=4.5.0"
-
-[[package]]
 name = "astroid"
 version = "3.3.6"
 description = "An abstract syntax tree for Python with inference support."
@@ -570,21 +554,6 @@ files = [
 ]
 
 [[package]]
-name = "columnar"
-version = "1.4.1"
-description = "A tool for printing data in a columnar format."
-optional = false
-python-versions = "*"
-files = [
-    {file = "Columnar-1.4.1-py3-none-any.whl", hash = "sha256:8efb692a7e6ca07dcc8f4ea889960421331a5dffa8e5af81f0a67ad8ea1fc798"},
-    {file = "Columnar-1.4.1.tar.gz", hash = "sha256:c3cb57273333b2ff9cfaafc86f09307419330c97faa88dcfe23df05e6fbb9c72"},
-]
-
-[package.dependencies]
-toolz = "*"
-wcwidth = "*"
-
-[[package]]
 name = "dill"
 version = "0.3.9"
 description = "serialize all of Python"
@@ -782,16 +751,6 @@ python-versions = ">=3.7"
 files = [
     {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
     {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
-]
-
-[[package]]
-name = "html2text"
-version = "2024.2.26"
-description = "Turn HTML into equivalent Markdown-structured text."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "html2text-2024.2.26.tar.gz", hash = "sha256:05f8e367d15aaabc96415376776cdd11afd5127a77fce6e36afc60c563ca2c32"},
 ]
 
 [[package]]
@@ -1291,22 +1250,6 @@ spelling = ["pyenchant (>=3.2,<4.0)"]
 testutils = ["gitpython (>3)"]
 
 [[package]]
-name = "pymarkdownlnt"
-version = "0.9.26"
-description = "A GitHub Flavored Markdown compliant Markdown linter."
-optional = false
-python-versions = ">=3.8.0"
-files = [
-    {file = "pymarkdownlnt-0.9.26-py3-none-any.whl", hash = "sha256:fc2d8b50e4d3793ea671c82e9e252cfe8418a6f6156bf321c2d3c9a63f0eba47"},
-    {file = "pymarkdownlnt-0.9.26.tar.gz", hash = "sha256:fa001135ec4d1414e8be774e6be48ff6cf632d687cb7ad7e446f5781ab89f64f"},
-]
-
-[package.dependencies]
-application-properties = ">=0.8.2"
-columnar = ">=1.4.0"
-typing-extensions = ">=4.7.0"
-
-[[package]]
 name = "pysocks"
 version = "1.7.1"
 description = "A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information."
@@ -1762,17 +1705,6 @@ files = [
 ]
 
 [[package]]
-name = "toolz"
-version = "1.0.0"
-description = "List processing tools and functional utilities"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "toolz-1.0.0-py3-none-any.whl", hash = "sha256:292c8f1c4e7516bf9086f8850935c799a874039c8bcf959d47b600e4c44a6236"},
-    {file = "toolz-1.0.0.tar.gz", hash = "sha256:2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02"},
-]
-
-[[package]]
 name = "trio"
 version = "0.27.0"
 description = "A friendly Python library for async concurrency and I/O"
@@ -1861,17 +1793,6 @@ brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
 h2 = ["h2 (>=4,<5)"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
-
-[[package]]
-name = "wcwidth"
-version = "0.2.13"
-description = "Measures the displayed width of unicode strings in a terminal"
-optional = false
-python-versions = "*"
-files = [
-    {file = "wcwidth-0.2.13-py2.py3-none-any.whl", hash = "sha256:3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"},
-    {file = "wcwidth-0.2.13.tar.gz", hash = "sha256:72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"},
-]
 
 [[package]]
 name = "webencodings"
@@ -2013,4 +1934,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "de173ea28d9cda8e73cd55693e2f26af65086c4f3aed6a74799cb19d5c361c32"
+content-hash = "92a95b99f75a1ac73bccd66b451a657919dff292cb122cc31a97d405e25b6033"
