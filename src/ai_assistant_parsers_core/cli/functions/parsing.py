@@ -5,8 +5,8 @@ from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_path
-from ai_assistant_parsers_core.common_utils.magic_path import MagicPath
+from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_url
+from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
 from ai_assistant_parsers_core.fetchers import ABCFetcher
@@ -65,13 +65,13 @@ def process_parsed_html(
         BeautifulSoup: Очищенный HTML.
     """
     try:
-        cleaned_soup = parser.parse(raw_soup, path=MagicPath(url))
+        cleaned_soup = parser.parse(raw_soup, path=MagicURL(url))
     except Exception as error:
         raise ParsingError(url=url, parser=parser, html=str(raw_soup)) from error
 
     for parsing_refiner in parsing_refiners:
         try:
-            parsing_refiner.refine(cleaned_soup, path=MagicPath(url))
+            parsing_refiner.refine(cleaned_soup, magic_url=MagicURL(url))
         except Exception as error:
             raise RefineError(url=url, refiner=parsing_refiner, html=str(cleaned_soup)) from error
 
@@ -112,7 +112,7 @@ async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher]) ->
     """
     for pattern, fetcher in fetchers_config.items():
         parsed_url = parse_url(url)
-        check_path = normalize_path(f"{parsed_url.netloc}{parsed_url.path}")
+        check_path = normalize_url(f"{parsed_url.netloc}{parsed_url.path}")
         if fnmatchcase(check_path, pattern):
             try:
                 return await fetcher.fetch(url)
@@ -136,7 +136,7 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
         ABCParser: Парсер.
     """
     for parser in parsers:
-        if parser.check(path=MagicPath(url)):
+        if parser.check(path=MagicURL(url)):
             return parser
     raise RuntimeError("Required parser for this URL does not exist")
 

@@ -7,7 +7,7 @@ import abc
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.magic_path import MagicPath
+from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
 
 
 class BaseQueryMixin(abc.ABC):
@@ -27,15 +27,15 @@ class BaseQueryMixin(abc.ABC):
         и ничего не делают. Их работа зависит лишь от того, как их реализовать.
     """
 
-    def parse(self, soup: BeautifulSoup, path: MagicPath) -> BeautifulSoup:
+    def parse(self, soup: BeautifulSoup, magic_url: MagicURL) -> BeautifulSoup:
         """Реализует метод ``parse`` базового абстрактного класса."""
         source_html = soup
         cleaned_html = BeautifulSoup("<html><head></head><body></body></html>", "html5lib")
 
         self._prepare_result(source_html, cleaned_html)
 
-        self.__call_function_with_optional_url(self._clean_parsed_html, cleaned_html, path=path)
-        self.__call_function_with_optional_url(self._restructure_parsed_html, cleaned_html, path=path)
+        self.__call_function_with_optional_parameters(self._clean_parsed_html, cleaned_html, magic_url=magic_url)
+        self.__call_function_with_optional_parameters(self._restructure_parsed_html, cleaned_html, magic_url=magic_url)
 
         return cleaned_html
 
@@ -48,7 +48,7 @@ class BaseQueryMixin(abc.ABC):
             cleaned_html (BeautifulSoup): Очищенный HTML-код.
         """
 
-    def _clean_parsed_html(self, soup: BeautifulSoup, path: MagicPath) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         """
         Метод для реализации.
 
@@ -59,10 +59,10 @@ class BaseQueryMixin(abc.ABC):
 
         Args:
             soup (BeautifulSoup): Объект beautiful soup.
-            path (MagicPath): Волшебный объект обёртывающий URL-адрес страницы.
+            magic_url (MagicURL): Волшебный объект обёртывающий URL-адрес страницы.
         """
 
-    def _restructure_parsed_html(self, soup: BeautifulSoup, path: MagicPath) -> None:
+    def _restructure_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         """
         Метод для реализации.
 
@@ -73,20 +73,21 @@ class BaseQueryMixin(abc.ABC):
 
         Args:
             soup (BeautifulSoup): HTML-код.
+            magic_url (MagicURL): Волшебный объект обёртывающий URL-адрес страницы.
         """
 
-    def __call_function_with_optional_url(
+    def __call_function_with_optional_parameters(
         self,
         function: t.Callable,
         cleaned_html: BeautifulSoup,
-        path: MagicPath,
+        magic_url: MagicURL,
     ) -> None:
         signature = inspect.signature(function)
-        if "path" in signature.parameters:
-            function(cleaned_html, path=path)
-
         # TODO: Deprecated
-        elif "url" in signature.parameters:
-            function(cleaned_html, url=path.url)
-        else:
+        if "url" in signature.parameters:
+            function(cleaned_html, url=magic_url.url)
+        # TODO: Deprecated
+        elif "magic_url" not in signature.parameters:
             function(cleaned_html)
+        else:
+            function(cleaned_html, magic_url=magic_url)

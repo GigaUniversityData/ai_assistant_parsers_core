@@ -8,7 +8,7 @@ from pathlib import Path
 import asyncclick as click
 from bs4 import BeautifulSoup
 from fake_headers import Headers
-from ai_assistant_parsers_core.common_utils.parse_url import extract_path
+from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import AiohttpFetcher
@@ -81,7 +81,7 @@ def merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
 
 
 def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
-    url_hash = f"{extract_path(url).subdomain}_{_hash_string(url)}"
+    url_hash = f"{parse_domain(url).subdomain}_{_hash_string(url)}"
     parser_name = _get_full_parser_name(parser)
     html = str(cleaned_soup)
 

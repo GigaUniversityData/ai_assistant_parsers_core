@@ -2,14 +2,14 @@ import typing as t
 import re
 from fnmatch import fnmatchcase
 
-from ai_assistant_parsers_core.common_utils.parse_url import normalize_path, parse_url, extract_path
+from ai_assistant_parsers_core.common_utils.parse_url import normalize_url, parse_url, parse_domain
 
 
-class MagicPath:
+class MagicURL:
     def __init__(self, url: str) -> None:
         self._url = url
         self._parsed_url = parse_url(url)
-        self._extracted_path = extract_path(url)
+        self._parsed_domain = parse_domain(url)
 
     @property
     def url(self):
@@ -40,24 +40,24 @@ class MagicPath:
         return self._parsed_url.fragment
 
     @property
-    def path_domain(self):
-        return self._extracted_path.domain
+    def domain_name(self):
+        return self._parsed_domain.domain
 
     @property
-    def path_subdomain(self):
-        return self._extracted_path.subdomain
+    def domain_subdomain(self):
+        return self._parsed_domain.subdomain
 
     @property
-    def path_suffix(self):
-        return self._extracted_path.suffix
+    def domain_suffix(self):
+        return self._parsed_domain.suffix
 
     @property
     def normalized_url(self):
-        return normalize_path(self.url)
+        return normalize_url(self.url)
 
     @property
     def normalized_path(self):
-        return normalize_path(self.path)
+        return normalize_url(self.path)
 
     def is_path_regex_match(self, pattern: str | re.Pattern[str]) -> bool:
         return re.match(pattern, self.normalized_path) is not None
