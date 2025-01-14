@@ -9,13 +9,13 @@ from tldextract.tldextract import ExtractResult
 
 
 def parse_domain(url: str) -> ExtractResult:
-    """Получает поддомен из URL-адреса.
+    """Парсит домен и его элементы из URL-адреса.
 
     Args:
         url (str): URL-адрес.
 
     Returns:
-        str: Поддомен.
+        ExtractResult: Результат парсинга.
     """
     parsed_url = tldextract.extract(url)
     # subdomain = subdomain.replace("www.", "")
@@ -23,6 +23,14 @@ def parse_domain(url: str) -> ExtractResult:
 
 
 def parse_url(url: str) -> ParseResult:
+    """Парсит URL-адрес.
+
+    Args:
+        url (str): URL-адрес.
+
+    Returns:
+        ParseResult: Результат парсинга.
+    """
     return urlparse(url)
 
 

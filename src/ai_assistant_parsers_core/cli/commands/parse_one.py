@@ -82,6 +82,7 @@ def _merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict
 
 
 def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
+    """Записывает запаршенные данные в выходные файлы."""
     url_hash = f"{parse_domain(url).subdomain}_{_hash_string(url)}"
     parser_name = _get_full_parser_name(parser)
     html = str(cleaned_soup)
@@ -109,8 +110,10 @@ def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParse
 
 
 def _get_full_parser_name(parser: ABCParser) -> str:
+    """Получает полное имя парсера."""
     return type(parser).__name__
 
 
 def _hash_string(string: str, size: int = 10) -> str:
+    """Хеширует строку."""
     return md5(string.encode()).hexdigest()[:size]

@@ -10,7 +10,9 @@ from .base_query import BaseQueryMixin
 
 
 class FindQueryMixin(BaseQueryMixin):
-    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки, которые удаётся найти через ``soup.find``."""
+    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки.
+    HTML-блоки удаётся найти через ``soup.find``.
+    """
 
     def __init__(self, find_arguments: list[dict[str, t.Any]], **kwargs) -> None:
         super().__init__(**kwargs)
