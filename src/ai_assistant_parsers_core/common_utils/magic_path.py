@@ -1,6 +1,7 @@
 import typing as t
 import re
 from fnmatch import fnmatchcase
+from functools import cached_property
 
 from ai_assistant_parsers_core.common_utils.parse_url import normalize_url, parse_url, parse_domain
 
@@ -51,11 +52,11 @@ class MagicURL:
     def domain_suffix(self):
         return self._parsed_domain.suffix
 
-    @property
+    @cached_property
     def normalized_url(self):
         return normalize_url(self.url)
 
-    @property
+    @cached_property
     def normalized_path(self):
         return normalize_url(self.path)
 
