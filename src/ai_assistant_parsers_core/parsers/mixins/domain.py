@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from fnmatch import fnmatchcase
 
-from ai_assistant_parsers_core.common_utils.parse_url import get_normalized_path, parse_url
 from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
 
 
@@ -49,8 +48,8 @@ class DomainMixin:
 
     def check(self, magic_url: MagicURL) -> bool:
         """Реализует метод ``check`` базового абстрактного класса."""
-        domain_path = parse_url(magic_url.url).netloc
-        url_path = get_normalized_path(magic_url.url)
+        domain_path = magic_url.netloc
+        url_path = magic_url.normalized_path
 
         return (
             domain_path in self._allowed_domains_paths
