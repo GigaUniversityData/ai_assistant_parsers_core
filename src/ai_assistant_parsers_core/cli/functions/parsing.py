@@ -65,7 +65,7 @@ def process_parsed_html(
         BeautifulSoup: Очищенный HTML.
     """
     try:
-        cleaned_soup = parser.parse(raw_soup, path=MagicURL(url))
+        cleaned_soup = parser.parse(raw_soup, magic_url=MagicURL(url))
     except Exception as error:
         raise ParsingError(url=url, parser=parser, html=str(raw_soup)) from error
 
@@ -136,7 +136,7 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
         ABCParser: Парсер.
     """
     for parser in parsers:
-        if parser.check(path=MagicURL(url)):
+        if parser.check(magic_url=MagicURL(url)):
             return parser
     raise RuntimeError("Required parser for this URL does not exist")
 
