@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from fnmatch import fnmatchcase
 
-from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
+from ai_assistant_parsers_core.common_utils.magic_url import MagicURL
 
 
 class DomainMixin:

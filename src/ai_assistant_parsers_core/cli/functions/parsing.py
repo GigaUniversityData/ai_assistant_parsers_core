@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_url
-from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
+from ai_assistant_parsers_core.common_utils.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
 from ai_assistant_parsers_core.fetchers import ABCFetcher

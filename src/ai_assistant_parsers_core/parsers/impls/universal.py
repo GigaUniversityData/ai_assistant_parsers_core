@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.common_utils.universal_clean_html import universal_clean_html
-from ai_assistant_parsers_core.common_utils.magic_path import MagicURL
+from ai_assistant_parsers_core.common_utils.magic_url import MagicURL
 
 from ..abc import ABCParser
 
