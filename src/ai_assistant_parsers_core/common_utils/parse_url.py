@@ -44,18 +44,3 @@ def normalize_url(url: str) -> str:
     if not url.endswith("/"):
         return f"{url}/"
     return url
-
-
-def get_normalized_path(url: str) -> str:
-    """Извлекает и нормализует путь из заданного URL-адреса.
-
-    Examples:
-        - ``https://spbu.ru/`` -> ``spbu.ru/``
-
-    Args:
-        url (str): URL-адрес.
-
-    Returns:
-        str: URL-путь.
-    """
-    return normalize_url(parse_url(url).path)
