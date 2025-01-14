@@ -9,7 +9,7 @@ from ai_assistant_parsers_core.common_utils.beautiful_soup import (
     converts_relative_links_to_absolute,
 )
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_all_by_select
-from ai_assistant_parsers_core.common_utils.magic_url import MagicURL
+from ai_assistant_parsers_core.magic_url import MagicURL
 
 from ..abc import ABCParsingRefiner
 

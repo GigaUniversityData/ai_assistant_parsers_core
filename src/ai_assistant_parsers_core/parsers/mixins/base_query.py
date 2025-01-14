@@ -7,7 +7,7 @@ import abc
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.magic_url import MagicURL
+from ai_assistant_parsers_core.magic_url import MagicURL
 
 
 class BaseQueryMixin(abc.ABC):
