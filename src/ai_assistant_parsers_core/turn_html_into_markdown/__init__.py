@@ -1,10 +1,11 @@
 """Модуль для ``turn_html_into_markdown``."""
 
-from aiohttp import ClientSession
+from os import getenv
 
 
 SERVER_URL = "http://localhost:8080"
 
+API_URL = getenv("AAPC__MARKDOWN_API_URL", "http://localhost:8080")
 
 async def turn_html_into_markdown(html: str,) -> str:
     """Преобразовывает HTML в Markdown.
