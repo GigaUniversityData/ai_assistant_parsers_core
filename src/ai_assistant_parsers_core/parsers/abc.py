@@ -4,7 +4,6 @@ import abc
 
 from bs4 import BeautifulSoup
 
-
 from ai_assistant_parsers_core.magic_url import MagicURL
 
 

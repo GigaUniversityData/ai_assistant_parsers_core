@@ -40,7 +40,6 @@ def normalize_url(url: str) -> str:
     Returns:
         str: URL-адрес или URL-путь.
     """
-
     if not url.endswith("/"):
         return f"{url}/"
     return url

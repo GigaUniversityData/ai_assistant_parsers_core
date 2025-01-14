@@ -47,7 +47,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
     parsers = config.PARSERS
     parsing_refiners = getattr(config, "PARSING_REFINERS", [])
     fetchers_config = getattr(config, "FETCHERS_CONFIG", {})
-    fetchers_config = merge_configs(default_fetchers_config, fetchers_config)
+    fetchers_config = _merge_configs(default_fetchers_config, fetchers_config)
 
     await open_fetchers(fetchers_config=fetchers_config)
 
@@ -72,7 +72,8 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
         await close_fetchers(fetchers_config=fetchers_config)
 
 
-def merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
+def _merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
+    """Правильного объединяет параметров конфигов."""
     merged_config = fetchers_config.copy()
     for key, value in default_fetchers_config.items():
         if key not in merged_config:

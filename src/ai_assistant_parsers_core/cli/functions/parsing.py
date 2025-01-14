@@ -141,6 +141,7 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
     raise RuntimeError("Required parser for this URL does not exist")
 
 
+# TODO: Странное название
 class BaseParsingError(Exception):
     pass
 

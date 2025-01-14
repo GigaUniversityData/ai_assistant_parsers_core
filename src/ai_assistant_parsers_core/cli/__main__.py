@@ -15,6 +15,7 @@ def cli():
 
 if __name__ == "__main__":
     for command in COMMANDS:
+        # noinspection PyTypeChecker
         cli.add_command(command)
 
     cli()
