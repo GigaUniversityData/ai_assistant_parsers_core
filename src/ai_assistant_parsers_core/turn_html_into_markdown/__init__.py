@@ -2,8 +2,8 @@
 
 from os import getenv
 
+from aiohttp import ClientSession, ClientConnectorError, ClientResponseError
 
-SERVER_URL = "http://localhost:8080"
 
 API_URL = getenv("AAPC__MARKDOWN_API_URL", "http://localhost:8080")
 
@@ -17,12 +17,17 @@ async def turn_html_into_markdown(html: str) -> str:
     Returns:
         str: Markdown.
     """
-    async with ClientSession() as client:
-        async with client.post(f"{SERVER_URL}/api/v1/convert", json=dict(html=html)) as response:
-            if response.status != 200:
-                # TODO: Handle server closed errors.
-                raise ServerMarkdownConverterError(f"Ошибка на стороне сервера. Код ошибки: {response.status}.")
-            data = await response.json()
+    async with ClientSession(raise_for_status=True) as client:
+        try:
+            async with client.post(f"{API_URL}/api/v1/convert", json=dict(html=html)) as response:
+                data = await response.json()
+        except ClientConnectorError as error:
+            raise ServerMarkdownConverterError(f"Cannot connect to markdown api server") from error
+        except ClientResponseError as error:
+            raise ServerMarkdownConverterError(
+                f"Exceptions occurred after receiving a response: "
+                f"{error.status} {error.message!r}",
+            ) from error
 
     return data["markdown"]
 
@@ -31,5 +36,5 @@ class MarkdownConverterError(Exception):
     pass
 
 
-class ServerMarkdownConverterError(Exception):
+class ServerMarkdownConverterError(MarkdownConverterError):
     pass
