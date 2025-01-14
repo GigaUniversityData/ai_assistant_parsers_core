@@ -8,9 +8,10 @@
 
 from bs4 import BeautifulSoup
 
+from ai_assistant_parsers_core.magic_url import MagicURL
+from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select, clean_all_by_select
 from ai_assistant_parsers_core.parsers.utils.restructure_blocks import rename_all_by_select, rename_one_by_select
-from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 
 
 class ProgramsWWWDomainParser(SimpleSelectDomainBaseParser):
@@ -21,7 +22,7 @@ class ProgramsWWWDomainParser(SimpleSelectDomainBaseParser):
             included_paths=["/enrollee/programs/*?"],
         )
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         clean_one_by_select(soup, ".section:has(> .container > .breadcrumbs)")  # Breadcrumbs
 
         clean_one_by_select(soup, ".prog_forma > .col-send-doc")  # "Приёмная комиссия"
@@ -33,7 +34,7 @@ class ProgramsWWWDomainParser(SimpleSelectDomainBaseParser):
         clean_all_by_select(soup, ".discipline-type")  # Тип программы обучения
 
     # TODO: Создать методы для упрощения кода
-    def _restructure_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _restructure_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         # Глобальные #
 
         rename_all_by_select(soup, "p.text-important", "h2")

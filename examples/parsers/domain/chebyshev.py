@@ -6,6 +6,7 @@
 
 from bs4 import BeautifulSoup
 
+from ai_assistant_parsers_core.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import ABCParser, DomainMixin, BaseQueryMixin
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_all_by_select
 from ai_assistant_parsers_core.parsers.utils.restructure_blocks import rename_all_by_select
@@ -28,7 +29,7 @@ class ChebyshevDomainParser(
         for tag in tags:
             cleaned_html.html.body.append(tag)
 
-    def _restructure_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _restructure_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         # Обработка таблиц
         clean_all_by_select(soup, ".courses-table__col-title")  # Имеет `display: none;`
         rename_all_by_select(soup, "div.courses-table", "table")

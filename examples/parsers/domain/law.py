@@ -6,8 +6,9 @@
 
 from bs4 import BeautifulSoup, Tag
 
-from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select
+from ai_assistant_parsers_core.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
+from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select
 
 
 class LawDomainParser(SimpleSelectDomainBaseParser):
@@ -17,7 +18,7 @@ class LawDomainParser(SimpleSelectDomainBaseParser):
             select_arguments=["body"],
         )
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         body: Tag = soup.find(name="body")  # type: ignore
 
         for child in body.contents.copy():
