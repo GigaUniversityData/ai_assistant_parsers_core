@@ -9,7 +9,7 @@
 import re
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.parse_url import get_url_path
+from ai_assistant_parsers_core.common_utils.parse_url import get_normalized_path
 
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select, clean_all_by_select
@@ -41,7 +41,7 @@ class MainOnlineDomainParser(SimpleSelectDomainBaseParser):
         )
 
     def check(self, url: str) -> bool:
-        return super().check(url) and any(regex.fullmatch(get_url_path(url)) for regex in _MAIN_PATHS)
+        return super().check(url) and any(regex.fullmatch(get_normalized_path(url)) for regex in _MAIN_PATHS)
 
     def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
         clean_one_by_select(soup, "#header")
@@ -65,7 +65,7 @@ class CourseOnlineDomainParser(SimpleSelectDomainBaseParser):
         )
 
     def check(self, url: str) -> bool:
-        return super().check(url) and not any(regex.fullmatch(get_url_path(url)) for regex in _MAIN_PATHS)
+        return super().check(url) and not any(regex.fullmatch(get_normalized_path(url)) for regex in _MAIN_PATHS)
 
     def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
         clean_all_by_select(soup, ".clear")

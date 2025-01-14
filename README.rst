@@ -18,7 +18,7 @@ AI Assistant Parsers Core - это ядро библиотеки, предост
 - Утилиты для обработки HTML (``clean_one_by_select``, ``clean_all_by_select``, ``rename_all_by_select``, ``convert_tables_to_divs`` и др.)
 - Абстрактные классы "Refiners", которые улучшают пост- и пре- обработку HTML
 - Универсальные "Refiners" для постобработки (``CleanPostParsingRefiner``, ``RestructurePostParsingRefiner``)
-- Утилиты общего назначения (``converts_relative_links_to_absolute``, ``normalize_path``, ``universal_clean_html`` и др.)
+- Утилиты общего назначения (``converts_relative_links_to_absolute``, ``normalize_url``, ``universal_clean_html`` и др.)
 
 
 Установка
