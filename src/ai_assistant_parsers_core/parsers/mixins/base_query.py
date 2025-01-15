@@ -84,6 +84,7 @@ class BaseQueryMixin(abc.ABC):
     ) -> None:
         signature = inspect.signature(function)
 
+        # TODO: Deprecated
         if "magic_url" not in signature.parameters:
             function(cleaned_html)
             return
