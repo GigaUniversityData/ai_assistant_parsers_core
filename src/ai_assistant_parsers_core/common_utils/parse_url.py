@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from warnings import warn
 from urllib.parse import urlparse, ParseResult
 
 import tldextract
@@ -58,3 +59,8 @@ def normalize_path(path: str) -> str:
     if not path.endswith("/"):
         return f"{path}/"
     return path
+
+
+def extract_url(url: str) -> ExtractResult:
+    warn("The function is deprecated. Please use 'extract_path'.", DeprecationWarning, stacklevel=2)
+    return extract_path(url)
