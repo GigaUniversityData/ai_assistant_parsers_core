@@ -55,13 +55,15 @@ def normalize_url(url: str) -> str:
 
 
 def extract_url(url: str) -> ExtractResult:
-    """Парсит домен и его элементы из URL-адреса.
-
-    Args:
-        url (str): URL-адрес.
-
-    Returns:
-        ExtractResult: Результат парсинга.
-    """
     warn("The function is deprecated. Please use 'parse_domain' instead.", DeprecationWarning, stacklevel=2)
     return parse_domain(url)
+
+
+def normalize_path(path: str) -> str:
+    warn("The function is deprecated. Please use 'normalize_url' instead.", DeprecationWarning, stacklevel=2)
+    return normalize_url(path)
+
+
+def get_url_path(url: str) -> str:
+    warn("The function is deprecated. Please dont use this.", DeprecationWarning, stacklevel=2)
+    return normalize_url(parse_url(url).path)
