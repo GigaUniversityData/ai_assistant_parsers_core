@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from warnings import warn
 from urllib.parse import urlparse, ParseResult
 
 import tldextract
@@ -51,3 +52,16 @@ def normalize_url(url: str) -> str:
     if not url.endswith("/"):
         return f"{url}/"
     return url
+
+
+def extract_url(url: str) -> ExtractResult:
+    """Парсит домен и его элементы из URL-адреса.
+
+    Args:
+        url (str): URL-адрес.
+
+    Returns:
+        ExtractResult: Результат парсинга.
+    """
+    warn("The function is deprecated. Please use 'parse_domain' instead.", DeprecationWarning, stacklevel=2)
+    return parse_domain(url)
