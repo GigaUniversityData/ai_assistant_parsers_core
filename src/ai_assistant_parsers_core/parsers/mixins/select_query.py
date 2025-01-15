@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from bs4 import BeautifulSoup
 
-from .base_query_mixin import BaseQueryMixin
+from .base_query import BaseQueryMixin
 
 
 class SelectQueryMixin(BaseQueryMixin):
-    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки, которые удаётся найти через ``soup.select_one``."""
+    """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки.
+    HTML-блоки удаётся найти через ``soup.select_one``.
+    """
 
     def __init__(self, select_arguments: list[str], **kwargs) -> None:
         super().__init__(**kwargs)

@@ -9,8 +9,7 @@
 import re
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.parse_url import get_url_path
-
+from ai_assistant_parsers_core.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select, clean_all_by_select
 
@@ -40,10 +39,10 @@ class MainOnlineDomainParser(SimpleSelectDomainBaseParser):
             select_arguments=["#main"],
         )
 
-    def check(self, url: str) -> bool:
-        return super().check(url) and any(regex.fullmatch(get_url_path(url)) for regex in _MAIN_PATHS)
+    def check(self, magic_url: MagicURL) -> bool:
+        return super().check(magic_url) and any(regex.fullmatch(magic_url.normalized_path) for regex in _MAIN_PATHS)
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         clean_one_by_select(soup, "#header")
         clean_one_by_select(soup, ".close_news")
 
@@ -64,10 +63,10 @@ class CourseOnlineDomainParser(SimpleSelectDomainBaseParser):
             select_arguments=[".text"],
         )
 
-    def check(self, url: str) -> bool:
-        return super().check(url) and not any(regex.fullmatch(get_url_path(url)) for regex in _MAIN_PATHS)
+    def check(self, magic_url: MagicURL) -> bool:
+        return super().check(magic_url) and not any(regex.fullmatch(magic_url.normalized_path) for regex in _MAIN_PATHS)
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         clean_all_by_select(soup, ".clear")
 
         clean_one_by_select(soup, ".dop_links:has(> .items_kurs)")  # Рекомендуемые курсы

@@ -9,14 +9,14 @@ import tldextract
 from tldextract.tldextract import ExtractResult
 
 
-def extract_path(url: str) -> ExtractResult:
-    """Получает поддомен из URL-адреса.
+def parse_domain(url: str) -> ExtractResult:
+    """Парсит домен и его элементы из URL-адреса.
 
     Args:
         url (str): URL-адрес.
 
     Returns:
-        str: Поддомен.
+        ExtractResult: Результат парсинга.
     """
     parsed_url = tldextract.extract(url)
     # subdomain = subdomain.replace("www.", "")
@@ -24,43 +24,46 @@ def extract_path(url: str) -> ExtractResult:
 
 
 def parse_url(url: str) -> ParseResult:
-    return urlparse(url)
-
-
-def get_url_path(url: str) -> str:
-    """Получает URL-путь из URL-адреса.
-
-    Examples:
-        - ``https://spbu.ru/`` -> ``spbu.ru/``
+    """Парсит URL-адрес.
 
     Args:
         url (str): URL-адрес.
 
     Returns:
-        str: URL-путь.
+        ParseResult: Результат парсинга.
     """
-    return normalize_path(parse_url(url).path)
+    return urlparse(url)
 
 
-def normalize_path(path: str) -> str:
-    """Нормализует URL-адрес так, чтобы одинаковые по суте URL-адреса, но разные по строке URL адреса в нормализации стали одинаковыми.
+def normalize_url(url: str) -> str:
+    """Нормализует URL-адрес так, чтобы одинаковые по сути URL-адреса,
+    но разные по строке URL адреса в нормализации стали одинаковыми.
 
     Examples: 
         - ``https://spbu.ru/`` -> ``https://spbu.ru/``
         - ``https://spbu.ru``  -> ``https://spbu.ru/``
 
     Args:
-        path (str): URL-адрес или URL-путь.
+        url (str): URL-адрес или URL-путь.
 
     Returns:
         str: URL-адрес или URL-путь.
     """
-
-    if not path.endswith("/"):
-        return f"{path}/"
-    return path
+    if not url.endswith("/"):
+        return f"{url}/"
+    return url
 
 
 def extract_url(url: str) -> ExtractResult:
-    warn("The function is deprecated. Please use 'extract_path'.", DeprecationWarning, stacklevel=2)
-    return extract_path(url)
+    warn("The function is deprecated. Please use 'parse_domain' instead.", DeprecationWarning, stacklevel=2)
+    return parse_domain(url)
+
+
+def normalize_path(path: str) -> str:
+    warn("The function is deprecated. Please use 'normalize_url' instead.", DeprecationWarning, stacklevel=2)
+    return normalize_url(path)
+
+
+def get_url_path(url: str) -> str:
+    warn("The function is deprecated. Please dont use this.", DeprecationWarning, stacklevel=2)
+    return normalize_url(parse_url(url).path)

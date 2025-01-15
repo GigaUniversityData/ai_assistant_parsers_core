@@ -8,8 +8,9 @@ import re
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_find, clean_one_by_select
+from ai_assistant_parsers_core.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
+from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_find, clean_one_by_select
 
 
 class CIDomainParser(SimpleSelectDomainBaseParser):
@@ -19,7 +20,7 @@ class CIDomainParser(SimpleSelectDomainBaseParser):
             select_arguments=[".pad.group"],
         )
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         # Блок "Статьи по теме..."
         clean_one_by_select(soup, ".heading:has(> .fa.fa-hand-o-right)")
         clean_one_by_select(soup, ".related-posts")

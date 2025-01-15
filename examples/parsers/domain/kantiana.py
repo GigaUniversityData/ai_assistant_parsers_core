@@ -8,9 +8,10 @@
 
 from bs4 import BeautifulSoup
 
+from ai_assistant_parsers_core.magic_url import MagicURL
+from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_one_by_select
 from ai_assistant_parsers_core.parsers.utils.restructure_blocks import rename_all_by_select
-from ai_assistant_parsers_core.parsers import SimpleSelectDomainBaseParser
 
 
 class MainWWWDomainParser(SimpleSelectDomainBaseParser):
@@ -21,11 +22,11 @@ class MainWWWDomainParser(SimpleSelectDomainBaseParser):
             excluded_paths=["/enrollee/programs/*?"],
         )
 
-    def _clean_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _clean_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         clean_one_by_select(soup, ".banner")  # Банер
         clean_one_by_select(soup, ".section--news")  # Новости
 
-    def _restructure_parsed_html(self, soup: BeautifulSoup) -> None:
+    def _restructure_parsed_html(self, soup: BeautifulSoup, magic_url: MagicURL) -> None:
         # Заголовки #
         rename_all_by_select(soup, "p.prog-section__title", "h2")  # Старый тег
         rename_all_by_select(soup, "div.prog-section__title", "h2")
