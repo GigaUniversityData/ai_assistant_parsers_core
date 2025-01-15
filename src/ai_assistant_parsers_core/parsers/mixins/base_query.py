@@ -86,8 +86,10 @@ class BaseQueryMixin(abc.ABC):
         # TODO: Deprecated
         if "url" in signature.parameters:
             function(cleaned_html, url=magic_url.url)
+            return
         # TODO: Deprecated
         elif "magic_url" not in signature.parameters:
             function(cleaned_html)
-        else:
-            function(cleaned_html, magic_url=magic_url)
+            return
+
+        function(cleaned_html, magic_url=magic_url)
