@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from warnings import warn
 from urllib.parse import urlparse, ParseResult
 
+from typing_extensions import deprecated
 import tldextract
 from tldextract.tldextract import ExtractResult
 
@@ -54,16 +54,16 @@ def normalize_url(url: str) -> str:
     return url
 
 
+@deprecated("Please use 'parse_domain' instead")
 def extract_url(url: str) -> ExtractResult:
-    warn("The function is deprecated. Please use 'parse_domain' instead.", DeprecationWarning, stacklevel=2)
     return parse_domain(url)
 
 
+@deprecated("Please use 'normalize_url' instead")
 def normalize_path(path: str) -> str:
-    warn("The function is deprecated. Please use 'normalize_url' instead.", DeprecationWarning, stacklevel=2)
     return normalize_url(path)
 
 
+@deprecated("Please don't use this")
 def get_url_path(url: str) -> str:
-    warn("The function is deprecated. Please dont use this.", DeprecationWarning, stacklevel=2)
     return normalize_url(parse_url(url).path)
