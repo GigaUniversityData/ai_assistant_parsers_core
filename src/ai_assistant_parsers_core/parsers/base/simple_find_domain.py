@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import typing as t
 
+from typing_extensions import deprecated
+
 from ..abc import ABCParser
 from ..mixins import DomainMixin, FindQueryMixin
 
 
+@deprecated("Please use 'SimpleSelectDomainBaseParser' instead")
 class SimpleFindDomainBaseParser(DomainMixin, FindQueryMixin, ABCParser):
     """
     Базовый класс, который просто совмещает в себе Mixin'ы ``DomainMixin`` и ``FindQueryMixin``.

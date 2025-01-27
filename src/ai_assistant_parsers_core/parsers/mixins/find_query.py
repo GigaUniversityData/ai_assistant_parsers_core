@@ -5,10 +5,12 @@ from __future__ import annotations
 import typing as t
 
 from bs4 import BeautifulSoup
+from typing_extensions import deprecated
 
 from .base_query import BaseQueryMixin
 
 
+@deprecated("Please use 'SelectQueryMixin' instead")
 class FindQueryMixin(BaseQueryMixin):
     """Mixin для реализации метода ``parse``, который оставляет только те HTML-блоки.
     HTML-блоки удаётся найти через ``soup.find``.
