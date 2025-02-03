@@ -59,8 +59,8 @@ async def parse_one(module_name: str, output_dir: Path, url: str):
             fetchers_config=fetchers_config,
             url=url,
         )
-    except Exception:
-        pass
+    except Exception as error:
+        raise error
     else:
         _write_data_to_files(
             cleaned_soup=result.cleaned_html,
