@@ -32,6 +32,10 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
     _rename_one_element(tag, replace_name=replace_name)
 
 
+rename_all = rename_all_by_select
+rename_one = rename_one_by_select
+
+
 def _rename_one_element(tag: Tag | None, replace_name: str) -> None:
     if tag is None:
         return

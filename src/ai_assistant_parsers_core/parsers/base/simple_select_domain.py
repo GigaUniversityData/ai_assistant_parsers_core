@@ -27,3 +27,6 @@ class SimpleSelectDomainBaseParser(DomainMixin, SelectQueryMixin, ABCParser):
             included_paths=included_paths,
             select_arguments=select_arguments,
         )
+
+
+SimpleDomainBaseParser = SimpleSelectDomainBaseParser
