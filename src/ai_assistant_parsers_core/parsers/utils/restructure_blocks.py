@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from functools import partial
+
 from bs4 import BeautifulSoup, Tag
 
 
@@ -30,6 +32,9 @@ def rename_one_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name:
     """
     tag = soup.select_one(selector)
     _rename_one_element(tag, replace_name=replace_name)
+
+
+html = partial(BeautifulSoup, features="html.parser")
 
 
 def _rename_one_element(tag: Tag | None, replace_name: str) -> None:
