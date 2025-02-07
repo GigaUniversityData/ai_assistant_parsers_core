@@ -1,11 +1,19 @@
 """
 Утилиты для изменения структуры HTML-кода.
 Как правило, нужны для улучшения читаемости HTML-кода.
+
+Attributes:
+    html (partial[BeautifulSoup]): Объект ``BeautifulSoup`` для удобного встраивания HTML-кода.
 """
 
 from __future__ import annotations
 
+from functools import partial
+
 from bs4 import BeautifulSoup, Tag
+
+
+html = partial(BeautifulSoup, features="html.parser")
 
 
 def rename_all_by_select(soup: BeautifulSoup | Tag, selector: str, replace_name: str) -> None:
