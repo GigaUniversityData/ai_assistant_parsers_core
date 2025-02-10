@@ -8,8 +8,11 @@ from urllib import parse
 from bs4 import BeautifulSoup, Tag, Comment
 
 
-# https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s08.html
 URL_SCHEME_PATTERN = re.compile(r"^([a-z][a-z0-9+\-.]*):", re.IGNORECASE)
+"""Паттерн для извлечения ``scheme`` из URL адреса. 
+
+Смотри: https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s08.html
+"""
 
 
 def clean_tags(soup: BeautifulSoup | Tag, tags: list[str]) -> None:

@@ -55,15 +55,18 @@ def normalize_url(url: str) -> str:
 
 
 def extract_url(url: str) -> ExtractResult:
+    """Функция устарела. Пожалуйста, используйте вместо нее ``parse_domain``."""
     warn("The function is deprecated. Please use 'parse_domain' instead.", DeprecationWarning, stacklevel=2)
     return parse_domain(url)
 
 
 def normalize_path(path: str) -> str:
+    """Функция устарела. Пожалуйста, используйте вместо нее ``normalize_url``."""
     warn("The function is deprecated. Please use 'normalize_url' instead.", DeprecationWarning, stacklevel=2)
     return normalize_url(path)
 
 
 def get_url_path(url: str) -> str:
+    """Функция устарела. Пожалуйста, не используйте её."""
     warn("The function is deprecated. Please dont use this.", DeprecationWarning, stacklevel=2)
     return normalize_url(parse_url(url).path)
