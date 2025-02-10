@@ -142,11 +142,11 @@ def get_parser_by_url(url: str, parsers: list[ABCParser]) -> ABCParser:
 
 
 # TODO: Странное название
-class BaseParsingError(Exception):
+class ParsingProcessError(Exception):
     """Базовая ошибка процесса парсинга."""
 
 
-class FetchingError(BaseParsingError):
+class FetchingError(ParsingProcessError):
     """Базовая ошибка при фетченге."""
     def __init__(self, url: str, fetcher: ABCFetcher):
         self.url = url
@@ -156,7 +156,7 @@ class FetchingError(BaseParsingError):
         return f"Error when fetching {self.url} by {self.fetcher}"
 
 
-class RefineError(BaseParsingError):
+class RefineError(ParsingProcessError):
     """Базовая ошибка при рефайне."""
     def __init__(self, url: str, refiner: ABCParsingRefiner, html: str):
         self.url = url
@@ -167,7 +167,7 @@ class RefineError(BaseParsingError):
         return f"Error when refine with {self.url} by {self.refiner}"
 
 
-class ParsingError(BaseParsingError):
+class ParsingError(ParsingProcessError):
     """Базовая ошибка при парсинге."""
     def __init__(self, url: str, parser: ABCParser, html: str):
         self.url = url

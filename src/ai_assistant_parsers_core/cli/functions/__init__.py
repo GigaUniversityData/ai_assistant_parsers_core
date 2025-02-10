@@ -1,5 +1,5 @@
 from .parsing import (
-    BaseParsingError,
+    ParsingProcessError,
     FetchingError,
     ParsingError,
     ParsingResult,
@@ -13,7 +13,7 @@ from .parsing import (
 )
 
 __all__ = [
-    "BaseParsingError",
+    "ParsingProcessError",
     "FetchingError",
     "ParsingError",
     "ParsingResult",

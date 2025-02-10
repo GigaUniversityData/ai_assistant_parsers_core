@@ -2,7 +2,7 @@ from .commands import (
     parse_one,
 )
 from .functions import (
-    BaseParsingError,
+    ParsingProcessError,
     FetchingError,
     ParsingError,
     ParsingResult,
@@ -16,7 +16,7 @@ from .functions import (
 )
 
 __all__ = [
-    "BaseParsingError",
+    "ParsingProcessError",
     "FetchingError",
     "ParsingError",
     "ParsingResult",
