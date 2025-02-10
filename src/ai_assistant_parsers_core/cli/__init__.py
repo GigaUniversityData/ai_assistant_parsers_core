@@ -2,9 +2,9 @@ from .commands import (
     parse_one,
 )
 from .functions import (
-    ParsingProcessError,
     FetchingError,
     ParsingError,
+    ParsingProcessError,
     ParsingResult,
     RefineError,
     close_fetchers,
@@ -16,9 +16,9 @@ from .functions import (
 )
 
 __all__ = [
-    "ParsingProcessError",
     "FetchingError",
     "ParsingError",
+    "ParsingProcessError",
     "ParsingResult",
     "RefineError",
     "close_fetchers",
