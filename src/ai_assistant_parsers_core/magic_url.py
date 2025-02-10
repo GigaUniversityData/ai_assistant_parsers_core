@@ -4,7 +4,6 @@ import typing as t
 import re
 from fnmatch import fnmatchcase
 from functools import cached_property
-from pathlib import PurePosixPath, PurePath
 
 from ai_assistant_parsers_core.common_utils.parse_url import normalize_url, parse_url, parse_domain
 
@@ -16,11 +15,6 @@ class MagicURL:
         self._url = url
         self._parsed_url = parse_url(url)
         self._parsed_domain = parse_domain(url)
-
-    @property
-    def path(self) -> PurePath:
-        """Возвращает путь URL в виде объекта ``pathlib``."""
-        return PurePosixPath(self.raw_path)
 
     @property
     def url(self) -> str:
@@ -38,7 +32,7 @@ class MagicURL:
         return self._parsed_url.netloc
 
     @property
-    def raw_path(self) -> str:
+    def path(self) -> str:
         """Возвращает путь URL."""
         return self._parsed_url.path
 
@@ -65,7 +59,7 @@ class MagicURL:
     @cached_property
     def normalized_path(self) -> str:
         """Возвращает нормализованный путь URL."""
-        return normalize_url(self.raw_path)
+        return normalize_url(self.path)
 
     @property
     def domain_name(self) -> str:
