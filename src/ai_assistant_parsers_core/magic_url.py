@@ -4,6 +4,7 @@ import typing as t
 import re
 from fnmatch import fnmatchcase
 from functools import cached_property
+from pathlib import PurePosixPath, PurePath
 
 from ai_assistant_parsers_core.common_utils.parse_url import normalize_url, parse_url, parse_domain
 
@@ -15,6 +16,11 @@ class MagicURL:
         self._url = url
         self._parsed_url = parse_url(url)
         self._parsed_domain = parse_domain(url)
+
+    @property
+    def path(self) -> PurePath:
+        """Возвращает путь URL в виде объекта ``pathlib``."""
+        return PurePosixPath(self.raw_path)
 
     @property
     def url(self) -> str:
@@ -32,7 +38,7 @@ class MagicURL:
         return self._parsed_url.netloc
 
     @property
-    def path(self) -> str:
+    def raw_path(self) -> str:
         """Возвращает путь URL."""
         return self._parsed_url.path
 
@@ -57,9 +63,9 @@ class MagicURL:
         return normalize_url(self.url)
 
     @cached_property
-    def normalized_path(self) -> str:
+    def normalized_raw_path(self) -> str:
         """Возвращает нормализованный путь URL."""
-        return normalize_url(self.path)
+        return normalize_url(self.raw_path)
 
     @property
     def domain_name(self) -> str:
@@ -85,7 +91,7 @@ class MagicURL:
         Returns:
             bool: True, если совпадает, иначе False.
         """
-        return re.match(pattern, self.normalized_path) is not None
+        return re.match(pattern, self.normalized_raw_path) is not None
 
     def is_path_fn_match(self, pattern: t.AnyStr) -> bool:
         """Проверяет, соответствует ли нормализованный путь заданному шаблону fnmatch.
@@ -96,7 +102,7 @@ class MagicURL:
         Returns:
             bool: True, если совпадает, иначе False.
         """
-        return fnmatchcase(self.normalized_path, pattern)
+        return fnmatchcase(self.normalized_raw_path, pattern)
 
     def is_path_equals(self, string: str) -> bool:
         """
@@ -108,4 +114,4 @@ class MagicURL:
         Returns:
             bool: True, если равен, иначе False.
         """
-        return string == self.normalized_path
+        return string == self.normalized_raw_path
