@@ -18,9 +18,9 @@ class MagicURL:
         self._parsed_domain = parse_domain(url)
 
     @property
-    def magic_path(self) -> PurePath:
+    def path(self) -> PurePath:
         """Возвращает путь URL в виде объекта ``pathlib``."""
-        return PurePosixPath(self.path)
+        return PurePosixPath(self.raw_path)
 
     @property
     def url(self) -> str:
@@ -38,7 +38,7 @@ class MagicURL:
         return self._parsed_url.netloc
 
     @property
-    def path(self) -> str:
+    def raw_path(self) -> str:
         """Возвращает путь URL."""
         return self._parsed_url.path
 
@@ -65,7 +65,7 @@ class MagicURL:
     @cached_property
     def normalized_path(self) -> str:
         """Возвращает нормализованный путь URL."""
-        return normalize_url(self.path)
+        return normalize_url(self.raw_path)
 
     @property
     def domain_name(self) -> str:
