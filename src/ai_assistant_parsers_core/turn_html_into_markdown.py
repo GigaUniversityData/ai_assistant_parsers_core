@@ -2,10 +2,11 @@
 
 from os import getenv
 
-from aiohttp import ClientSession, ClientConnectorError, ClientResponseError
+from aiohttp import ClientSession, ClientConnectorError, ClientResponseError, BasicAuth
 
 
-API_URL = getenv("AAPC__MARKDOWN_API_URL", "http://localhost:8080")
+API_URL = getenv("AAPC_MARKDOWN_API_URL", "http://5.35.3.148:16000")
+API_AUTH = getenv("AAPC_MARKDOWN_API_AUTH")
 
 
 async def turn_html_into_markdown(html: str) -> str:
@@ -17,9 +18,26 @@ async def turn_html_into_markdown(html: str) -> str:
     Returns:
         str: Markdown.
     """
+    if API_AUTH is None:
+        raise MarkdownConverterError(
+            "Authorization parameters are not specified. "
+            "Please use the 'AAPC_MARKDOWN_API_AUTH' environment variable for this."
+        )
+    try:
+        login, password = API_AUTH.split(":")
+    except ValueError as error:
+        raise MarkdownConverterError(
+            "'AAPC_MARKDOWN_API_AUTH' environment variable is not valid. "
+            "Please use format: [login]:[password]."
+        ) from error
+
     async with ClientSession(raise_for_status=True) as client:
         try:
-            async with client.post(f"{API_URL}/api/v1/convert", json=dict(html=html)) as response:
+            async with client.post(
+                f"{API_URL}/convert",
+                json=dict(html=html),
+                auth=BasicAuth(login, password),
+            ) as response:
                 data = await response.json()
         except ClientConnectorError as error:
             raise ServerMarkdownConverterError(f"Cannot connect to markdown api server") from error
