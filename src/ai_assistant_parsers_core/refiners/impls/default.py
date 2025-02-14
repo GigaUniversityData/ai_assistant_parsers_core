@@ -7,8 +7,8 @@ from ai_assistant_parsers_core.common_utils.beautiful_soup import (
     clean_comments,
     URL_SCHEME_PATTERN,
     converts_relative_links_to_absolute,
+    clean_tags,
 )
-from ai_assistant_parsers_core.parsers.utils.clean_blocks import clean_all_by_select
 
 from ..abc import ABCParsingRefiner
 
@@ -42,19 +42,26 @@ class DefaultRefiner(ABCParsingRefiner):
         self._restructure(soup, url)
 
     def _clear(self, soup, url: str) -> None:
-        for tag in ["script", "style", "noscript"]:
-            clean_all_by_select(soup, tag)
+        # Лишние HTML-теги
+        clean_tags(soup, ["img"])
+        #clean_tags(soup, ["aside"])
 
-        # clean_tags(soup, ["aside"])
-        # clean_empty_tags(soup)
+        # Теги не влияющие на контент
+        clean_tags(soup, ["script", "style", "noscript"])
         clean_comments(soup)
+        #clean_empty_tags(soup)
+
+        # Мелкий остаток, не влияющий на отображение
         _clear_javascript_scheme_from_links(soup)
-        _clean_empty_style_tags(soup)
-        _clean_empty_list_items(soup)
-        _clean_all_excess_tags_from_links(soup)
 
     def _restructure(self, soup, url: str) -> None:
         converts_relative_links_to_absolute(soup, base_url=url)
+
+    def __patch_html_for_markdown_converter(self, soup: BeautifulSoup) -> None:
+        """Патчит HTML для преобразователя HTML в Markdown."""
+        _clean_empty_style_tags(soup)
+        _clean_empty_list_items(soup)
+        _clean_all_excess_tags_from_links(soup)
 
 
 def _clear_javascript_scheme_from_links(soup: BeautifulSoup) -> None:
