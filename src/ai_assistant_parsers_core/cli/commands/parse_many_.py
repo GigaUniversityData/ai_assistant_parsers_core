@@ -14,6 +14,6 @@ async def parse_many(module_name: str, output_dir: Path) -> None:
     """Парсит множество URL-адресов, основываясь на конфигурации модуля."""
     input_ = sys.stdin.read().strip()
     urls = input_.split()
-    for url in urls:
-        click.echo(click.style(f"@ {url}", fg="green", bold=True))
+    for index, url in enumerate(urls, start=1):
+        click.echo(click.style(f"{index}. {url}", fg="green", bold=True))
         await parse_one.callback(module_name, output_dir, url)
