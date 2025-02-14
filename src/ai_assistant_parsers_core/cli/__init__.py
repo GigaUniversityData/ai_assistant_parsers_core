@@ -1,4 +1,5 @@
 from .commands import (
+    parse_many,
     parse_one,
 )
 from .functions import (
@@ -26,6 +27,7 @@ __all__ = [
     "get_parser_by_url",
     "open_fetchers",
     "parse_by_url",
+    "parse_many",
     "parse_one",
     "process_parsed_html",
 ]
