@@ -11,7 +11,9 @@ from .parse_one_ import parse_one
 @click.argument("module_name", type=str)
 @click.argument("output_dir", type=click.Path(path_type=Path))
 async def parse_many(module_name: str, output_dir: Path) -> None:
+    """Парсит множество URL-адресов, основываясь на конфигурации модуля."""
     input_ = sys.stdin.read().strip()
     urls = input_.split()
     for url in urls:
+        click.echo(click.style(f"@ {url}", fg="green", bold=True))
         await parse_one.callback(module_name, output_dir, url)
