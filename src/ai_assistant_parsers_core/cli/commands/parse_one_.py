@@ -64,7 +64,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
     except Exception as error:
         raise error
     else:
-        _write_data_to_files(
+        await _write_data_to_files(
             cleaned_soup=result.cleaned_html,
             url=url,
             parser=result.parser,
@@ -83,7 +83,7 @@ def _merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict
     return merged_config
 
 
-def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
+async def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
     """Записывает запаршенные данные в выходные файлы."""
     url_hash = f"{parse_domain(url).subdomain}_{_hash_string(url)}"
     parser_name = _get_full_parser_name(parser)
@@ -101,7 +101,7 @@ def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParse
 
     path = result_dir / "result.md"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(turn_html_into_markdown(html))
+        fp.write(await turn_html_into_markdown(html))
 
     click.echo(f"file://{path.absolute()}")
 

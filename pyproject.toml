@@ -10,14 +10,12 @@ packages = [{include = "ai_assistant_parsers_core", from = "src"}]
 python = "^3.10"
 beautifulsoup4 = "^4.12.3"
 tldextract = "^5.1.2"
-html2text = "^2024.2.26"
 html5lib = "^1.1"
 aiohttp = "^3.10.10"
 fake-headers = "^1.0.2"
 asyncclick = "^8.1.7.2"
 selenium = "^4.25.0"
 charset-normalizer = "^3.4.0"
-pymarkdownlnt = "^0.9.24"
 aiohttp-retry = "^2.9.1"
 
 [tool.poetry.group.dev.dependencies]
