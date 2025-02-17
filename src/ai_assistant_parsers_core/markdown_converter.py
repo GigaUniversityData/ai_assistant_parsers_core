@@ -5,7 +5,7 @@ from os import getenv
 from aiohttp import ClientSession, ClientConnectorError, ClientResponseError, BasicAuth
 
 
-API_URL = getenv("AAPC_MARKDOWN_API_URL", "http://5.35.3.148:16000")
+API_URL = getenv("AAPC_MARKDOWN_API_URL", "https://uniassistant.ru/api/markdown-converter/convert")
 API_AUTH = getenv("AAPC_MARKDOWN_API_AUTH")
 
 
