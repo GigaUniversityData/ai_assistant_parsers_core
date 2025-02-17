@@ -5,10 +5,6 @@ description = "AI Assistant Parsers Core - это ядро библиотеки,
 authors = ["LEv145", "AI Assistant"]
 readme = "README.rst"
 packages = [{include = "ai_assistant_parsers_core", from = "src"}]
-# Pip bug
-exclude = [
-    { path = "ai_assistant_parsers_core/turn_html_into_markdown" }
-]
 
 [tool.poetry.dependencies]
 python = "^3.10"

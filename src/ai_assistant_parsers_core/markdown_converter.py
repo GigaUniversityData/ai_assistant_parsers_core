@@ -1,4 +1,4 @@
-"""Модуль для ``turn_html_into_markdown``."""
+"""Модуль для ``convert_html_to_markdown``."""
 
 from os import getenv
 
@@ -9,7 +9,7 @@ API_URL = getenv("AAPC_MARKDOWN_API_URL", "http://5.35.3.148:16000")
 API_AUTH = getenv("AAPC_MARKDOWN_API_AUTH")
 
 
-async def turn_html_into_markdown(html: str) -> str:
+async def convert_html_to_markdown(html: str) -> str:
     """Преобразовывает HTML в Markdown.
 
     Args:

@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from fake_headers import Headers
 
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
-from ai_assistant_parsers_core.turn_html_into_markdown import turn_html_into_markdown
+from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import AiohttpFetcher
 from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers
@@ -101,7 +101,7 @@ async def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: AB
 
     path = result_dir / "result.md"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(await turn_html_into_markdown(html))
+        fp.write(await convert_html_to_markdown(html))
 
     click.echo(f"file://{path.absolute()}")
 
