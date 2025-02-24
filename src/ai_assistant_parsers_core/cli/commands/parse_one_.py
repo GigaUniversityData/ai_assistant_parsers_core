@@ -12,7 +12,7 @@ from fake_headers import Headers
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
-from ai_assistant_parsers_core.fetchers import AiohttpFetcher
+from ai_assistant_parsers_core.fetchers import APIFetcher
 from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers
 
 
@@ -41,24 +41,20 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
 
     output_dir.mkdir(exist_ok=True, parents=True)
 
-    default_fetchers_config = {
-        "*": AiohttpFetcher(dict(headers=Headers(os="mac", headers=True).generate())),
-    }
+    default_fetchers_config = {"*": APIFetcher()}
 
     config = importlib.import_module(f"{module_name}.settings")
     parsers = config.PARSERS
     parsing_refiners = getattr(config, "PARSING_REFINERS", [])
-    fetchers_config = getattr(config, "FETCHERS_CONFIG", {})
-    fetchers_config = _merge_configs(default_fetchers_config, fetchers_config)
 
-    await open_fetchers(fetchers_config=fetchers_config)
+    await open_fetchers(fetchers_config=default_fetchers_config)
 
     # noinspection PyBroadException
     try:
         result = await parse_by_url(
             parsers=parsers,
             parsing_refiners=parsing_refiners,
-            fetchers_config=fetchers_config,
+            fetchers_config=default_fetchers_config,
             url=url,
         )
     except Exception as error:
@@ -71,16 +67,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
             output_dir=output_dir
         )
     finally:
-        await close_fetchers(fetchers_config=fetchers_config)
-
-
-def _merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
-    """Правильного объединяет параметров конфигов."""
-    merged_config = fetchers_config.copy()
-    for key, value in default_fetchers_config.items():
-        if key not in merged_config:
-            merged_config[key] = value
-    return merged_config
+        await close_fetchers(fetchers_config=default_fetchers_config)
 
 
 async def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
