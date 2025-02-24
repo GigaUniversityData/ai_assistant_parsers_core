@@ -2,6 +2,7 @@
 
 import typing as t
 from contextlib import suppress
+from warnings import deprecated
 
 import charset_normalizer
 from aiohttp import ClientSession, ClientConnectorCertificateError
@@ -10,6 +11,7 @@ from aiohttp_retry import RetryClient, ExponentialRetry
 from ..abc import ABCFetcher
 
 
+@deprecated("Please use universal APIFetcher")
 class AiohttpFetcher(ABCFetcher):
     """Фетчер на основе ``aiohttp``."""
 

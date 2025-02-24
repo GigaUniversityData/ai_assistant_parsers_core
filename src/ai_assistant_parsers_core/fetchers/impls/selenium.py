@@ -1,6 +1,7 @@
 """Модуль для ``SeleniumFetcher``."""
 
 import typing as t
+from warnings import deprecated
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
@@ -9,6 +10,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver, Op
 from ..abc import ABCFetcher
 
 
+@deprecated("Please use universal APIFetcher")
 class SeleniumFetcher(ABCFetcher):
     """Фетчер на основе ``selenium``."""
 
