@@ -19,16 +19,16 @@ async def convert_html_to_markdown(html: str) -> str:
         str: Markdown.
     """
     if API_AUTH is None:
-        raise MarkdownConverterError(
+        raise InvalidAuthorizationError(
             "Authorization parameters are not specified. "
-            "Please use the 'AAPC_MARKDOWN_API_AUTH' environment variable for this."
+            "Please use the 'AAPC_MARKDOWN_API_AUTH' environment variable for this"
         )
     try:
         login, password = API_AUTH.split(":")
     except ValueError as error:
-        raise MarkdownConverterError(
+        raise InvalidAuthorizationError(
             "'AAPC_MARKDOWN_API_AUTH' environment variable is not valid. "
-            "Please use format: [login]:[password]."
+            "Please use format: [login]:[password]"
         ) from error
 
     async with ClientSession(raise_for_status=True) as client:
@@ -55,4 +55,8 @@ class MarkdownConverterError(Exception):
 
 
 class ServerMarkdownConverterError(MarkdownConverterError):
+    pass
+
+
+class InvalidAuthorizationError(MarkdownConverterError):
     pass
