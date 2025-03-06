@@ -2,7 +2,7 @@
 
 import typing as t
 from contextlib import suppress
-from warnings import deprecated
+from typing_extensions import deprecated
 
 import charset_normalizer
 from aiohttp import ClientSession, ClientConnectorCertificateError

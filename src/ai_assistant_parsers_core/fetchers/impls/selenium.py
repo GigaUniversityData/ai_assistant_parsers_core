@@ -1,7 +1,7 @@
 """Модуль для ``SeleniumFetcher``."""
 
 import typing as t
-from warnings import deprecated
+from typing_extensions import deprecated
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
