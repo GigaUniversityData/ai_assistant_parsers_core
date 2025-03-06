@@ -2,6 +2,8 @@
 
 import abc
 
+from ai_assistant_parsers_core.magic_url import MagicURL
+
 
 class ABCFetcher(abc.ABC):
     """Абстрактный фетчер."""
@@ -11,11 +13,11 @@ class ABCFetcher(abc.ABC):
         """Открывает фетчер."""
 
     @abc.abstractmethod
-    async def fetch(self, url: str) -> str:
+    async def fetch(self, magic_url: MagicURL) -> str:
         """Извлекает HTML из URL-адреса.
 
         Args:
-            url (str): URL-адрес.
+            magic_url (MagicURL): URL-адрес.
 
         Returns:
             str: HTML-код.

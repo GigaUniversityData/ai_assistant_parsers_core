@@ -8,6 +8,8 @@ import charset_normalizer
 from aiohttp import ClientSession, ClientConnectorCertificateError
 from aiohttp_retry import RetryClient, ExponentialRetry
 
+from ai_assistant_parsers_core.magic_url import MagicURL
+
 from ..abc import ABCFetcher
 
 
@@ -36,17 +38,17 @@ class AiohttpFetcher(ABCFetcher):
             ),
         )
 
-    async def fetch(self, url: str) -> str:
+    async def fetch(self, magic_url: MagicURL) -> str:
         """Извлекает HTML из URL-адреса."""
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
         try:
-            async with self._retry_client.get(url) as response:
+            async with self._retry_client.get(magic_url.url) as response:
                 byte_string = await response.read()
                 encoding = response.get_encoding()
         except ClientConnectorCertificateError:
-            async with self._retry_client.get(url, ssl=False) as response:
+            async with self._retry_client.get(magic_url.url, ssl=False) as response:
                 byte_string = await response.read()
                 encoding = response.get_encoding()
 
