@@ -67,13 +67,13 @@ def process_parsed_html(
     try:
         cleaned_soup = parser.parse(raw_soup, magic_url=MagicURL(url))
     except Exception as error:
-        raise ParsingError(url=url, parser=parser, html=str(raw_soup)) from error
+        raise ParseParsingProcessError(url=url, parser=parser, html=str(raw_soup)) from error
 
     for parsing_refiner in parsing_refiners:
         try:
             parsing_refiner.refine(cleaned_soup, magic_url=MagicURL(url))
         except Exception as error:
-            raise RefineError(url=url, refiner=parsing_refiner, html=str(cleaned_soup)) from error
+            raise RefineParsingProcessError(url=url, refiner=parsing_refiner, html=str(cleaned_soup)) from error
 
     return cleaned_soup
 
@@ -117,7 +117,7 @@ async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher]) ->
             try:
                 return await fetcher.fetch(url)
             except Exception as error:
-                raise FetchingError(url=url, fetcher=fetcher) from error
+                raise FetchParsingProcessError(url=url, fetcher=fetcher) from error
 
     raise RuntimeError(f"Fetcher for {url} does not exist.")
 
@@ -146,7 +146,7 @@ class ParsingProcessError(Exception):
     """Базовая ошибка процесса парсинга."""
 
 
-class FetchingError(ParsingProcessError):
+class FetchParsingProcessError(ParsingProcessError):
     """Базовая ошибка при фетченге."""
     def __init__(self, url: str, fetcher: ABCFetcher):
         self.url = url
@@ -156,7 +156,7 @@ class FetchingError(ParsingProcessError):
         return f"Error when fetching {self.url} by {self.fetcher}"
 
 
-class RefineError(ParsingProcessError):
+class RefineParsingProcessError(ParsingProcessError):
     """Базовая ошибка при рефайне."""
     def __init__(self, url: str, refiner: ABCParsingRefiner, html: str):
         self.url = url
@@ -167,7 +167,7 @@ class RefineError(ParsingProcessError):
         return f"Error when refine with {self.url} by {self.refiner}"
 
 
-class ParsingError(ParsingProcessError):
+class ParseParsingProcessError(ParsingProcessError):
     """Базовая ошибка при парсинге."""
     def __init__(self, url: str, parser: ABCParser, html: str):
         self.url = url
