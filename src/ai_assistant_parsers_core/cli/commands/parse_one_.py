@@ -7,7 +7,6 @@ from pathlib import Path
 
 import asyncclick as click
 from bs4 import BeautifulSoup
-from fake_headers import Headers
 
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
