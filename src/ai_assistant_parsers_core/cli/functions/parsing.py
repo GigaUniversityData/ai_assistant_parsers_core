@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 
-from ai_assistant_parsers_core.common_utils.parse_url import parse_url, normalize_url
+from ai_assistant_parsers_core.common_utils.parse_url import normalize_url
 from ai_assistant_parsers_core.magic_url import MagicURL
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.refiners import ABCParsingRefiner
@@ -111,11 +111,11 @@ async def fetch_html_by_url(url: str, fetchers_config: dict[str, ABCFetcher]) ->
         str: Извлечённый HTML-код.
     """
     for pattern, fetcher in fetchers_config.items():
-        parsed_url = parse_url(url)
-        check_path = normalize_url(f"{parsed_url.netloc}{parsed_url.path}")
+        magic_url = MagicURL(url)
+        check_path = normalize_url(f"{magic_url.netloc}{magic_url.path}")
         if fnmatchcase(check_path, pattern):
             try:
-                return await fetcher.fetch(url)
+                return await fetcher.fetch(magic_url)
             except Exception as error:
                 raise FetchParsingProcessError(url=url, fetcher=fetcher) from error
 
