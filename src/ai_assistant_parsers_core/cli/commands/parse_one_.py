@@ -31,12 +31,6 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
 
         # Опциональные
         PARSING_REFINERS = [CleanParsingRefiner(), RestructureParsingRefiner()]
-
-        selenium_fetcher = SeleniumFetcher(webdriver.Firefox)
-        FETCHERS_CONFIG = {
-            "www.spbstu.ru/abit/master/to-choose-the-direction-of-training/education-program/": fetcher,
-        }
-
     """
 
     output_dir.mkdir(exist_ok=True, parents=True)
