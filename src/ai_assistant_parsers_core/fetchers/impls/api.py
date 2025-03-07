@@ -3,11 +3,17 @@ import base64
 from os import getenv
 
 import brotli
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientConnectorError, ClientResponseError
 
 from ai_assistant_parsers_core.magic_url import MagicURL
 from ..abc import ABCFetcher
-from ..errors import FetcherError, FetcherNotOpenError, InvalidAuthorizationError
+from ..errors import (
+    FetcherError,
+    FetcherNotOpenError,
+    InvalidAuthorizationError,
+    ServerConnectionError,
+    ServerResponseError,
+)
 
 
 DEFAULT_API_URL = getenv("AAPC_FETCHING_API_URL", "http://5.35.3.148:8300/fetch")
@@ -41,8 +47,10 @@ class APIFetcher(ABCFetcher):
         try:
             async with self._client.get(self._api_url, headers=headers, params=params) as response:
                 json = await response.json()
-        except Exception as error:
-            raise FetcherError(f"Unexpected error while fetching {magic_url.url}") from error
+        except ClientConnectorError as error:
+            raise ServerConnectionError from error
+        except ClientResponseError as error:
+            raise ServerResponseError from error
 
         return self._decore_raw_html(json["data"]["raw_html"])
 

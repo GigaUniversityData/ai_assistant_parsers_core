@@ -40,12 +40,9 @@ async def convert_html_to_markdown(html: str) -> str:
             ) as response:
                 data = await response.json()
         except ClientConnectorError as error:
-            raise ServerMarkdownConverterError(f"Cannot connect to markdown api server") from error
+            raise ServerConnectionError from error
         except ClientResponseError as error:
-            raise ServerMarkdownConverterError(
-                f"Exceptions occurred after receiving a response: "
-                f"{error.status} {error.message!r}",
-            ) from error
+            raise ServerResponseError from error
 
     return data["markdown"]
 
@@ -54,7 +51,12 @@ class MarkdownConverterError(Exception):
     pass
 
 
-class ServerMarkdownConverterError(MarkdownConverterError):
+class ServerConnectionError(MarkdownConverterError):
+    def __str__(self) -> str:
+        return "Cannot connect to MarkdownAPI server"
+
+
+class ServerResponseError(MarkdownConverterError):
     pass
 
 
