@@ -15,9 +15,10 @@ from ai_assistant_parsers_core.fetchers import ABCFetcher
 @dataclass
 class ParsingResult:
     """Результат парсинга."""
-    raw_html: BeautifulSoup
-    cleaned_html: BeautifulSoup
+    raw_soup: BeautifulSoup
+    cleaned_soup: BeautifulSoup
     parser: ABCParser
+    url: str
 
 
 async def parse_by_url(
@@ -40,12 +41,11 @@ async def parse_by_url(
     html = await fetch_html_by_url(url, fetchers_config=fetchers_config)
 
     raw_soup = BeautifulSoup(html, "html5lib")
-
     parser = get_parser_by_url(url, parsers=parsers)
     cleaned_soup = process_parsed_html(parser=parser, parsing_refiners=parsing_refiners, url=url, raw_soup=raw_soup)
 
-    return ParsingResult(raw_html=raw_soup, cleaned_html=cleaned_soup, parser=parser)
-
+    raw_soup = BeautifulSoup(html, "html5lib")
+    return ParsingResult(raw_soup=raw_soup, cleaned_soup=cleaned_soup, parser=parser, url=url)
 
 def process_parsed_html(
     parser: ABCParser,
