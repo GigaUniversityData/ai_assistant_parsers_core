@@ -64,10 +64,9 @@ class APIFetcher(ABCFetcher):
         return self._client is not None
 
     def _decore_raw_html(self, raw_html: str) -> str:
-        decoded_once = base64.b64decode(raw_html)
-        decoded_twice = base64.b64decode(decoded_once)
+        decoded_string = base64.b64decode(raw_html)
 
-        raw_data = brotli.decompress(decoded_twice)
+        raw_data = brotli.decompress(decoded_string)
         text = raw_data.decode("utf-8", errors="replace")
 
         return text
