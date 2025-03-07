@@ -8,11 +8,12 @@ from pathlib import Path
 import asyncclick as click
 from bs4 import BeautifulSoup
 
+from ai_assistant_parsers_core.common_utils.beautiful_soup import add_base_tag
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
 from ai_assistant_parsers_core.fetchers import APIFetcher
-from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers
+from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers, ParsingResult
 
 
 @click.command()
@@ -44,7 +45,7 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
 
     # noinspection PyBroadException
     try:
-        result = await parse_by_url(
+        parsing_result = await parse_by_url(
             parsers=parsers,
             parsing_refiners=parsing_refiners,
             fetchers_config=default_fetchers_config,
@@ -53,35 +54,44 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
     except Exception as error:
         raise error
     else:
-        await _write_data_to_files(
-            cleaned_soup=result.cleaned_html,
-            url=url,
-            parser=result.parser,
-            output_dir=output_dir
-        )
+        await _write_data_to_files(parsing_result=parsing_result, output_dir=output_dir)
     finally:
         await close_fetchers(fetchers_config=default_fetchers_config)
 
 
-async def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
+async def _write_data_to_files(
+    parsing_result: ParsingResult,
+    output_dir: Path,
+) -> None:
     """Записывает запаршенные данные в выходные файлы."""
+    url = parsing_result.url
+    parser = parsing_result.parser
+    cleaned_soup = parsing_result.cleaned_soup
+    raw_soup = parsing_result.raw_soup
+
     url_hash = f"{parse_domain(url).subdomain}_{_hash_string(url)}"
     parser_name = _get_full_parser_name(parser)
-    html = str(cleaned_soup)
+    cleaned_html = str(cleaned_soup)
 
     result_dir = output_dir / url_hash
     result_dir.mkdir(exist_ok=True)
 
     click.echo(parser_name)
 
+    path = result_dir / "input.html"
+    add_base_tag(raw_soup, base_url=url)
+    with open(path, "w", encoding="utf-8") as fp:
+        fp.write(str(raw_soup))
+    click.echo(f"file://{path.absolute()}")
+
     path = result_dir / "result.html"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(html)
+        fp.write(str(cleaned_soup))
     click.echo(f"file://{path.absolute()}")
 
     path = result_dir / "result.md"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(await convert_html_to_markdown(html))
+        fp.write(await convert_html_to_markdown(cleaned_html))
 
     click.echo(f"file://{path.absolute()}")
 
