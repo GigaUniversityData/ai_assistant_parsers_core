@@ -82,12 +82,9 @@ def clean_empty_tags(soup: BeautifulSoup | Tag) -> None:
 
 
 def add_base_tag(soup: BeautifulSoup | Tag, base_url: str, target: str = "_blank") -> None:
-    body = soup.select_one("body")
-    if body is None:
-        raise RuntimeError("Body tag is not found")
+    head_tag = soup.select_one("head")
+    if head_tag is None:
+        raise RuntimeError("Head tag is not found")
 
-    base_tag = soup.new_tag("base")
-    base_tag.href = base_url
-    base_tag.target = target
-
-    body.insert(0, base_tag)
+    base_tag = soup.new_tag("base", href=base_url, target=target)
+    head_tag.insert(0, base_tag)
