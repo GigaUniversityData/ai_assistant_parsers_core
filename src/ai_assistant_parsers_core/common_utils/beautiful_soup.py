@@ -79,3 +79,15 @@ def clean_empty_tags(soup: BeautifulSoup | Tag) -> None:
     for tag in soup.find_all():
         if not tag.text.strip():
             tag.decompose()
+
+
+def add_base_tag(soup: BeautifulSoup | Tag, base_url: str, target: str = "_blank") -> None:
+    body = soup.select_one("body")
+    if body is None:
+        raise RuntimeError("Body tag is not found")
+
+    base_tag = soup.new_tag("base")
+    base_tag.href = base_url
+    base_tag.target = target
+
+    body.insert(0, base_tag)
