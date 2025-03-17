@@ -4,16 +4,19 @@ import importlib
 import json
 from hashlib import md5
 from pathlib import Path
+from os import getenv
 
 import asyncclick as click
-from bs4 import BeautifulSoup
 
 from ai_assistant_parsers_core.common_utils.beautiful_soup import add_base_tag
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
-from ai_assistant_parsers_core.fetchers import APIFetcher
+from ai_assistant_parsers_core.fetchers import APIFetcher, ABCFetcher, AiohttpFetcher
 from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers, ParsingResult
+
+
+DEFAULT_FETCHER = getenv("AAPC_DEFAULT_FETCHER", "default")
 
 
 @click.command()
@@ -32,19 +35,14 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
         # Опциональные
         PARSING_REFINERS = [CleanParsingRefiner(), RestructureParsingRefiner()]
     """
-
-    output_dir.mkdir(exist_ok=True, parents=True)
-
-    default_fetchers_config = {"*": APIFetcher()}
-
+    default_fetchers_config = {"*": _get_default_fetchers()}
     config = importlib.import_module(f"{module_name}.settings")
-    parsers = config.PARSERS
-    parsing_refiners = getattr(config, "PARSING_REFINERS", [])
 
     await open_fetchers(fetchers_config=default_fetchers_config)
 
-    # noinspection PyBroadException
     try:
+        parsers = config.PARSERS
+        parsing_refiners = getattr(config, "PARSING_REFINERS", [])
         parsing_result = await parse_by_url(
             parsers=parsers,
             parsing_refiners=parsing_refiners,
@@ -59,11 +57,22 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
         await close_fetchers(fetchers_config=default_fetchers_config)
 
 
+def _get_default_fetchers() -> ABCFetcher:
+    if DEFAULT_FETCHER == "default":
+        return APIFetcher()
+    elif DEFAULT_FETCHER == "aiohttp":
+        return AiohttpFetcher()
+    else:
+        raise RuntimeError(f"Fetcher {DEFAULT_FETCHER} not fount. Please check 'AAPC_DEFAULT_FETCHER' environment")
+
+
 async def _write_data_to_files(
     parsing_result: ParsingResult,
     output_dir: Path,
 ) -> None:
     """Записывает запаршенные данные в выходные файлы."""
+    output_dir.mkdir(exist_ok=True, parents=True)
+
     url = parsing_result.url
     parser = parsing_result.parser
     cleaned_soup = parsing_result.cleaned_soup
