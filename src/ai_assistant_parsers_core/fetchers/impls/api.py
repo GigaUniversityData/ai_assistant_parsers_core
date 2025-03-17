@@ -8,7 +8,6 @@ from aiohttp import ClientSession, ClientConnectorError, ClientResponseError
 from ai_assistant_parsers_core.magic_url import MagicURL
 from ..abc import ABCFetcher
 from ..errors import (
-    FetcherError,
     FetcherNotOpenError,
     InvalidAuthorizationError,
     ServerConnectionError,
@@ -36,7 +35,6 @@ class APIFetcher(ABCFetcher):
         if not self.is_open():
             raise FetcherNotOpenError
         if API_TOKEN is None:
-            # TODO: Названия ошибкам
             raise InvalidAuthorizationError(
                 "Authorization parameters are not specified. "
                 "Please use the 'AAPC_FETCHING_API_TOKEN' environment variable for this"
