@@ -64,7 +64,12 @@ class APIFetcher(ABCFetcher):
     def _decore_raw_html(self, raw_html: str) -> str:
         decoded_string = base64.b64decode(raw_html)
 
-        raw_data = brotli.decompress(decoded_string)
+        # FIXME: Проблема на стороне сервера - данные хранятся некорректно
+        try:
+            raw_data = brotli.decompress(decoded_string)
+        except brotli.error:
+            raw_data = brotli.decompress(base64.b64decode(decoded_string))
+
         text = raw_data.decode("utf-8", errors="replace")
 
         return text
