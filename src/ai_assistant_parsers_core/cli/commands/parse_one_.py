@@ -16,7 +16,7 @@ from ai_assistant_parsers_core.fetchers import APIFetcher, ABCFetcher, AiohttpFe
 from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers, ParsingResult
 
 
-DEFAULT_FETCHER = getenv("AAPC_DEFAULT_FETCHER", "default")
+_DEFAULT_FETCHER = getenv("AAPC_DEFAULT_FETCHER", "default")
 
 
 @click.command()
@@ -58,12 +58,12 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
 
 
 def _get_default_fetchers() -> ABCFetcher:
-    if DEFAULT_FETCHER == "default":
+    if _DEFAULT_FETCHER == "default":
         return APIFetcher()
-    elif DEFAULT_FETCHER == "aiohttp":
+    elif _DEFAULT_FETCHER == "aiohttp":
         return AiohttpFetcher()
     else:
-        raise RuntimeError(f"Fetcher {DEFAULT_FETCHER} not fount. Please check 'AAPC_DEFAULT_FETCHER' environment")
+        raise RuntimeError(f"Fetcher {_DEFAULT_FETCHER} not fount. Please check 'AAPC_DEFAULT_FETCHER' environment")
 
 
 async def _write_data_to_files(
