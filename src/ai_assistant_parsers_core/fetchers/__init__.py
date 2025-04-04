@@ -5,6 +5,8 @@ from .errors import (
     FetcherError,
     FetcherNotOpenError,
     InvalidAuthorizationError,
+    ServerConnectionError,
+    ServerResponseError,
 )
 from .impls import (
     APIFetcher,
@@ -24,4 +26,6 @@ __all__ = [
     "FetcherNotOpenError",
     "InvalidAuthorizationError",
     "SeleniumFetcher",
+    "ServerConnectionError",
+    "ServerResponseError",
 ]

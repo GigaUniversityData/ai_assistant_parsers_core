@@ -7,6 +7,7 @@ import brotli
 from aiohttp import ClientSession, ClientConnectorError, ClientResponseError
 
 from ai_assistant_parsers_core.magic_url import MagicURL
+from ai_assistant_parsers_core.common_utils.decode_body import decode_body
 from ..abc import ABCFetcher
 from ..errors import (
     FetcherNotOpenError,
@@ -73,6 +74,5 @@ class APIFetcher(ABCFetcher):
             )
             raw_data_body = brotli.decompress(base64.b64decode(decoded_string))
 
-        text = raw_data.decode("utf-8", errors="replace")
-
-        return text
+        raw_html = decode_body(raw_data_body)
+        return raw_html
