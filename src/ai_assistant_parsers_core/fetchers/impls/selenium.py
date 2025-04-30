@@ -1,14 +1,18 @@
 """Модуль для ``SeleniumFetcher``."""
 
 import typing as t
+from typing_extensions import deprecated
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver, Options as FirefoxOptions
 from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver, Options as ChromeOptions
 
+from ai_assistant_parsers_core.magic_url import MagicURL
+
 from ..abc import ABCFetcher
 
 
+@deprecated("Please use universal APIFetcher")
 class SeleniumFetcher(ABCFetcher):
     """Фетчер на основе ``selenium``."""
 
@@ -36,12 +40,12 @@ class SeleniumFetcher(ABCFetcher):
         self._add_headless_to_options()
         self._webdriver = self._webdriver_class(**self._webdriver_arguments)
 
-    async def fetch(self, url: str) -> str:
+    async def fetch(self, magic_url: MagicURL) -> str:
         """Извлекает HTML из URL-адреса."""
         if not self.is_open():
             raise RuntimeError("Fetcher is not open")
 
-        self._webdriver.get(url)
+        self._webdriver.get(magic_url.url)
         self.wait_for_page_load()
         return self._webdriver.page_source
 

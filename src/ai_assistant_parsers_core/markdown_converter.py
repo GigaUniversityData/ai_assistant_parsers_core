@@ -5,7 +5,7 @@ from os import getenv
 from aiohttp import ClientSession, ClientConnectorError, ClientResponseError, BasicAuth
 
 
-API_URL = getenv("AAPC_MARKDOWN_API_URL", "https://uniassistant.ru/api/markdown-converter")
+API_URL = getenv("AAPC_MARKDOWN_API_URL", "http://5.35.3.148:16000")
 API_AUTH = getenv("AAPC_MARKDOWN_API_AUTH")
 
 
@@ -19,16 +19,16 @@ async def convert_html_to_markdown(html: str) -> str:
         str: Markdown.
     """
     if API_AUTH is None:
-        raise MarkdownConverterError(
+        raise InvalidAuthorizationError(
             "Authorization parameters are not specified. "
-            "Please use the 'AAPC_MARKDOWN_API_AUTH' environment variable for this."
+            "Please use the 'AAPC_MARKDOWN_API_AUTH' environment variable for this"
         )
     try:
         login, password = API_AUTH.split(":")
     except ValueError as error:
-        raise MarkdownConverterError(
+        raise InvalidAuthorizationError(
             "'AAPC_MARKDOWN_API_AUTH' environment variable is not valid. "
-            "Please use format: [login]:[password]."
+            "Please use format: [login]:[password]"
         ) from error
 
     async with ClientSession(raise_for_status=True) as client:
@@ -40,12 +40,9 @@ async def convert_html_to_markdown(html: str) -> str:
             ) as response:
                 data = await response.json()
         except ClientConnectorError as error:
-            raise ServerMarkdownConverterError(f"Cannot connect to markdown api server") from error
+            raise ServerConnectionError from error
         except ClientResponseError as error:
-            raise ServerMarkdownConverterError(
-                f"Exceptions occurred after receiving a response: "
-                f"{error.status} {error.message!r}",
-            ) from error
+            raise ServerResponseError from error
 
     return data["markdown"]
 
@@ -54,5 +51,14 @@ class MarkdownConverterError(Exception):
     pass
 
 
-class ServerMarkdownConverterError(MarkdownConverterError):
+class ServerConnectionError(MarkdownConverterError):
+    def __str__(self) -> str:
+        return "Cannot connect to MarkdownAPI server"
+
+
+class ServerResponseError(MarkdownConverterError):
+    pass
+
+
+class InvalidAuthorizationError(MarkdownConverterError):
     pass

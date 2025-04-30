@@ -4,16 +4,19 @@ import importlib
 import json
 from hashlib import md5
 from pathlib import Path
+from os import getenv
 
 import asyncclick as click
-from bs4 import BeautifulSoup
-from fake_headers import Headers
 
+from ai_assistant_parsers_core.common_utils.beautiful_soup import add_base_tag
 from ai_assistant_parsers_core.common_utils.parse_url import parse_domain
 from ai_assistant_parsers_core.markdown_converter import convert_html_to_markdown
 from ai_assistant_parsers_core.parsers import ABCParser
-from ai_assistant_parsers_core.fetchers import AiohttpFetcher
-from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers
+from ai_assistant_parsers_core.fetchers import APIFetcher, ABCFetcher, AiohttpFetcher
+from ai_assistant_parsers_core.cli.functions.parsing import parse_by_url, open_fetchers, close_fetchers, ParsingResult
+
+
+_DEFAULT_FETCHER = getenv("AAPC_DEFAULT_FETCHER", "default")
 
 
 @click.command()
@@ -31,77 +34,73 @@ async def parse_one(module_name: str, output_dir: Path, url: str) -> None:
 
         # Опциональные
         PARSING_REFINERS = [CleanParsingRefiner(), RestructureParsingRefiner()]
-
-        selenium_fetcher = SeleniumFetcher(webdriver.Firefox)
-        FETCHERS_CONFIG = {
-            "www.spbstu.ru/abit/master/to-choose-the-direction-of-training/education-program/": fetcher,
-        }
-
     """
-
-    output_dir.mkdir(exist_ok=True, parents=True)
-
-    default_fetchers_config = {
-        "*": AiohttpFetcher(dict(headers=Headers(os="mac", headers=True).generate())),
-    }
-
+    default_fetchers_config = {"*": _get_default_fetchers()}
     config = importlib.import_module(f"{module_name}.settings")
-    parsers = config.PARSERS
-    parsing_refiners = getattr(config, "PARSING_REFINERS", [])
-    fetchers_config = getattr(config, "FETCHERS_CONFIG", {})
-    fetchers_config = _merge_configs(default_fetchers_config, fetchers_config)
 
-    await open_fetchers(fetchers_config=fetchers_config)
+    await open_fetchers(fetchers_config=default_fetchers_config)
 
-    # noinspection PyBroadException
     try:
-        result = await parse_by_url(
+        parsers = config.PARSERS
+        parsing_refiners = getattr(config, "PARSING_REFINERS", [])
+        parsing_result = await parse_by_url(
             parsers=parsers,
             parsing_refiners=parsing_refiners,
-            fetchers_config=fetchers_config,
+            fetchers_config=default_fetchers_config,
             url=url,
         )
     except Exception as error:
         raise error
     else:
-        await _write_data_to_files(
-            cleaned_soup=result.cleaned_html,
-            url=url,
-            parser=result.parser,
-            output_dir=output_dir
-        )
+        await _write_data_to_files(parsing_result=parsing_result, output_dir=output_dir)
     finally:
-        await close_fetchers(fetchers_config=fetchers_config)
+        await close_fetchers(fetchers_config=default_fetchers_config)
 
 
-def _merge_configs(default_fetchers_config: dict, fetchers_config: dict) -> dict:
-    """Правильного объединяет параметров конфигов."""
-    merged_config = fetchers_config.copy()
-    for key, value in default_fetchers_config.items():
-        if key not in merged_config:
-            merged_config[key] = value
-    return merged_config
+def _get_default_fetchers() -> ABCFetcher:
+    if _DEFAULT_FETCHER == "default":
+        return APIFetcher()
+    elif _DEFAULT_FETCHER == "aiohttp":
+        return AiohttpFetcher()
+    else:
+        raise RuntimeError(f"Fetcher {_DEFAULT_FETCHER} not fount. Please check 'AAPC_DEFAULT_FETCHER' environment")
 
 
-async def _write_data_to_files(cleaned_soup: BeautifulSoup, url: str, parser: ABCParser, output_dir: Path) -> None:
+async def _write_data_to_files(
+    parsing_result: ParsingResult,
+    output_dir: Path,
+) -> None:
     """Записывает запаршенные данные в выходные файлы."""
+    output_dir.mkdir(exist_ok=True, parents=True)
+
+    url = parsing_result.url
+    parser = parsing_result.parser
+    cleaned_soup = parsing_result.cleaned_soup
+    raw_soup = parsing_result.raw_soup
+
     url_hash = f"{parse_domain(url).subdomain}_{_hash_string(url)}"
     parser_name = _get_full_parser_name(parser)
-    html = str(cleaned_soup)
+    cleaned_html = str(cleaned_soup)
 
     result_dir = output_dir / url_hash
     result_dir.mkdir(exist_ok=True)
 
     click.echo(parser_name)
 
+    path = result_dir / "input.html"
+    add_base_tag(raw_soup, base_url=url)
+    with open(path, "w", encoding="utf-8") as fp:
+        fp.write(str(raw_soup))
+    click.echo(f"file://{path.absolute()}")
+
     path = result_dir / "result.html"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(html)
+        fp.write(str(cleaned_soup))
     click.echo(f"file://{path.absolute()}")
 
     path = result_dir / "result.md"
     with open(path, "w", encoding="utf-8") as fp:
-        fp.write(await convert_html_to_markdown(html))
+        fp.write(await convert_html_to_markdown(cleaned_html))
 
     click.echo(f"file://{path.absolute()}")
 
